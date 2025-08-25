@@ -2386,17 +2386,12 @@ class PROTOBUF_EXPORT DescriptorPool {
     enforce_extension_declarations_ = enforce;
   }
 
-  bool EnforceDescriptorExtensionDeclarations() const {
+  bool ShouldEnforceDescriptorExtensionDeclarations() const {
     return enforce_extension_declarations_ ==
            ExtDeclEnforcementLevel::kAllExtensions;
   }
 
-  bool EnforceCustomExtensionDeclarations() const {
-    return enforce_extension_declarations_ ==
-               ExtDeclEnforcementLevel::kAllExtensions ||
-           enforce_extension_declarations_ ==
-               ExtDeclEnforcementLevel::kCustomExtensions;
-  }
+  bool ShouldEnforceExtensionDeclaration(const FieldDescriptor& field) const;
 
 #ifndef SWIG
   // Dispatch recursive builds to a callback that may stick them onto a separate
@@ -3184,16 +3179,22 @@ enum class HasbitMode : uint8_t {
 //     indicates an unset field (kTrueHasbit);
 //   - have hasbits where hasbit == 1 indicates "field is possibly modified" and
 //     hasbit == 0 indicates "field is definitely missing" (kHintHasbit).
-PROTOBUF_EXPORT HasbitMode GetFieldHasbitMode(const FieldDescriptor* field);
+//
+// Note that this may not match the hasbit mode chosen by the compiler, which
+// may be influenced by other factors like PDProto profiles.
+PROTOBUF_EXPORT HasbitMode
+GetFieldHasbitModeWithoutProfile(const FieldDescriptor* field);
 
 // Returns true if there are hasbits for the field.
 // Note that this does not correlate with "hazzer"s, i.e., whether has_foo APIs
 // are emitted.
-PROTOBUF_EXPORT bool HasHasbit(const FieldDescriptor* field);
+//
+// Note that this may not match the hasbit mode chosen by the compiler, which
+// may be influenced by other factors like PDProto profiles.
+PROTOBUF_EXPORT bool HasHasbitWithoutProfile(const FieldDescriptor* field);
 
 enum class Utf8CheckMode : uint8_t {
   kStrict = 0,  // Parsing will fail if non UTF-8 data is in string fields.
-  kVerify = 1,  // Only log an error but parsing will succeed.
   kNone = 2,    // No UTF-8 check.
 };
 PROTOBUF_EXPORT Utf8CheckMode GetUtf8CheckMode(const FieldDescriptor* field,
