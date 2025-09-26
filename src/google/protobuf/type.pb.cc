@@ -198,7 +198,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_EXPORT
 }  // namespace google
 static const ::_pb::EnumDescriptor* PROTOBUF_NONNULL
     file_level_enum_descriptors_google_2fprotobuf_2ftype_2eproto[3];
-static constexpr const ::_pb::ServiceDescriptor *PROTOBUF_NONNULL *PROTOBUF_NULLABLE
+static constexpr const ::_pb::ServiceDescriptor* PROTOBUF_NONNULL* PROTOBUF_NULLABLE
     file_level_service_descriptors_google_2fprotobuf_2ftype_2eproto = nullptr;
 const ::uint32_t
     TableStruct_google_2fprotobuf_2ftype_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -557,25 +557,32 @@ Type::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
     // string name = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 3, 0, PROTOBUF_FIELD_OFFSET(Type, _impl_.name_)}},
+     {10, 3, 0,
+      PROTOBUF_FIELD_OFFSET(Type, _impl_.name_)}},
     // repeated .google.protobuf.Field fields = 2;
     {::_pbi::TcParser::FastMtR1,
-     {18, 0, 0, PROTOBUF_FIELD_OFFSET(Type, _impl_.fields_)}},
+     {18, 0, 0,
+      PROTOBUF_FIELD_OFFSET(Type, _impl_.fields_)}},
     // repeated string oneofs = 3;
     {::_pbi::TcParser::FastUR1,
-     {26, 1, 0, PROTOBUF_FIELD_OFFSET(Type, _impl_.oneofs_)}},
+     {26, 1, 0,
+      PROTOBUF_FIELD_OFFSET(Type, _impl_.oneofs_)}},
     // repeated .google.protobuf.Option options = 4;
     {::_pbi::TcParser::FastMtR1,
-     {34, 2, 1, PROTOBUF_FIELD_OFFSET(Type, _impl_.options_)}},
+     {34, 2, 1,
+      PROTOBUF_FIELD_OFFSET(Type, _impl_.options_)}},
     // .google.protobuf.SourceContext source_context = 5;
     {::_pbi::TcParser::FastMtS1,
-     {42, 5, 2, PROTOBUF_FIELD_OFFSET(Type, _impl_.source_context_)}},
+     {42, 5, 2,
+      PROTOBUF_FIELD_OFFSET(Type, _impl_.source_context_)}},
     // .google.protobuf.Syntax syntax = 6;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Type, _impl_.syntax_), 6>(),
-     {48, 6, 0, PROTOBUF_FIELD_OFFSET(Type, _impl_.syntax_)}},
+     {48, 6, 0,
+      PROTOBUF_FIELD_OFFSET(Type, _impl_.syntax_)}},
     // string edition = 7;
     {::_pbi::TcParser::FastUS1,
-     {58, 4, 0, PROTOBUF_FIELD_OFFSET(Type, _impl_.edition_)}},
+     {58, 4, 0,
+      PROTOBUF_FIELD_OFFSET(Type, _impl_.edition_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -829,14 +836,18 @@ void Type::MergeImpl(::google::protobuf::MessageLite& to_msg,
   cached_has_bits = from._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x0000007fU)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_fields()->MergeFrom(
+      _this->_internal_mutable_fields()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_fields());
     }
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      _this->_internal_mutable_oneofs()->MergeFrom(from._internal_oneofs());
+      _this->_internal_mutable_oneofs()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_oneofs());
     }
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
-      _this->_internal_mutable_options()->MergeFrom(
+      _this->_internal_mutable_options()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_options());
     }
     if (CheckHasBit(cached_has_bits, 0x00000008U)) {
@@ -1074,35 +1085,45 @@ Field::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
     // .google.protobuf.Field.Kind kind = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Field, _impl_.kind_), 5>(),
-     {8, 5, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.kind_)}},
+     {8, 5, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.kind_)}},
     // .google.protobuf.Field.Cardinality cardinality = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Field, _impl_.cardinality_), 6>(),
-     {16, 6, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.cardinality_)}},
+     {16, 6, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.cardinality_)}},
     // int32 number = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Field, _impl_.number_), 7>(),
-     {24, 7, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.number_)}},
+     {24, 7, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.number_)}},
     // string name = 4;
     {::_pbi::TcParser::FastUS1,
-     {34, 1, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.name_)}},
+     {34, 1, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.name_)}},
     {::_pbi::TcParser::MiniParse, {}},
     // string type_url = 6;
     {::_pbi::TcParser::FastUS1,
-     {50, 2, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.type_url_)}},
+     {50, 2, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.type_url_)}},
     // int32 oneof_index = 7;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Field, _impl_.oneof_index_), 8>(),
-     {56, 8, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.oneof_index_)}},
+     {56, 8, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.oneof_index_)}},
     // bool packed = 8;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Field, _impl_.packed_), 9>(),
-     {64, 9, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.packed_)}},
+     {64, 9, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.packed_)}},
     // repeated .google.protobuf.Option options = 9;
     {::_pbi::TcParser::FastMtR1,
-     {74, 0, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.options_)}},
+     {74, 0, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.options_)}},
     // string json_name = 10;
     {::_pbi::TcParser::FastUS1,
-     {82, 3, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.json_name_)}},
+     {82, 3, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.json_name_)}},
     // string default_value = 11;
     {::_pbi::TcParser::FastUS1,
-     {90, 4, 0, PROTOBUF_FIELD_OFFSET(Field, _impl_.default_value_)}},
+     {90, 4, 0,
+      PROTOBUF_FIELD_OFFSET(Field, _impl_.default_value_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -1409,6 +1430,7 @@ void Field::MergeImpl(::google::protobuf::MessageLite& to_msg,
   if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
     from.CheckHasBitConsistency();
   }
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:google.protobuf.Field)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
@@ -1417,7 +1439,8 @@ void Field::MergeImpl(::google::protobuf::MessageLite& to_msg,
   cached_has_bits = from._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x000000ffU)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_options()->MergeFrom(
+      _this->_internal_mutable_options()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_options());
     }
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
@@ -1692,22 +1715,28 @@ Enum::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
     // string name = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 2, 0, PROTOBUF_FIELD_OFFSET(Enum, _impl_.name_)}},
+     {10, 2, 0,
+      PROTOBUF_FIELD_OFFSET(Enum, _impl_.name_)}},
     // repeated .google.protobuf.EnumValue enumvalue = 2;
     {::_pbi::TcParser::FastMtR1,
-     {18, 0, 0, PROTOBUF_FIELD_OFFSET(Enum, _impl_.enumvalue_)}},
+     {18, 0, 0,
+      PROTOBUF_FIELD_OFFSET(Enum, _impl_.enumvalue_)}},
     // repeated .google.protobuf.Option options = 3;
     {::_pbi::TcParser::FastMtR1,
-     {26, 1, 1, PROTOBUF_FIELD_OFFSET(Enum, _impl_.options_)}},
+     {26, 1, 1,
+      PROTOBUF_FIELD_OFFSET(Enum, _impl_.options_)}},
     // .google.protobuf.SourceContext source_context = 4;
     {::_pbi::TcParser::FastMtS1,
-     {34, 4, 2, PROTOBUF_FIELD_OFFSET(Enum, _impl_.source_context_)}},
+     {34, 4, 2,
+      PROTOBUF_FIELD_OFFSET(Enum, _impl_.source_context_)}},
     // .google.protobuf.Syntax syntax = 5;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Enum, _impl_.syntax_), 5>(),
-     {40, 5, 0, PROTOBUF_FIELD_OFFSET(Enum, _impl_.syntax_)}},
+     {40, 5, 0,
+      PROTOBUF_FIELD_OFFSET(Enum, _impl_.syntax_)}},
     // string edition = 6;
     {::_pbi::TcParser::FastUS1,
-     {50, 3, 0, PROTOBUF_FIELD_OFFSET(Enum, _impl_.edition_)}},
+     {50, 3, 0,
+      PROTOBUF_FIELD_OFFSET(Enum, _impl_.edition_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
@@ -1937,11 +1966,13 @@ void Enum::MergeImpl(::google::protobuf::MessageLite& to_msg,
   cached_has_bits = from._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x0000003fU)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_enumvalue()->MergeFrom(
+      _this->_internal_mutable_enumvalue()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_enumvalue());
     }
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      _this->_internal_mutable_options()->MergeFrom(
+      _this->_internal_mutable_options()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_options());
     }
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
@@ -2158,13 +2189,16 @@ EnumValue::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
     // string name = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 1, 0, PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.name_)}},
+     {10, 1, 0,
+      PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.name_)}},
     // int32 number = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(EnumValue, _impl_.number_), 2>(),
-     {16, 2, 0, PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.number_)}},
+     {16, 2, 0,
+      PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.number_)}},
     // repeated .google.protobuf.Option options = 3;
     {::_pbi::TcParser::FastMtR1,
-     {26, 0, 0, PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.options_)}},
+     {26, 0, 0,
+      PROTOBUF_FIELD_OFFSET(EnumValue, _impl_.options_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -2316,6 +2350,7 @@ void EnumValue::MergeImpl(::google::protobuf::MessageLite& to_msg,
   if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
     from.CheckHasBitConsistency();
   }
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:google.protobuf.EnumValue)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
@@ -2324,7 +2359,8 @@ void EnumValue::MergeImpl(::google::protobuf::MessageLite& to_msg,
   cached_has_bits = from._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_options()->MergeFrom(
+      _this->_internal_mutable_options()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_options());
     }
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {
@@ -2512,10 +2548,12 @@ Option::_table_ = {
   }, {{
     // .google.protobuf.Any value = 2;
     {::_pbi::TcParser::FastMtS1,
-     {18, 1, 0, PROTOBUF_FIELD_OFFSET(Option, _impl_.value_)}},
+     {18, 1, 0,
+      PROTOBUF_FIELD_OFFSET(Option, _impl_.value_)}},
     // string name = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(Option, _impl_.name_)}},
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(Option, _impl_.name_)}},
   }}, {{
     65535, 65535
   }}, {{

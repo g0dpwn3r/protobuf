@@ -27,6 +27,7 @@
 #include "absl/log/absl_check.h"
 #include "absl/numeric/bits.h"
 #include "absl/strings/str_cat.h"
+#include "absl/types/span.h"
 #include "google/protobuf/arena_test_util.h"
 #include "google/protobuf/internal_visibility_for_testing.h"
 #include "google/protobuf/io/coded_stream.h"
@@ -49,6 +50,15 @@ using ::testing::AllOf;
 using ::testing::ElementsAre;
 using ::testing::Ge;
 using ::testing::Le;
+
+using String = std::string;
+using SmallMsg = proto2_unittest::ForeignMessage;
+using LargeMsg = proto2_unittest::TestAllTypes;
+
+namespace {
+enum WithArena : bool { kNoArena = false, kArena = true };
+enum AddMode { kIntoNew, kIntoCleared };
+}  // namespace
 
 TEST(RepeatedPtrOverPtrsIteratorTest, Traits) {
   using It = RepeatedPtrField<std::string>::pointer_iterator;
@@ -168,7 +178,7 @@ TEST(RepeatedPtrFieldTest, ClearThenReserveMore) {
   // calls here.
   RepeatedPtrField<std::string> field;
   for (int i = 0; i < 32; i++) {
-    *field.Add() = std::string("abcdefghijklmnopqrstuvwxyz0123456789");
+    *field.Add() = "abcdefghijklmnopqrstuvwxyz0123456789";
   }
   EXPECT_EQ(32, field.size());
   field.Clear();
@@ -620,7 +630,7 @@ TEST(RepeatedPtrFieldTest, UnsafeArenaAddAllocatedReleaseLastOnBaseField) {
   ElemT* concrete_new_elem = static_cast<ElemT*>(base_new_elem);
   concrete_new_elem->set_bb(456);
   base_field->UnsafeArenaAddAllocated<GenericTypeHandler<Message>>(
-      base_new_elem);
+      &arena, base_new_elem);
   Message* base_new_elem_roundtrip =
       base_field->UnsafeArenaReleaseLast<GenericTypeHandler<Message>>();
   ASSERT_NE(base_new_elem_roundtrip, nullptr);
@@ -906,10 +916,14 @@ TEST(RepeatedPtrFieldTest, SmallOptimization) {
   // Adding a second object stops sso.
   std::string str2;
   array->UnsafeArenaAddAllocated(&str2);
-  EXPECT_EQ(array->Capacity(), 3);
-  // Backing array and the strings.
-  EXPECT_EQ(array->SpaceUsedExcludingSelf(),
-            (1 + array->Capacity()) * sizeof(void*) + 2 * sizeof(str));
+  // We know we have exited sso if the capacity is greater than 1.
+  EXPECT_GT(array->Capacity(), 1);
+  // Backing array and the strings. sizeof(Rep) = 2 * sizeof(int) for capacity
+  // and allocated_size. Each element of the Rep contributes sizeof(void*),
+  // and each string contributes sizeof(str) to arena memory.
+  EXPECT_EQ(
+      array->SpaceUsedExcludingSelf(),
+      2 * sizeof(int) + array->Capacity() * sizeof(void*) + 2 * sizeof(str));
   // We used some arena space now.
   EXPECT_LT(usage_before, arena.SpaceUsed());
   // And the pointer_begin is not in the sso anymore.

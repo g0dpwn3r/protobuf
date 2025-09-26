@@ -1372,9 +1372,6 @@ bool ShouldGenerateV2Code(const Descriptor* descriptor,
 }
 
 bool IsEligibleForV2Batching(const FieldDescriptor* field) {
-#ifdef PROTOBUF_DISABLE_BATCH
-  return false;
-#endif  // PROTOBUF_DISABLE_BATCH
   // Non-message fields whose numbers fit into 2B should be considered for
   // batching although the actual batching depends on the current batching, the
   // payload size, etc. Oneof fields are not eligible for batching because they
@@ -1443,6 +1440,20 @@ bool IsStringOrMessage(const FieldDescriptor* field) {
 
   ABSL_LOG(FATAL) << "Can't get here.";
   return false;
+}
+
+bool IsRepeatedPtrField(const FieldDescriptor* field) {
+  if (!field->is_repeated() || field->is_map()) {
+    return false;
+  }
+  switch (field->cpp_type()) {
+    case FieldDescriptor::CPPTYPE_MESSAGE:
+      return true;
+    case FieldDescriptor::CPPTYPE_STRING:
+      return field->cpp_string_type() != FieldDescriptor::CppStringType::kCord;
+    default:
+      return false;
+  }
 }
 
 bool IsAnyMessage(const FileDescriptor* descriptor) {

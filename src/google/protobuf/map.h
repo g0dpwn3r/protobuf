@@ -364,7 +364,6 @@ class PROTOBUF_EXPORT UntypedMapBase {
     std::swap(index_of_first_non_null_, other->index_of_first_non_null_);
     std::swap(type_info_, other->type_info_);
     std::swap(table_, other->table_);
-    std::swap(arena_, other->arena_);
   }
 
   void UntypedMergeFrom(const UntypedMapBase& other);
@@ -1421,7 +1420,7 @@ class Map : private internal::KeyMapBase<internal::KeyForBase<Key>> {
 
   void swap(Map& other) {
     if (arena() == other.arena()) {
-      InternalSwap(&other);
+      this->InternalSwap(&other);
     } else {
       size_t other_size = other.size();
       Node* other_copy = this->CloneFromOther(other);
@@ -1431,10 +1430,6 @@ class Map : private internal::KeyMapBase<internal::KeyForBase<Key>> {
         this->MergeIntoEmpty(other_copy, other_size);
       }
     }
-  }
-
-  void InternalSwap(Map* other) {
-    internal::UntypedMapBase::InternalSwap(other);
   }
 
   hasher hash_function() const { return {}; }

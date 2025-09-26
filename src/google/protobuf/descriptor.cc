@@ -97,7 +97,12 @@ namespace protobuf {
 namespace {
 
 constexpr int kPackageLimit = 100;
+
+#ifdef PROTOBUF_UNSAFE_DISABLE_MAX_FIELD_COUNT_CHECK
+constexpr int kMaxFieldsPerMessage = std::numeric_limits<int32_t>::max();
+#else   // PROTOBUF_UNSAFE_DISABLE_MAX_FIELD_COUNT_CHECK
 constexpr int kMaxFieldsPerMessage = 65535;
+#endif  // PROTOBUF_UNSAFE_DISABLE_MAX_FIELD_COUNT_CHECK
 
 
 size_t CamelCaseSize(const absl::string_view input) {
@@ -6726,7 +6731,7 @@ FileDescriptor* DescriptorBuilder::BuildFileImpl(
           }
         });
   }
-  if (!had_errors_) {
+  if (!had_errors_ && pool_->enforce_symbol_visibility_) {
     // Check Symbol Visibility Rules.
     CheckVisibilityRules(result, proto);
   }
@@ -7924,7 +7929,8 @@ void DescriptorBuilder::CrossLinkField(FieldDescriptor* field,
                                      "\" is not a message type.");
                });
       return;
-    } else if (!extendee.IsVisibleFrom(file_)) {
+    } else if (!extendee.IsVisibleFrom(file_) &&
+               pool_->enforce_symbol_visibility_) {
       AddError(field->full_name(), proto,
                DescriptorPool::ErrorCollector::EXTENDEE, [&] {
                  return extendee.GetVisibilityError(file_, "target of extend");
@@ -8036,7 +8042,7 @@ void DescriptorBuilder::CrossLinkField(FieldDescriptor* field,
       field->is_map_ = sub_message->options().map_entry();
     }
 
-    if (!type.IsVisibleFrom(file_)) {
+    if (!type.IsVisibleFrom(file_) && pool_->enforce_symbol_visibility_) {
       AddError(field->full_name(), proto, DescriptorPool::ErrorCollector::TYPE,
                [&] { return type.GetVisibilityError(file_); });
       return;
@@ -8625,6 +8631,7 @@ void DescriptorBuilder::ValidateOptions(const Descriptor* message,
                                         const DescriptorProto& proto) {
   CheckFieldJsonNameUniqueness(proto, message);
   ValidateExtensionRangeOptions(proto, *message);
+
 }
 
 void DescriptorBuilder::ValidateOptions(const OneofDescriptor* /*oneof*/,

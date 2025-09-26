@@ -299,6 +299,12 @@ Error, UINTPTR_MAX is undefined
 #define UPB_ASSERT(expr) assert(expr)
 #endif
 
+#if !defined(NDEBUG) && !defined(UPB_TSAN)
+#define UPB_ENABLE_REF_CYCLE_CHECKS 1
+#else
+#define UPB_ENABLE_REF_CYCLE_CHECKS 0
+#endif
+
 #if defined(__GNUC__) || defined(__clang__)
 #define UPB_UNREACHABLE()    \
   do {                       \
@@ -501,8 +507,7 @@ Error, UINTPTR_MAX is undefined
 #if defined(__ELF__) || defined(__wasm__)
 
 #define UPB_LINKARR_APPEND(name) \
-  __attribute__((retain, used,   \
-                 section("linkarr_" #name))) UPB_NO_SANITIZE_ADDRESS
+  __attribute__((section("linkarr_" #name))) UPB_NO_SANITIZE_ADDRESS
 #define UPB_LINKARR_DECLARE(name, type) \
   extern type __start_linkarr_##name;   \
   extern type __stop_linkarr_##name;    \
@@ -514,8 +519,7 @@ Error, UINTPTR_MAX is undefined
 
 /* As described in: https://stackoverflow.com/a/22366882 */
 #define UPB_LINKARR_APPEND(name) \
-  __attribute__((retain, used,   \
-                 section("__DATA,__la_" #name))) UPB_NO_SANITIZE_ADDRESS
+  __attribute__((section("__DATA,__la_" #name))) UPB_NO_SANITIZE_ADDRESS
 #define UPB_LINKARR_DECLARE(name, type)     \
   extern type __start_linkarr_##name __asm( \
       "section$start$__DATA$__la_" #name);  \
@@ -535,9 +539,8 @@ Error, UINTPTR_MAX is undefined
 
 // Usage of __attribute__ here probably means this is Clang-specific, and would
 // not work on MSVC.
-#define UPB_LINKARR_APPEND(name)         \
-  __declspec(allocate("la_" #name "$j")) \
-  __attribute__((retain, used)) UPB_NO_SANITIZE_ADDRESS
+#define UPB_LINKARR_APPEND(name) \
+  __declspec(allocate("la_" #name "$j")) UPB_NO_SANITIZE_ADDRESS
 #define UPB_LINKARR_DECLARE(name, type)                               \
   __declspec(allocate("la_" #name "$a")) type __start_linkarr_##name; \
   __declspec(allocate("la_" #name "$z")) type __stop_linkarr_##name;  \
@@ -5181,9 +5184,21 @@ void upb_Arena_SetMaxBlockSize(size_t max) {
 typedef struct upb_MemBlock {
   struct upb_MemBlock* next;
   // Size of the actual allocation.
+  // Size of 0 means this is a upb_ArenaRef.
   size_t size;
   // Data follows.
 } upb_MemBlock;
+
+// A special block type that indicates a reference to another arena.
+// When this arena is freed, a ref is released on the referenced arena.
+// size must be 0.
+typedef struct upb_ArenaRef {
+  upb_MemBlock prefix;  // size is always zero
+  const upb_Arena* arena;
+#ifndef NDEBUG
+  const struct upb_ArenaRef* next_ref;
+#endif
+} upb_ArenaRef;
 
 typedef struct upb_ArenaInternal {
   // upb_alloc* together with a low bit which signals if there is an initial
@@ -5192,6 +5207,12 @@ typedef struct upb_ArenaInternal {
 
   // Linked list of blocks to free/cleanup.
   upb_MemBlock* blocks;
+
+#ifndef NDEBUG
+  // Stack of pointers to other arenas that this arena owns.
+  // Used for debug-only ref cycle checks.
+  UPB_ATOMIC(const upb_ArenaRef*) refs;
+#endif
 
   // A growing hint of what the *next* block should be sized
   size_t size_hint;
@@ -5250,6 +5271,9 @@ typedef struct {
 
 static const size_t kUpb_MemblockReserve =
     UPB_ALIGN_MALLOC(sizeof(upb_MemBlock));
+
+static const size_t kUpb_ArenaRefReserve =
+    UPB_ALIGN_MALLOC(sizeof(upb_ArenaRef));
 
 // Extracts the (upb_ArenaInternal*) from a (upb_Arena*)
 static upb_ArenaInternal* upb_Arena_Internal(const upb_Arena* a) {
@@ -5450,6 +5474,43 @@ uint32_t upb_Arena_DebugRefCount(const upb_Arena* a) {
   return (uint32_t)_upb_Arena_RefCountFromTagged(tagged);
 }
 
+#if UPB_ENABLE_REF_CYCLE_CHECKS
+
+bool upb_Arena_HasRefChain(const upb_Arena* from, const upb_Arena* to) {
+  upb_ArenaInternal* ai = upb_Arena_Internal(from);
+  upb_ArenaInternal* current;
+
+  if (upb_Arena_IsFused(from, to)) return true;
+
+  // 1. Traverse backward to the start of a consistent segment.
+  uintptr_t previous_or_tail =
+      upb_Atomic_Load(&ai->previous_or_tail, memory_order_acquire);
+  while (_upb_Arena_IsTaggedPrevious(previous_or_tail)) {
+    ai = _upb_Arena_PreviousFromTagged(previous_or_tail);
+    UPB_PRIVATE(upb_Xsan_AccessReadOnly)(UPB_XSAN(ai));
+    previous_or_tail =
+        upb_Atomic_Load(&ai->previous_or_tail, memory_order_acquire);
+  }
+
+  // 2. Traverse forward through all arenas in the fuse group.
+  current = ai;
+  while (current != NULL) {
+    UPB_PRIVATE(upb_Xsan_AccessReadOnly)(UPB_XSAN(current));
+    const upb_ArenaRef* ref =
+        upb_Atomic_Load(&current->refs, memory_order_acquire);
+    while (ref != NULL) {
+      if (ref->arena == to || upb_Arena_HasRefChain(ref->arena, to)) {
+        return true;
+      }
+      ref = ref->next_ref;
+    }
+    current = upb_Atomic_Load(&current->next, memory_order_acquire);
+  }
+  return false;
+}
+
+#endif
+
 // Adds an allocated block to the head of the list.
 static void _upb_Arena_AddBlock(upb_Arena* a, void* ptr, size_t offset,
                                 size_t block_size) {
@@ -5584,6 +5645,9 @@ static upb_Arena* _upb_Arena_InitSlow(upb_alloc* alloc, size_t first_size) {
                   _upb_Arena_TaggedFromTail(&a->body));
   upb_Atomic_Init(&a->body.space_allocated, actual_block_size);
   a->body.blocks = NULL;
+#ifndef NDEBUG
+  a->body.refs = NULL;
+#endif
   a->body.upb_alloc_cleanup = NULL;
   UPB_PRIVATE(upb_Xsan_Init)(UPB_XSAN(&a->body));
 
@@ -5621,6 +5685,9 @@ upb_Arena* upb_Arena_Init(void* mem, size_t n, upb_alloc* alloc) {
                   _upb_Arena_TaggedFromTail(&a->body));
   upb_Atomic_Init(&a->body.space_allocated, 0);
   a->body.blocks = NULL;
+#ifndef NDEBUG
+  a->body.refs = NULL;
+#endif
   a->body.size_hint = 128;
   a->body.upb_alloc_cleanup = NULL;
   a->body.block_alloc = _upb_Arena_MakeBlockAlloc(alloc, 1);
@@ -5653,7 +5720,14 @@ static void _upb_Arena_DoFree(upb_ArenaInternal* ai) {
     while (block != NULL) {
       // Load first since we are deleting block.
       upb_MemBlock* next_block = block->next;
-      upb_free_sized(block_alloc, block, block->size);
+      if (block->size == 0) {
+        // If the block is an arena ref, then we need to release our ref on the
+        // referenced arena.
+        upb_ArenaRef* ref = (upb_ArenaRef*)block;
+        upb_Arena_DecRefFor((upb_Arena*)ref->arena, ai);
+      } else {
+        upb_free_sized(block_alloc, block, block->size);
+      }
       block = next_block;
     }
     if (alloc_cleanup != NULL) {
@@ -5928,6 +6002,9 @@ bool upb_Arena_Fuse(const upb_Arena* a1, const upb_Arena* a2) {
   while (true) {
     upb_ArenaInternal* new_root = _upb_Arena_DoFuse(&ai1, &ai2, &ref_delta);
     if (new_root != NULL && _upb_Arena_FixupRefs(new_root, ref_delta)) {
+#if UPB_ENABLE_REF_CYCLE_CHECKS
+      UPB_ASSERT(!upb_Arena_HasRefChain(a1, a2));
+#endif
       return true;
     }
   }
@@ -5977,6 +6054,64 @@ void upb_Arena_DecRefFor(const upb_Arena* a, const void* owner) {
   upb_Arena_Free((upb_Arena*)a);
 }
 
+bool upb_Arena_RefArena(upb_Arena* from, const upb_Arena* to) {
+  UPB_ASSERT(!upb_Arena_IsFused(from, to));
+  if (_upb_ArenaInternal_HasInitialBlock(upb_Arena_Internal(to))) {
+    // We can't increment a ref to `to`, so return early.
+    return false;
+  }
+
+  upb_ArenaInternal* ai = upb_Arena_Internal(from);
+  upb_ArenaRef* ref = upb_Arena_Malloc(from, kUpb_ArenaRefReserve);
+
+  if (!ref) {
+    return false;
+  }
+
+  // When 'from' is freed, a ref on 'to' will be released.
+  // Intentionally ignore return value, since we already check up above if this
+  // call will succeed.
+  bool result = upb_Arena_IncRefFor(to, from);
+  UPB_ASSERT(result);
+
+  // When we add a reference from `from` to `to`, we need to keep track of the
+  // ref in the `from` arena's linked list of refs. This allows us to
+  // walk all refs for `from` when `from` is freed, and thus allows us to
+  // decrement the refcount on `to` when `from` is freed.
+  ref->prefix.next = ai->blocks;
+  ref->prefix.size = 0;
+  ref->arena = to;
+  ai->blocks = (upb_MemBlock*)ref;
+
+#ifndef NDEBUG
+  // Add to the dedicated list of refs.
+  // This function is not thread-safe from `from`, so a simple load/store is
+  // sufficient.
+  ref->next_ref = upb_Atomic_Load(&ai->refs, memory_order_relaxed);
+  upb_Atomic_Store(&ai->refs, ref, memory_order_release);
+#endif
+
+#if UPB_ENABLE_REF_CYCLE_CHECKS
+  UPB_ASSERT(!upb_Arena_HasRefChain(to, from));  // Forbid cycles.
+#endif
+
+  return true;
+}
+
+#ifndef NDEBUG
+bool upb_Arena_HasRef(const upb_Arena* from, const upb_Arena* to) {
+  const upb_ArenaInternal* ai = upb_Arena_Internal(from);
+  const upb_ArenaRef* ref = upb_Atomic_Load(&ai->refs, memory_order_acquire);
+  while (ref != NULL) {
+    if (upb_Arena_IsFused(ref->arena, to)) {
+      return true;
+    }
+    ref = ref->next_ref;
+  }
+  return false;
+}
+#endif
+
 upb_alloc* upb_Arena_GetUpbAlloc(upb_Arena* a) {
   UPB_PRIVATE(upb_Xsan_AccessReadOnly)(UPB_XSAN(a));
   upb_ArenaInternal* ai = upb_Arena_Internal(a);
@@ -6000,6 +6135,11 @@ void UPB_PRIVATE(_upb_Arena_SwapOut)(upb_Arena* des, const upb_Arena* src) {
 bool _upb_Arena_WasLastAlloc(struct upb_Arena* a, void* ptr, size_t oldsize) {
   upb_ArenaInternal* ai = upb_Arena_Internal(a);
   upb_MemBlock* block = ai->blocks;
+  if (block == NULL) return false;
+  // Skip any arena refs.
+  while (block != NULL && block->size == 0) {
+    block = block->next;
+  }
   if (block == NULL) return false;
   block = block->next;
   if (block == NULL) return false;
@@ -7142,7 +7282,7 @@ static void upb_CombineUnknownFields(upb_UnknownField_Context* ctx,
   // unknown field data is valid, so parse errors here should be impossible.
   while (!upb_EpsCopyInputStream_IsDone(&ctx->stream, &ptr)) {
     uint32_t tag;
-    ptr = upb_WireReader_ReadTag(ptr, &tag);
+    ptr = upb_WireReader_ReadTag(ptr, &tag, &ctx->stream);
     UPB_ASSERT(tag <= UINT32_MAX);
     int wire_type = upb_WireReader_GetWireType(tag);
     if (wire_type == kUpb_WireType_EndGroup) break;
@@ -7158,20 +7298,22 @@ static void upb_CombineUnknownFields(upb_UnknownField_Context* ctx,
 
     switch (wire_type) {
       case kUpb_WireType_Varint:
-        ptr = upb_WireReader_ReadVarint(ptr, &field->data.varint);
+        ptr = upb_WireReader_ReadVarint(ptr, &field->data.varint, &ctx->stream);
         UPB_ASSERT(ptr);
         break;
       case kUpb_WireType_64Bit:
-        ptr = upb_WireReader_ReadFixed64(ptr, &field->data.uint64);
+        ptr =
+            upb_WireReader_ReadFixed64(ptr, &field->data.uint64, &ctx->stream);
         UPB_ASSERT(ptr);
         break;
       case kUpb_WireType_32Bit:
-        ptr = upb_WireReader_ReadFixed32(ptr, &field->data.uint32);
+        ptr =
+            upb_WireReader_ReadFixed32(ptr, &field->data.uint32, &ctx->stream);
         UPB_ASSERT(ptr);
         break;
       case kUpb_WireType_Delimited: {
         int size;
-        ptr = upb_WireReader_ReadSize(ptr, &size);
+        ptr = upb_WireReader_ReadSize(ptr, &size, &ctx->stream);
         UPB_ASSERT(ptr);
         const char* s_ptr = ptr;
         ptr = upb_EpsCopyInputStream_ReadStringAliased(&ctx->stream, &s_ptr,
@@ -8951,6 +9093,17 @@ bool upb_MiniTable_SetSubEnum(upb_MiniTable* table, upb_MiniTableField* field,
     return false;
   }
 
+  if ((table->UPB_PRIVATE(ext) & kUpb_ExtMode_IsMapEntry) &&
+      !upb_MiniTableEnum_CheckValue(sub, 0)) {
+    // An enum used in a map must include 0 as a value.  This matches a check
+    // performed in protoc ("Enum value in map must define 0 as the first
+    // value").  Protoc should ensure that we never get here.
+    //
+    // This ends up being important if we receive wire messages where a map
+    // entry omits the value (and thus defaults to 0).
+    return false;
+  }
+
   upb_MiniTableSub* table_sub =
       (void*)&table->UPB_PRIVATE(subs)[field->UPB_PRIVATE(submsg_index)];
   *table_sub = upb_MiniTableSub_FromEnum(sub);
@@ -10106,10 +10259,8 @@ struct upb_EnumDef {
   int res_range_count;
   int res_name_count;
   int32_t defaultval;
+  UPB_DESC(SymbolVisibility) visibility;
   bool is_sorted;  // Whether all of the values are defined in ascending order.
-#if UINTPTR_MAX == 0xffffffff
-  uint32_t padding;  // Increase size to a multiple of 8.
-#endif
 };
 
 upb_EnumDef* _upb_EnumDef_At(const upb_EnumDef* e, int i) {
@@ -10145,6 +10296,10 @@ bool upb_EnumDef_HasOptions(const upb_EnumDef* e) {
 const UPB_DESC(FeatureSet) *
     upb_EnumDef_ResolvedFeatures(const upb_EnumDef* e) {
   return e->resolved_features;
+}
+
+UPB_DESC(SymbolVisibility) upb_EnumDef_Visibility(const upb_EnumDef* e) {
+  return e->visibility;
 }
 
 const char* upb_EnumDef_FullName(const upb_EnumDef* e) { return e->full_name; }
@@ -10341,6 +10496,8 @@ static void create_enumdef(upb_DefBuilder* ctx, const char* prefix,
       UPB_DESC(EnumDescriptorProto_reserved_name)(enum_proto, &n_res_name);
   e->res_name_count = n_res_name;
   e->res_names = _upb_EnumReservedNames_New(ctx, n_res_name, res_names);
+
+  e->visibility = UPB_DESC(EnumDescriptorProto_visibility)(enum_proto);
 
   if (!upb_inttable_compact(&e->iton, ctx->arena)) _upb_DefBuilder_OomErr(ctx);
 
@@ -12759,6 +12916,7 @@ struct upb_MessageDef {
   bool in_message_set;
   bool is_sorted;
   upb_WellKnown well_known_type;
+  UPB_DESC(SymbolVisibility) visibility;
 };
 
 static void assign_msg_wellknowntype(upb_MessageDef* m) {
@@ -13004,6 +13162,11 @@ const upb_FieldDef* upb_MessageDef_NestedExtension(const upb_MessageDef* m,
 
 upb_WellKnown upb_MessageDef_WellKnownType(const upb_MessageDef* m) {
   return m->well_known_type;
+}
+
+UPB_API UPB_DESC(SymbolVisibility)
+    upb_MessageDef_Visibility(const upb_MessageDef* m) {
+  return m->visibility;
 }
 
 bool _upb_MessageDef_InMessageSet(const upb_MessageDef* m) {
@@ -13446,6 +13609,8 @@ static void create_msgdef(upb_DefBuilder* ctx, const char* prefix,
   m->nested_msg_count = n_msg;
   m->nested_msgs =
       _upb_MessageDefs_New(ctx, n_msg, msgs, m->resolved_features, m);
+
+  m->visibility = UPB_DESC(DescriptorProto_visibility)(msg_proto);
 }
 
 // Allocate and initialize an array of |n| message defs.
@@ -14263,6 +14428,11 @@ static google_protobuf_EnumDescriptorProto* enumdef_toproto(upb_ToProto_Context*
                 upb_EnumDef_Options(e));
   }
 
+  UPB_DESC(SymbolVisibility) visibility = upb_EnumDef_Visibility(e);
+  if (visibility != UPB_DESC(VISIBILITY_UNSET)) {
+    google_protobuf_EnumDescriptorProto_set_visibility(proto, visibility);
+  }
+
   return proto;
 }
 
@@ -14356,6 +14526,11 @@ static google_protobuf_DescriptorProto* msgdef_toproto(upb_ToProto_Context* ctx,
   if (upb_MessageDef_HasOptions(m)) {
     SET_OPTIONS(proto, DescriptorProto, MessageOptions,
                 upb_MessageDef_Options(m));
+  }
+
+  UPB_DESC(SymbolVisibility) visibility = upb_MessageDef_Visibility(m);
+  if (visibility != UPB_DESC(VISIBILITY_UNSET)) {
+    google_protobuf_DescriptorProto_set_visibility(proto, visibility);
   }
 
   return proto;
@@ -14731,6 +14906,7 @@ static _upb_DecodeLongVarintReturn _upb_Decoder_DecodeLongTag(const char* ptr,
 UPB_FORCEINLINE
 const char* _upb_Decoder_DecodeVarint(upb_Decoder* d, const char* ptr,
                                       uint64_t* val) {
+  UPB_PRIVATE(upb_EpsCopyInputStream_ConsumeBytes)(&d->input, 10);
   uint64_t byte = (uint8_t)*ptr;
   if (UPB_LIKELY((byte & 0x80) == 0)) {
     *val = byte;
@@ -14746,6 +14922,7 @@ const char* _upb_Decoder_DecodeVarint(upb_Decoder* d, const char* ptr,
 UPB_FORCEINLINE
 const char* _upb_Decoder_DecodeTag(upb_Decoder* d, const char* ptr,
                                    uint32_t* val) {
+  UPB_PRIVATE(upb_EpsCopyInputStream_ConsumeBytes)(&d->input, 5);
   uint64_t byte = (uint8_t)*ptr;
   if (UPB_LIKELY((byte & 0x80) == 0)) {
     *val = byte;
@@ -14988,11 +15165,11 @@ const char* _upb_Decoder_DecodeFixedPacked(upb_Decoder* d, const char* ptr,
     char* dst = mem;
     while (!_upb_Decoder_IsDone(d, &ptr)) {
       if (lg2 == 2) {
-        ptr = upb_WireReader_ReadFixed32(ptr, dst);
+        ptr = upb_WireReader_ReadFixed32(ptr, dst, &d->input);
         dst += 4;
       } else {
         UPB_ASSERT(lg2 == 3);
-        ptr = upb_WireReader_ReadFixed64(ptr, dst);
+        ptr = upb_WireReader_ReadFixed64(ptr, dst, &d->input);
         dst += 8;
       }
     }
@@ -15644,13 +15821,13 @@ const char* _upb_Decoder_DecodeWireValue(upb_Decoder* d, const char* ptr,
       if (((1 << field->UPB_PRIVATE(descriptortype)) & kFixed32OkMask) == 0) {
         *op = kUpb_DecodeOp_UnknownField;
       }
-      return upb_WireReader_ReadFixed32(ptr, &val->uint32_val);
+      return upb_WireReader_ReadFixed32(ptr, &val->uint32_val, &d->input);
     case kUpb_WireType_64Bit:
       *op = kUpb_DecodeOp_Scalar8Byte;
       if (((1 << field->UPB_PRIVATE(descriptortype)) & kFixed64OkMask) == 0) {
         *op = kUpb_DecodeOp_UnknownField;
       }
-      return upb_WireReader_ReadFixed64(ptr, &val->uint64_val);
+      return upb_WireReader_ReadFixed64(ptr, &val->uint64_val, &d->input);
     case kUpb_WireType_Delimited:
       ptr = upb_Decoder_DecodeSize(d, ptr, &val->size);
       *op = _upb_Decoder_GetDelimitedOp(d, mt, field);
@@ -16872,10 +17049,28 @@ const char* _upb_EpsCopyInputStream_IsDoneFallbackNoCallback(
 // Must be last.
 
 UPB_NOINLINE UPB_PRIVATE(_upb_WireReader_LongVarint)
-    UPB_PRIVATE(_upb_WireReader_ReadLongVarint)(const char* ptr, uint64_t val) {
+    UPB_PRIVATE(_upb_WireReader_ReadLongVarint64)(const char* ptr,
+                                                  uint64_t val) {
   UPB_PRIVATE(_upb_WireReader_LongVarint) ret = {NULL, 0};
   uint64_t byte;
   for (int i = 1; i < 10; i++) {
+    byte = (uint8_t)ptr[i];
+    val += (byte - 1) << (i * 7);
+    if (!(byte & 0x80)) {
+      ret.ptr = ptr + i + 1;
+      ret.val = val;
+      return ret;
+    }
+  }
+  return ret;
+}
+
+UPB_NOINLINE UPB_PRIVATE(_upb_WireReader_LongVarint)
+    UPB_PRIVATE(_upb_WireReader_ReadLongVarint32)(const char* ptr,
+                                                  uint32_t val) {
+  UPB_PRIVATE(_upb_WireReader_LongVarint) ret = {NULL, 0};
+  uint64_t byte;
+  for (int i = 1; i < 5; i++) {
     byte = (uint8_t)ptr[i];
     val += (byte - 1) << (i * 7);
     if (!(byte & 0x80)) {
@@ -16894,7 +17089,7 @@ const char* UPB_PRIVATE(_upb_WireReader_SkipGroup)(
   uint32_t end_group_tag = (tag & ~7ULL) | kUpb_WireType_EndGroup;
   while (!upb_EpsCopyInputStream_IsDone(stream, &ptr)) {
     uint32_t tag;
-    ptr = upb_WireReader_ReadTag(ptr, &tag);
+    ptr = upb_WireReader_ReadTag(ptr, &tag, stream);
     if (!ptr) return NULL;
     if (tag == end_group_tag) return ptr;
     ptr = _upb_WireReader_SkipValue(ptr, tag, depth_limit, stream);
@@ -16979,3 +17174,4 @@ const char* UPB_PRIVATE(_upb_WireReader_SkipGroup)(
 #undef UPB_XSAN_MEMBER
 #undef UPB_XSAN
 #undef UPB_XSAN_STRUCT_SIZE
+#undef UPB_ENABLE_REF_CYCLE_CHECKS

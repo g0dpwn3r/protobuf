@@ -214,6 +214,9 @@ class PROTOBUF_EXPORT EpsCopyInputStream {
 
   [[nodiscard]] const char* ReadMicroString(const char* ptr, MicroString& str,
                                             Arena* arena);
+  [[nodiscard]] const char* ReadMicroStringWithSize(const char* ptr, int size,
+                                                    MicroString& str,
+                                                    Arena* arena);
   [[nodiscard]] const char* ReadMicroStringFallback(const char* ptr, int size,
                                                     MicroString& str,
                                                     Arena* arena);
@@ -294,6 +297,7 @@ class PROTOBUF_EXPORT EpsCopyInputStream {
 
 
   struct WireFormatNoOpSink {
+    static constexpr bool kIsLazySink = false;
     void Flush(const char* p) {}
     void Append(absl::string_view view) {}
     void Reset(const char* p) {}
@@ -638,6 +642,9 @@ class PROTOBUF_EXPORT ParseContext : public EpsCopyInputStream {
     if (ABSL_PREDICT_FALSE(!ConsumeEndGroup(tag))) return nullptr;
     return ptr;
   }
+  template <typename Func>
+  [[nodiscard]] PROTOBUF_ALWAYS_INLINE const char* ParseWithLengthInlined(
+      const char* ptr, uint32_t length, const Func& func);
 
  private:
   // Out-of-line routine to save space in ParseContext::ParseMessage<T>
@@ -1240,12 +1247,36 @@ inline const char* ParseContext::ReadSizeAndPushLimitAndDepthInlined(
   return ptr;
 }
 
+// Note that "length" is read outside of this function.
+template <typename Func>
+[[nodiscard]] PROTOBUF_ALWAYS_INLINE const char*
+ParseContext::ParseWithLengthInlined(const char* ptr, uint32_t length,
+                                     const Func& func) {
+  ABSL_DCHECK_NE(ptr, nullptr);
+  LimitToken old;
+  old = PushLimit(ptr, length);
+  --depth_;
+  auto old_depth = depth_;
+  PROTOBUF_ALWAYS_INLINE_CALL ptr = func(ptr);
+  if (ptr != nullptr) ABSL_DCHECK_EQ(old_depth, depth_);
+  depth_++;
+  if (!PopLimit(std::move(old))) return nullptr;
+  return ptr;
+}
+
 inline const char* EpsCopyInputStream::ReadMicroString(const char* ptr,
                                                        MicroString& str,
                                                        Arena* arena) {
   int size = ReadSize(&ptr);
   if (!ptr) return nullptr;
 
+  return ReadMicroStringWithSize(ptr, size, str, arena);
+}
+
+inline const char* EpsCopyInputStream::ReadMicroStringWithSize(const char* ptr,
+                                                               int size,
+                                                               MicroString& str,
+                                                               Arena* arena) {
   if (size <= BytesAvailable(ptr)) {
     str.Set(absl::string_view(ptr, size), arena);
     return ptr + size;

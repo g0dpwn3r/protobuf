@@ -18,6 +18,7 @@
 #include "absl/strings/string_view.h"
 #include "google/protobuf/compiler/java/helpers.h"
 #include "google/protobuf/compiler/java/name_resolver.h"
+#include "google/protobuf/compiler/java/names_internal.h"
 #include "google/protobuf/compiler/java/options.h"
 #include "google/protobuf/descriptor.h"
 #include "google/protobuf/descriptor.pb.h"
@@ -117,11 +118,11 @@ std::string ClassName(const FileDescriptor* descriptor) {
 
 std::string FileJavaPackage(const FileDescriptor* file, bool immutable,
                             Options options) {
-  return ClassNameResolver(options).GetFileJavaPackage(file, immutable);
+  return ClassNameResolver().GetFileJavaPackage(file, immutable);
 }
 
-std::string FileJavaPackage(const FileDescriptor* file, Options options) {
-  return FileJavaPackage(file, true /* immutable */, options);
+std::string FileJavaPackage(const FileDescriptor* file) {
+  return Proto2DefaultJavaPackage(file);
 }
 
 std::string JavaPackageDirectory(const FileDescriptor* file) {

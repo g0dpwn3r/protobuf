@@ -158,7 +158,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOC_EXPORT
 }  // namespace google
 static const ::_pb::EnumDescriptor* PROTOBUF_NONNULL
     file_level_enum_descriptors_google_2fprotobuf_2fcompiler_2fplugin_2eproto[1];
-static constexpr const ::_pb::ServiceDescriptor *PROTOBUF_NONNULL *PROTOBUF_NULLABLE
+static constexpr const ::_pb::ServiceDescriptor* PROTOBUF_NONNULL* PROTOBUF_NULLABLE
     file_level_service_descriptors_google_2fprotobuf_2fcompiler_2fplugin_2eproto = nullptr;
 const ::uint32_t
     TableStruct_google_2fprotobuf_2fcompiler_2fplugin_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -427,16 +427,20 @@ Version::_table_ = {
   }, {{
     // optional string suffix = 4;
     {::_pbi::TcParser::FastBS1,
-     {34, 0, 0, PROTOBUF_FIELD_OFFSET(Version, _impl_.suffix_)}},
+     {34, 0, 0,
+      PROTOBUF_FIELD_OFFSET(Version, _impl_.suffix_)}},
     // optional int32 major = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Version, _impl_.major_), 1>(),
-     {8, 1, 0, PROTOBUF_FIELD_OFFSET(Version, _impl_.major_)}},
+     {8, 1, 0,
+      PROTOBUF_FIELD_OFFSET(Version, _impl_.major_)}},
     // optional int32 minor = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Version, _impl_.minor_), 2>(),
-     {16, 2, 0, PROTOBUF_FIELD_OFFSET(Version, _impl_.minor_)}},
+     {16, 2, 0,
+      PROTOBUF_FIELD_OFFSET(Version, _impl_.minor_)}},
     // optional int32 patch = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Version, _impl_.patch_), 3>(),
-     {24, 3, 0, PROTOBUF_FIELD_OFFSET(Version, _impl_.patch_)}},
+     {24, 3, 0,
+      PROTOBUF_FIELD_OFFSET(Version, _impl_.patch_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -805,19 +809,23 @@ CodeGeneratorRequest::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
     // repeated string file_to_generate = 1;
     {::_pbi::TcParser::FastBR1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorRequest, _impl_.file_to_generate_)}},
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorRequest, _impl_.file_to_generate_)}},
     // optional string parameter = 2;
     {::_pbi::TcParser::FastBS1,
-     {18, 2, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorRequest, _impl_.parameter_)}},
+     {18, 2, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorRequest, _impl_.parameter_)}},
     // optional .google.protobuf.compiler.Version compiler_version = 3;
     {::_pbi::TcParser::FastMtS1,
-     {26, 3, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorRequest, _impl_.compiler_version_)}},
+     {26, 3, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorRequest, _impl_.compiler_version_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     // repeated .google.protobuf.FileDescriptorProto proto_file = 15;
     {::_pbi::TcParser::FastMtR1,
-     {122, 1, 1, PROTOBUF_FIELD_OFFSET(CodeGeneratorRequest, _impl_.proto_file_)}},
+     {122, 1, 1,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorRequest, _impl_.proto_file_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1017,10 +1025,13 @@ void CodeGeneratorRequest::MergeImpl(::google::protobuf::MessageLite& to_msg,
   cached_has_bits = from._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_file_to_generate()->MergeFrom(from._internal_file_to_generate());
+      _this->_internal_mutable_file_to_generate()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_file_to_generate());
     }
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      _this->_internal_mutable_proto_file()->MergeFrom(
+      _this->_internal_mutable_proto_file()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_proto_file());
     }
     if (CheckHasBit(cached_has_bits, 0x00000004U)) {
@@ -1035,7 +1046,8 @@ void CodeGeneratorRequest::MergeImpl(::google::protobuf::MessageLite& to_msg,
       }
     }
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000010U)) {
-      _this->_internal_mutable_source_file_descriptors()->MergeFrom(
+      _this->_internal_mutable_source_file_descriptors()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_source_file_descriptors());
     }
   }
@@ -1226,16 +1238,20 @@ CodeGeneratorResponse_File::_table_ = {
   }, {{
     // optional .google.protobuf.GeneratedCodeInfo generated_code_info = 16;
     {::_pbi::TcParser::FastMtS2,
-     {386, 3, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse_File, _impl_.generated_code_info_)}},
+     {386, 3, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse_File, _impl_.generated_code_info_)}},
     // optional string name = 1;
     {::_pbi::TcParser::FastBS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse_File, _impl_.name_)}},
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse_File, _impl_.name_)}},
     // optional string insertion_point = 2;
     {::_pbi::TcParser::FastBS1,
-     {18, 1, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse_File, _impl_.insertion_point_)}},
+     {18, 1, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse_File, _impl_.insertion_point_)}},
     // optional string content = 15;
     {::_pbi::TcParser::FastBS1,
-     {122, 2, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse_File, _impl_.content_)}},
+     {122, 2, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse_File, _impl_.content_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1597,21 +1613,26 @@ CodeGeneratorResponse::_table_ = {
     {::_pbi::TcParser::MiniParse, {}},
     // optional string error = 1;
     {::_pbi::TcParser::FastBS1,
-     {10, 1, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.error_)}},
+     {10, 1, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.error_)}},
     // optional uint64 supported_features = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CodeGeneratorResponse, _impl_.supported_features_), 2>(),
-     {16, 2, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.supported_features_)}},
+     {16, 2, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.supported_features_)}},
     // optional int32 minimum_edition = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CodeGeneratorResponse, _impl_.minimum_edition_), 3>(),
-     {24, 3, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.minimum_edition_)}},
+     {24, 3, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.minimum_edition_)}},
     // optional int32 maximum_edition = 4;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CodeGeneratorResponse, _impl_.maximum_edition_), 4>(),
-     {32, 4, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.maximum_edition_)}},
+     {32, 4, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.maximum_edition_)}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     // repeated .google.protobuf.compiler.CodeGeneratorResponse.File file = 15;
     {::_pbi::TcParser::FastMtR1,
-     {122, 0, 0, PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.file_)}},
+     {122, 0, 0,
+      PROTOBUF_FIELD_OFFSET(CodeGeneratorResponse, _impl_.file_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -1782,6 +1803,7 @@ void CodeGeneratorResponse::MergeImpl(::google::protobuf::MessageLite& to_msg,
   if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
     from.CheckHasBitConsistency();
   }
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:google.protobuf.compiler.CodeGeneratorResponse)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
@@ -1790,7 +1812,8 @@ void CodeGeneratorResponse::MergeImpl(::google::protobuf::MessageLite& to_msg,
   cached_has_bits = from._impl_._has_bits_[0];
   if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_file()->MergeFrom(
+      _this->_internal_mutable_file()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
           from._internal_file());
     }
     if (CheckHasBit(cached_has_bits, 0x00000002U)) {

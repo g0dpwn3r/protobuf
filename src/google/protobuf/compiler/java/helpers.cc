@@ -29,9 +29,11 @@
 #include "absl/strings/string_view.h"
 #include "absl/strings/substitute.h"
 #include "google/protobuf/compiler/java/java_features.pb.h"
+#include "google/protobuf/compiler/code_generator_lite.h"
 #include "google/protobuf/compiler/java/generator.h"
 #include "google/protobuf/compiler/java/name_resolver.h"
 #include "google/protobuf/compiler/versions.h"
+#include "google/protobuf/descriptor.h"
 #include "google/protobuf/descriptor.pb.h"
 #include "google/protobuf/io/printer.h"
 #include "google/protobuf/io/strtod.h"
@@ -106,7 +108,7 @@ void PrintGencodeVersionValidator(io::Printer* printer, bool oss_runtime,
       absl::StrCat("/* minor= */ ", version.minor()), "patch",
       absl::StrCat("/* patch= */ ", version.patch()), "suffix",
       absl::StrCat("/* suffix= */ \"", version.suffix(), "\""), "location",
-      absl::StrCat(java_class_name, ".class.getName()"));
+      absl::StrCat(java_class_name, ".class"));
 }
 
 std::string UnderscoresToCamelCase(absl::string_view input,
@@ -941,7 +943,6 @@ inline bool NestInFileClass(const Descriptor& descriptor) {
   }
   return nest_in_file_class == pb::JavaFeatures::NestInFileClassFeature::YES;
 }
-
 
 // Returns whether the type should be nested in the file class for the given
 // descriptor, depending on different Protobuf Java API versions.
