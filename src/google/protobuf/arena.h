@@ -741,10 +741,31 @@ class PROTOBUF_EXPORT PROTOBUF_ALIGNAS(8)
 template <typename T>
 PROTOBUF_NOINLINE void* PROTOBUF_NONNULL
 Arena::DefaultConstruct(Arena* PROTOBUF_NULLABLE arena) {
-  static_assert(is_destructor_skippable<T>::value, "");
-  void* mem = arena != nullptr ? arena->AllocateAligned(sizeof(T))
-                               : ::operator new(sizeof(T));
-  return new (mem) T(arena);
+  if (arena != nullptr) {
+    using ArenaRepT = typename internal::FieldArenaRep<T>::Type;
+    static_assert(is_destructor_skippable<ArenaRepT>::value, "");
+
+    void* mem = arena->AllocateAligned(sizeof(ArenaRepT));
+    ArenaRepT* arena_rep = new (mem) ArenaRepT(arena);
+    return internal::FieldArenaRep<T>::Get(arena_rep);
+  } else {
+    static_assert(is_destructor_skippable<T>::value, "");
+
+#if ABSL_HAVE_BUILTIN(__builtin_operator_new)
+    void* mem = __builtin_operator_new(sizeof(T));
+#else
+    void* mem = ::operator new(sizeof(T));
+#endif
+
+    // Fields which use arena offsets don't have constructors that take an arena
+    // pointer. Since the arena is nullptr, it is safe to default construct the
+    // object.
+    if constexpr (internal::FieldHasArenaOffset<T>()) {
+      return new (mem) T();
+    } else {
+      return new (mem) T(nullptr);
+    }
+  }
 }
 
 template <typename T>
@@ -766,8 +787,16 @@ PROTOBUF_NOINLINE void* PROTOBUF_NONNULL Arena::CopyConstruct(
     internal::Prefetch<kPrefetchOpts, T, T>(typed_from);
   }
   static_assert(is_destructor_skippable<T>::value, "");
-  void* mem = arena != nullptr ? arena->AllocateAligned(sizeof(T))
-                               : ::operator new(sizeof(T));
+  void* mem;
+  if (arena != nullptr) {
+    mem = arena->AllocateAligned(sizeof(T));
+  } else {
+#if ABSL_HAVE_BUILTIN(__builtin_operator_new)
+    mem = __builtin_operator_new(sizeof(T));
+#else
+    mem = ::operator new(sizeof(T));
+#endif
+  }
   return new (mem) T(arena, *typed_from);
 }
 
