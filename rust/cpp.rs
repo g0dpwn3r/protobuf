@@ -103,7 +103,7 @@ pub struct InnerProtoString {
     owned_ptr: CppStdString,
 }
 
-extern "C" {
+unsafe extern "C" {
     pub fn proto2_rust_Message_delete(m: RawMessage);
     pub fn proto2_rust_Message_clear(m: RawMessage);
     pub fn proto2_rust_Message_parse(m: RawMessage, input: PtrAndLen) -> bool;
@@ -149,7 +149,7 @@ impl From<&[u8]> for InnerProtoString {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     fn proto2_rust_cpp_new_string(src: PtrAndLen) -> CppStdString;
     fn proto2_rust_cpp_delete_string(src: CppStdString);
     fn proto2_rust_cpp_string_to_view(src: CppStdString) -> PtrAndLen;
@@ -324,7 +324,7 @@ impl From<RustStringRawParts> for String {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
     fn proto2_rust_utf8_debug_string(raw: RawMessage) -> RustStringRawParts;
 }
 
@@ -335,7 +335,7 @@ pub fn debug_string(raw: RawMessage, f: &mut fmt::Formatter<'_>) -> fmt::Result 
     write!(f, "{dbg_str}")
 }
 
-extern "C" {
+unsafe extern "C" {
     /// # Safety
     /// - `raw1` and `raw2` legally dereferenceable MessageLite* pointers.
     #[link_name = "proto2_rust_messagelite_equals"]
@@ -662,7 +662,7 @@ macro_rules! impl_repeated_primitives {
         $reserve_thunk:ident $(,)?
     ]),* $(,)?) => {
         $(
-            extern "C" {
+            unsafe extern "C" {
                 fn $new_thunk() -> RawRepeatedField;
                 fn $free_thunk(f: RawRepeatedField);
                 fn $add_thunk(f: RawRepeatedField, v: <$t as CppTypeConversions>::InsertElemType);
@@ -747,7 +747,7 @@ macro_rules! impl_repeated_primitives {
 
 impl_repeated_primitives!(i32, u32, i64, u64, f32, f64, bool, ProtoString, ProtoBytes);
 
-extern "C" {
+unsafe extern "C" {
     pub fn proto2_rust_RepeatedField_Message_new() -> RawRepeatedField;
     pub fn proto2_rust_RepeatedField_Message_free(field: RawRepeatedField);
     pub fn proto2_rust_RepeatedField_Message_size(field: RawRepeatedField) -> usize;
@@ -1354,7 +1354,7 @@ macro_rules! impl_map_primitives {
         $remove_thunk:ident,
     ]),* $(,)?) => {
         $(
-            extern "C" {
+            unsafe extern "C" {
                 pub fn $insert_thunk(
                     m: RawMap,
                     key: $cpp_type,
@@ -1397,7 +1397,7 @@ impl_map_primitives!(
     ProtoString, PtrAndLen;
 );
 
-extern "C" {
+unsafe extern "C" {
     fn proto2_rust_thunk_UntypedMapIterator_increment(iter: &mut UntypedMapIterator);
 
     pub fn proto2_rust_map_new(key_prototype: MapValue, value_prototype: MapValue) -> RawMap;
@@ -1491,18 +1491,54 @@ where
     }
 }
 
+/// Message equality definition which may have both false-negatives and false-positives in the face
+/// of unknown fields.
+///
+/// This behavior is deliberately held back from being exposed as an `Eq` trait for messages. The
+/// reason is that it is impossible to properly compare unknown fields for message equality, since
+/// without the schema you cannot know how to interpret the wire format properly for comparison.
+///
+/// False negative cases (where message_eq will return false on unknown fields where it
+/// would return true if the fields were known) are common and will occur in production: for
+/// example, as map and repeated fields look exactly the same, map field order is unstable, the
+/// comparison cannot know to treat it as unordered and will return false when it was the same
+/// map but in a different order.
+///
+/// False positives cases (where message_eq will return true on unknown fields where it would have
+/// return false if the fields were known) are possible but uncommon in practice. One example
+/// of this direction can occur if two fields are defined in the same oneof and both are present on
+/// the wire but in opposite order, without the schema these messages appear equal but with the
+/// schema they are not-equal.
+///
+/// This lossy behavior in the face of unknown fields is especially problematic in the face of
+/// extensions and other treeshaking behaviors where a given field being known or not to binary is a
+/// spooky-action-at-a-distance behavior, which may lead to surprising changes in outcome in
+/// equality tests based on changes made arbitrarily distant from the code performing the equality
+/// check.
+///
+/// Broadly this is recommended for use in tests (where unknown field behaviors are rarely a
+/// concern), and in limited/targeted cases where the lossy behavior in the face of unknown fields
+/// behavior is unlikely to be a problem.
+pub fn message_eq<T>(a: &T, b: &T) -> bool
+where
+    T: AsView + Debug,
+    for<'a> View<'a, <T as AsView>::Proxied>: CppGetRawMessage,
+{
+    unsafe {
+        raw_message_equals(
+            a.as_view().get_raw_message(Private),
+            b.as_view().get_raw_message(Private),
+        )
+    }
+}
+
 impl<T> MatcherEq for T
 where
     Self: AsView + Debug,
     for<'a> View<'a, <Self as AsView>::Proxied>: CppGetRawMessage,
 {
     fn matches(&self, o: &Self) -> bool {
-        unsafe {
-            raw_message_equals(
-                self.as_view().get_raw_message(Private),
-                o.as_view().get_raw_message(Private),
-            )
-        }
+        message_eq(self, o)
     }
 }
 

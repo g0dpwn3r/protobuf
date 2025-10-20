@@ -134,6 +134,18 @@ inline void SetAllocateAtLeastHook(AllocateAtLeastHookFn fn, void* context) {}
 
 #endif  // !NDEBUG && ABSL_HAVE_THREAD_LOCAL && __cpp_inline_variables
 
+// Allocates `size` bytes. This wrapper allows memory allocations to be
+// optimized by the compiler since `operator new` is considered observable.
+inline void* Allocate(size_t size) {
+#if ABSL_HAVE_BUILTIN(__builtin_operator_new)
+  // Allows the compiler to merge or optimize away the allocation even if it
+  // would violate the observability guarantees of ::operator new.
+  return __builtin_operator_new(size);
+#else
+  return ::operator new(size);
+#endif
+}
+
 // Allocates at least `size` bytes. This function follows the c++ language
 // proposal from D0901R10 (http://wg21.link/D0901R10) and will be implemented
 // in terms of the new operator new semantics when available. The allocated
@@ -145,7 +157,7 @@ inline SizedPtr AllocateAtLeast(size_t size) {
     return allocate_at_least_hook(size, allocate_at_least_hook_context);
   }
 #endif  // !NDEBUG && ABSL_HAVE_THREAD_LOCAL && __cpp_inline_variables
-  return {::operator new(size), size};
+  return {Allocate(size), size};
 }
 
 inline void SizedDelete(void* p, size_t size) {
@@ -254,6 +266,8 @@ enum { kCacheAlignment = alignof(max_align_t) };  // do the best we can
 
 // The maximum byte alignment we support.
 enum { kMaxMessageAlignment = 8 };
+
+inline constexpr bool EnableProtoFieldPresenceHints() { return false; }
 
 inline constexpr bool EnableStableExperiments() {
 #if defined(PROTOBUF_ENABLE_STABLE_EXPERIMENTS)

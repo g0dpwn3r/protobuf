@@ -160,6 +160,12 @@ Error, UINTPTR_MAX is undefined
 #define UPB_TSAN 0
 #endif
 
+#if UPB_HAS_FEATURE(memory_sanitizer)
+#define UPB_MSAN 1
+#else
+#define UPB_MSAN 0
+#endif
+
 // An unfortunate concession to C++17 and MSVC, which don't support zero-sized
 // structs.
 #if UPB_ASAN || UPB_HWASAN || UPB_TSAN
@@ -593,7 +599,7 @@ const upb_MiniTable google__protobuf__FileDescriptorSet_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FileDescriptorSet_msg_init_ptr = &google__protobuf__FileDescriptorSet_msg_init;
+const upb_MiniTable* const google__protobuf__FileDescriptorSet_msg_init_ptr = &google__protobuf__FileDescriptorSet_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FileDescriptorProto__submsgs[7] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__DescriptorProto_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__EnumDescriptorProto_msg_init_ptr},
@@ -630,7 +636,7 @@ const upb_MiniTable google__protobuf__FileDescriptorProto_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FileDescriptorProto_msg_init_ptr = &google__protobuf__FileDescriptorProto_msg_init;
+const upb_MiniTable* const google__protobuf__FileDescriptorProto_msg_init_ptr = &google__protobuf__FileDescriptorProto_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_DescriptorProto__submsgs[9] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FieldDescriptorProto_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__DescriptorProto_msg_init_ptr},
@@ -666,7 +672,7 @@ const upb_MiniTable google__protobuf__DescriptorProto_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__DescriptorProto_msg_init_ptr = &google__protobuf__DescriptorProto_msg_init;
+const upb_MiniTable* const google__protobuf__DescriptorProto_msg_init_ptr = &google__protobuf__DescriptorProto_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_DescriptorProto_ExtensionRange__submsgs[1] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__ExtensionRangeOptions_msg_init_ptr},
 };
@@ -686,7 +692,7 @@ const upb_MiniTable google__protobuf__DescriptorProto__ExtensionRange_msg_init =
 #endif
 };
 
-const upb_MiniTable* google__protobuf__DescriptorProto__ExtensionRange_msg_init_ptr = &google__protobuf__DescriptorProto__ExtensionRange_msg_init;
+const upb_MiniTable* const google__protobuf__DescriptorProto__ExtensionRange_msg_init_ptr = &google__protobuf__DescriptorProto__ExtensionRange_msg_init;
 static const upb_MiniTableField google_protobuf_DescriptorProto_ReservedRange__fields[2] = {
   {1, 12, 64, kUpb_NoSub, 5, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_4Byte << kUpb_FieldRep_Shift)},
   {2, 16, 65, kUpb_NoSub, 5, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_4Byte << kUpb_FieldRep_Shift)},
@@ -701,7 +707,7 @@ const upb_MiniTable google__protobuf__DescriptorProto__ReservedRange_msg_init = 
 #endif
 };
 
-const upb_MiniTable* google__protobuf__DescriptorProto__ReservedRange_msg_init_ptr = &google__protobuf__DescriptorProto__ReservedRange_msg_init;
+const upb_MiniTable* const google__protobuf__DescriptorProto__ReservedRange_msg_init_ptr = &google__protobuf__DescriptorProto__ReservedRange_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_ExtensionRangeOptions__submsgs[4] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__ExtensionRangeOptions__Declaration_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
@@ -725,7 +731,7 @@ const upb_MiniTable google__protobuf__ExtensionRangeOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__ExtensionRangeOptions_msg_init_ptr = &google__protobuf__ExtensionRangeOptions_msg_init;
+const upb_MiniTable* const google__protobuf__ExtensionRangeOptions_msg_init_ptr = &google__protobuf__ExtensionRangeOptions_msg_init;
 static const upb_MiniTableField google_protobuf_ExtensionRangeOptions_Declaration__fields[5] = {
   {1, 12, 64, kUpb_NoSub, 5, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_4Byte << kUpb_FieldRep_Shift)},
   {2, 16, 65, kUpb_NoSub, 12, (int)kUpb_FieldMode_Scalar | (int)kUpb_LabelFlags_IsAlternate | ((int)kUpb_FieldRep_StringView << kUpb_FieldRep_Shift)},
@@ -743,7 +749,7 @@ const upb_MiniTable google__protobuf__ExtensionRangeOptions__Declaration_msg_ini
 #endif
 };
 
-const upb_MiniTable* google__protobuf__ExtensionRangeOptions__Declaration_msg_init_ptr = &google__protobuf__ExtensionRangeOptions__Declaration_msg_init;
+const upb_MiniTable* const google__protobuf__ExtensionRangeOptions__Declaration_msg_init_ptr = &google__protobuf__ExtensionRangeOptions__Declaration_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FieldDescriptorProto__submsgs[3] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FieldOptions_msg_init_ptr},
   {.UPB_PRIVATE(subenum) = &google__protobuf__FieldDescriptorProto__Label_enum_init},
@@ -773,7 +779,7 @@ const upb_MiniTable google__protobuf__FieldDescriptorProto_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FieldDescriptorProto_msg_init_ptr = &google__protobuf__FieldDescriptorProto_msg_init;
+const upb_MiniTable* const google__protobuf__FieldDescriptorProto_msg_init_ptr = &google__protobuf__FieldDescriptorProto_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_OneofDescriptorProto__submsgs[1] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__OneofOptions_msg_init_ptr},
 };
@@ -792,7 +798,7 @@ const upb_MiniTable google__protobuf__OneofDescriptorProto_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__OneofDescriptorProto_msg_init_ptr = &google__protobuf__OneofDescriptorProto_msg_init;
+const upb_MiniTable* const google__protobuf__OneofDescriptorProto_msg_init_ptr = &google__protobuf__OneofDescriptorProto_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_EnumDescriptorProto__submsgs[4] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__EnumValueDescriptorProto_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__EnumOptions_msg_init_ptr},
@@ -818,7 +824,7 @@ const upb_MiniTable google__protobuf__EnumDescriptorProto_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__EnumDescriptorProto_msg_init_ptr = &google__protobuf__EnumDescriptorProto_msg_init;
+const upb_MiniTable* const google__protobuf__EnumDescriptorProto_msg_init_ptr = &google__protobuf__EnumDescriptorProto_msg_init;
 static const upb_MiniTableField google_protobuf_EnumDescriptorProto_EnumReservedRange__fields[2] = {
   {1, 12, 64, kUpb_NoSub, 5, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_4Byte << kUpb_FieldRep_Shift)},
   {2, 16, 65, kUpb_NoSub, 5, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_4Byte << kUpb_FieldRep_Shift)},
@@ -833,7 +839,7 @@ const upb_MiniTable google__protobuf__EnumDescriptorProto__EnumReservedRange_msg
 #endif
 };
 
-const upb_MiniTable* google__protobuf__EnumDescriptorProto__EnumReservedRange_msg_init_ptr = &google__protobuf__EnumDescriptorProto__EnumReservedRange_msg_init;
+const upb_MiniTable* const google__protobuf__EnumDescriptorProto__EnumReservedRange_msg_init_ptr = &google__protobuf__EnumDescriptorProto__EnumReservedRange_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_EnumValueDescriptorProto__submsgs[1] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__EnumValueOptions_msg_init_ptr},
 };
@@ -853,7 +859,7 @@ const upb_MiniTable google__protobuf__EnumValueDescriptorProto_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__EnumValueDescriptorProto_msg_init_ptr = &google__protobuf__EnumValueDescriptorProto_msg_init;
+const upb_MiniTable* const google__protobuf__EnumValueDescriptorProto_msg_init_ptr = &google__protobuf__EnumValueDescriptorProto_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_ServiceDescriptorProto__submsgs[2] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__MethodDescriptorProto_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__ServiceOptions_msg_init_ptr},
@@ -874,7 +880,7 @@ const upb_MiniTable google__protobuf__ServiceDescriptorProto_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__ServiceDescriptorProto_msg_init_ptr = &google__protobuf__ServiceDescriptorProto_msg_init;
+const upb_MiniTable* const google__protobuf__ServiceDescriptorProto_msg_init_ptr = &google__protobuf__ServiceDescriptorProto_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_MethodDescriptorProto__submsgs[1] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__MethodOptions_msg_init_ptr},
 };
@@ -897,7 +903,7 @@ const upb_MiniTable google__protobuf__MethodDescriptorProto_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__MethodDescriptorProto_msg_init_ptr = &google__protobuf__MethodDescriptorProto_msg_init;
+const upb_MiniTable* const google__protobuf__MethodDescriptorProto_msg_init_ptr = &google__protobuf__MethodDescriptorProto_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FileOptions__submsgs[3] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__UninterpretedOption_msg_init_ptr},
@@ -937,7 +943,7 @@ const upb_MiniTable google__protobuf__FileOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FileOptions_msg_init_ptr = &google__protobuf__FileOptions_msg_init;
+const upb_MiniTable* const google__protobuf__FileOptions_msg_init_ptr = &google__protobuf__FileOptions_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_MessageOptions__submsgs[2] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__UninterpretedOption_msg_init_ptr},
@@ -962,7 +968,7 @@ const upb_MiniTable google__protobuf__MessageOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__MessageOptions_msg_init_ptr = &google__protobuf__MessageOptions_msg_init;
+const upb_MiniTable* const google__protobuf__MessageOptions_msg_init_ptr = &google__protobuf__MessageOptions_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FieldOptions__submsgs[8] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FieldOptions__EditionDefault_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
@@ -1000,7 +1006,7 @@ const upb_MiniTable google__protobuf__FieldOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FieldOptions_msg_init_ptr = &google__protobuf__FieldOptions_msg_init;
+const upb_MiniTable* const google__protobuf__FieldOptions_msg_init_ptr = &google__protobuf__FieldOptions_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FieldOptions_EditionDefault__submsgs[1] = {
   {.UPB_PRIVATE(subenum) = &google__protobuf__Edition_enum_init},
 };
@@ -1019,30 +1025,31 @@ const upb_MiniTable google__protobuf__FieldOptions__EditionDefault_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FieldOptions__EditionDefault_msg_init_ptr = &google__protobuf__FieldOptions__EditionDefault_msg_init;
+const upb_MiniTable* const google__protobuf__FieldOptions__EditionDefault_msg_init_ptr = &google__protobuf__FieldOptions__EditionDefault_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FieldOptions_FeatureSupport__submsgs[3] = {
   {.UPB_PRIVATE(subenum) = &google__protobuf__Edition_enum_init},
   {.UPB_PRIVATE(subenum) = &google__protobuf__Edition_enum_init},
   {.UPB_PRIVATE(subenum) = &google__protobuf__Edition_enum_init},
 };
 
-static const upb_MiniTableField google_protobuf_FieldOptions_FeatureSupport__fields[4] = {
+static const upb_MiniTableField google_protobuf_FieldOptions_FeatureSupport__fields[5] = {
   {1, 12, 64, 0, 14, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_4Byte << kUpb_FieldRep_Shift)},
   {2, 16, 65, 1, 14, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_4Byte << kUpb_FieldRep_Shift)},
   {3, 24, 66, kUpb_NoSub, 12, (int)kUpb_FieldMode_Scalar | (int)kUpb_LabelFlags_IsAlternate | ((int)kUpb_FieldRep_StringView << kUpb_FieldRep_Shift)},
   {4, 20, 67, 2, 14, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_4Byte << kUpb_FieldRep_Shift)},
+  {5, UPB_SIZE(32, 40), 68, kUpb_NoSub, 12, (int)kUpb_FieldMode_Scalar | (int)kUpb_LabelFlags_IsAlternate | ((int)kUpb_FieldRep_StringView << kUpb_FieldRep_Shift)},
 };
 
 const upb_MiniTable google__protobuf__FieldOptions__FeatureSupport_msg_init = {
   &google_protobuf_FieldOptions_FeatureSupport__submsgs[0],
   &google_protobuf_FieldOptions_FeatureSupport__fields[0],
-  UPB_SIZE(32, 40), 4, kUpb_ExtMode_NonExtendable, 4, UPB_FASTTABLE_MASK(255), 0,
+  UPB_SIZE(40, 56), 5, kUpb_ExtMode_NonExtendable, 5, UPB_FASTTABLE_MASK(255), 0,
 #ifdef UPB_TRACING_ENABLED
   "google.protobuf.FieldOptions.FeatureSupport",
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FieldOptions__FeatureSupport_msg_init_ptr = &google__protobuf__FieldOptions__FeatureSupport_msg_init;
+const upb_MiniTable* const google__protobuf__FieldOptions__FeatureSupport_msg_init_ptr = &google__protobuf__FieldOptions__FeatureSupport_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_OneofOptions__submsgs[2] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__UninterpretedOption_msg_init_ptr},
@@ -1062,7 +1069,7 @@ const upb_MiniTable google__protobuf__OneofOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__OneofOptions_msg_init_ptr = &google__protobuf__OneofOptions_msg_init;
+const upb_MiniTable* const google__protobuf__OneofOptions_msg_init_ptr = &google__protobuf__OneofOptions_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_EnumOptions__submsgs[2] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__UninterpretedOption_msg_init_ptr},
@@ -1085,7 +1092,7 @@ const upb_MiniTable google__protobuf__EnumOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__EnumOptions_msg_init_ptr = &google__protobuf__EnumOptions_msg_init;
+const upb_MiniTable* const google__protobuf__EnumOptions_msg_init_ptr = &google__protobuf__EnumOptions_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_EnumValueOptions__submsgs[3] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__FieldOptions__FeatureSupport_msg_init_ptr},
@@ -1109,7 +1116,7 @@ const upb_MiniTable google__protobuf__EnumValueOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__EnumValueOptions_msg_init_ptr = &google__protobuf__EnumValueOptions_msg_init;
+const upb_MiniTable* const google__protobuf__EnumValueOptions_msg_init_ptr = &google__protobuf__EnumValueOptions_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_ServiceOptions__submsgs[2] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__UninterpretedOption_msg_init_ptr},
@@ -1130,7 +1137,7 @@ const upb_MiniTable google__protobuf__ServiceOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__ServiceOptions_msg_init_ptr = &google__protobuf__ServiceOptions_msg_init;
+const upb_MiniTable* const google__protobuf__ServiceOptions_msg_init_ptr = &google__protobuf__ServiceOptions_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_MethodOptions__submsgs[3] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__UninterpretedOption_msg_init_ptr},
@@ -1153,7 +1160,7 @@ const upb_MiniTable google__protobuf__MethodOptions_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__MethodOptions_msg_init_ptr = &google__protobuf__MethodOptions_msg_init;
+const upb_MiniTable* const google__protobuf__MethodOptions_msg_init_ptr = &google__protobuf__MethodOptions_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_UninterpretedOption__submsgs[1] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__UninterpretedOption__NamePart_msg_init_ptr},
 };
@@ -1187,7 +1194,7 @@ const upb_MiniTable google__protobuf__UninterpretedOption_msg_init = {
   })
 };
 
-const upb_MiniTable* google__protobuf__UninterpretedOption_msg_init_ptr = &google__protobuf__UninterpretedOption_msg_init;
+const upb_MiniTable* const google__protobuf__UninterpretedOption_msg_init_ptr = &google__protobuf__UninterpretedOption_msg_init;
 static const upb_MiniTableField google_protobuf_UninterpretedOption_NamePart__fields[2] = {
   {1, UPB_SIZE(12, 16), 64, kUpb_NoSub, 12, (int)kUpb_FieldMode_Scalar | (int)kUpb_LabelFlags_IsAlternate | ((int)kUpb_FieldRep_StringView << kUpb_FieldRep_Shift)},
   {2, 9, 65, kUpb_NoSub, 8, (int)kUpb_FieldMode_Scalar | ((int)kUpb_FieldRep_1Byte << kUpb_FieldRep_Shift)},
@@ -1202,7 +1209,7 @@ const upb_MiniTable google__protobuf__UninterpretedOption__NamePart_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__UninterpretedOption__NamePart_msg_init_ptr = &google__protobuf__UninterpretedOption__NamePart_msg_init;
+const upb_MiniTable* const google__protobuf__UninterpretedOption__NamePart_msg_init_ptr = &google__protobuf__UninterpretedOption__NamePart_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FeatureSet__submsgs[8] = {
   {.UPB_PRIVATE(subenum) = &google__protobuf__FeatureSet__FieldPresence_enum_init},
   {.UPB_PRIVATE(subenum) = &google__protobuf__FeatureSet__EnumType_enum_init},
@@ -1234,7 +1241,7 @@ const upb_MiniTable google__protobuf__FeatureSet_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FeatureSet_msg_init_ptr = &google__protobuf__FeatureSet_msg_init;
+const upb_MiniTable* const google__protobuf__FeatureSet_msg_init_ptr = &google__protobuf__FeatureSet_msg_init;
 const upb_MiniTable google__protobuf__FeatureSet__VisibilityFeature_msg_init = {
   NULL,
   NULL,
@@ -1244,7 +1251,7 @@ const upb_MiniTable google__protobuf__FeatureSet__VisibilityFeature_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FeatureSet__VisibilityFeature_msg_init_ptr = &google__protobuf__FeatureSet__VisibilityFeature_msg_init;
+const upb_MiniTable* const google__protobuf__FeatureSet__VisibilityFeature_msg_init_ptr = &google__protobuf__FeatureSet__VisibilityFeature_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FeatureSetDefaults__submsgs[3] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSetDefaults__FeatureSetEditionDefault_msg_init_ptr},
   {.UPB_PRIVATE(subenum) = &google__protobuf__Edition_enum_init},
@@ -1266,7 +1273,7 @@ const upb_MiniTable google__protobuf__FeatureSetDefaults_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FeatureSetDefaults_msg_init_ptr = &google__protobuf__FeatureSetDefaults_msg_init;
+const upb_MiniTable* const google__protobuf__FeatureSetDefaults_msg_init_ptr = &google__protobuf__FeatureSetDefaults_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_FeatureSetDefaults_FeatureSetEditionDefault__submsgs[3] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
   {.UPB_PRIVATE(submsg) = &google__protobuf__FeatureSet_msg_init_ptr},
@@ -1288,7 +1295,7 @@ const upb_MiniTable google__protobuf__FeatureSetDefaults__FeatureSetEditionDefau
 #endif
 };
 
-const upb_MiniTable* google__protobuf__FeatureSetDefaults__FeatureSetEditionDefault_msg_init_ptr = &google__protobuf__FeatureSetDefaults__FeatureSetEditionDefault_msg_init;
+const upb_MiniTable* const google__protobuf__FeatureSetDefaults__FeatureSetEditionDefault_msg_init_ptr = &google__protobuf__FeatureSetDefaults__FeatureSetEditionDefault_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_SourceCodeInfo__submsgs[1] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__SourceCodeInfo__Location_msg_init_ptr},
 };
@@ -1306,7 +1313,7 @@ const upb_MiniTable google__protobuf__SourceCodeInfo_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__SourceCodeInfo_msg_init_ptr = &google__protobuf__SourceCodeInfo_msg_init;
+const upb_MiniTable* const google__protobuf__SourceCodeInfo_msg_init_ptr = &google__protobuf__SourceCodeInfo_msg_init;
 static const upb_MiniTableField google_protobuf_SourceCodeInfo_Location__fields[5] = {
   {1, UPB_SIZE(12, 48), 0, kUpb_NoSub, 5, (int)kUpb_FieldMode_Array | (int)kUpb_LabelFlags_IsPacked | ((int)UPB_SIZE(kUpb_FieldRep_4Byte, kUpb_FieldRep_8Byte) << kUpb_FieldRep_Shift)},
   {2, UPB_SIZE(16, 56), 0, kUpb_NoSub, 5, (int)kUpb_FieldMode_Array | (int)kUpb_LabelFlags_IsPacked | ((int)UPB_SIZE(kUpb_FieldRep_4Byte, kUpb_FieldRep_8Byte) << kUpb_FieldRep_Shift)},
@@ -1324,7 +1331,7 @@ const upb_MiniTable google__protobuf__SourceCodeInfo__Location_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__SourceCodeInfo__Location_msg_init_ptr = &google__protobuf__SourceCodeInfo__Location_msg_init;
+const upb_MiniTable* const google__protobuf__SourceCodeInfo__Location_msg_init_ptr = &google__protobuf__SourceCodeInfo__Location_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_GeneratedCodeInfo__submsgs[1] = {
   {.UPB_PRIVATE(submsg) = &google__protobuf__GeneratedCodeInfo__Annotation_msg_init_ptr},
 };
@@ -1342,7 +1349,7 @@ const upb_MiniTable google__protobuf__GeneratedCodeInfo_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__GeneratedCodeInfo_msg_init_ptr = &google__protobuf__GeneratedCodeInfo_msg_init;
+const upb_MiniTable* const google__protobuf__GeneratedCodeInfo_msg_init_ptr = &google__protobuf__GeneratedCodeInfo_msg_init;
 static const upb_MiniTableSubInternal google_protobuf_GeneratedCodeInfo_Annotation__submsgs[1] = {
   {.UPB_PRIVATE(subenum) = &google__protobuf__GeneratedCodeInfo__Annotation__Semantic_enum_init},
 };
@@ -1364,7 +1371,7 @@ const upb_MiniTable google__protobuf__GeneratedCodeInfo__Annotation_msg_init = {
 #endif
 };
 
-const upb_MiniTable* google__protobuf__GeneratedCodeInfo__Annotation_msg_init_ptr = &google__protobuf__GeneratedCodeInfo__Annotation_msg_init;
+const upb_MiniTable* const google__protobuf__GeneratedCodeInfo__Annotation_msg_init_ptr = &google__protobuf__GeneratedCodeInfo__Annotation_msg_init;
 const upb_MiniTableEnum google__protobuf__Edition_enum_init = {
     64,
     9,
@@ -1634,7 +1641,7 @@ const upb_MiniTableFile google_protobuf_descriptor_proto_upb_file_layout = {
 
 
 
-static const char descriptor[13195] = {
+static const char descriptor[13232] = {
     '\n', ' ', 'g', 'o', 'o', 'g', 'l', 'e', '/', 'p', 'r', 'o',
     't', 'o', 'b', 'u', 'f', '/', 'd', 'e', 's', 'c', 'r', 'i',
     'p', 't', 'o', 'r', '.', 'p', 'r', 'o', 't', 'o', '\022', '\017',
@@ -2134,7 +2141,7 @@ static const char descriptor[13195] = {
     '*', '\t', '\010', '\350', '\007', '\020', '\200', '\200', '\200', '\200', '\002', 'J',
     '\004', '\010', '\004', '\020', '\005', 'J', '\004', '\010', '\005', '\020', '\006', 'J',
     '\004', '\010', '\006', '\020', '\007', 'J', '\004', '\010', '\010', '\020', '\t', 'J',
-    '\004', '\010', '\t', '\020', '\n', '\"', '\241', '\r', '\n', '\014', 'F', 'i',
+    '\004', '\010', '\t', '\020', '\n', '\"', '\306', '\r', '\n', '\014', 'F', 'i',
     'e', 'l', 'd', 'O', 'p', 't', 'i', 'o', 'n', 's', '\022', 'A',
     '\n', '\005', 'c', 't', 'y', 'p', 'e', '\030', '\001', ' ', '\001', '(',
     '\016', '2', '#', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p',
@@ -2212,7 +2219,7 @@ static const char descriptor[13195] = {
     '.', 'E', 'd', 'i', 't', 'i', 'o', 'n', 'R', '\007', 'e', 'd',
     'i', 't', 'i', 'o', 'n', '\022', '\024', '\n', '\005', 'v', 'a', 'l',
     'u', 'e', '\030', '\002', ' ', '\001', '(', '\t', 'R', '\005', 'v', 'a',
-    'l', 'u', 'e', '\032', '\226', '\002', '\n', '\016', 'F', 'e', 'a', 't',
+    'l', 'u', 'e', '\032', '\273', '\002', '\n', '\016', 'F', 'e', 'a', 't',
     'u', 'r', 'e', 'S', 'u', 'p', 'p', 'o', 'r', 't', '\022', 'G',
     '\n', '\022', 'e', 'd', 'i', 't', 'i', 'o', 'n', '_', 'i', 'n',
     't', 'r', 'o', 'd', 'u', 'c', 'e', 'd', '\030', '\001', ' ', '\001',
@@ -2235,78 +2242,156 @@ static const char descriptor[13195] = {
     '(', '\016', '2', '\030', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.',
     'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'E', 'd', 'i',
     't', 'i', 'o', 'n', 'R', '\016', 'e', 'd', 'i', 't', 'i', 'o',
-    'n', 'R', 'e', 'm', 'o', 'v', 'e', 'd', '\"', '/', '\n', '\005',
-    'C', 'T', 'y', 'p', 'e', '\022', '\n', '\n', '\006', 'S', 'T', 'R',
-    'I', 'N', 'G', '\020', '\000', '\022', '\010', '\n', '\004', 'C', 'O', 'R',
-    'D', '\020', '\001', '\022', '\020', '\n', '\014', 'S', 'T', 'R', 'I', 'N',
-    'G', '_', 'P', 'I', 'E', 'C', 'E', '\020', '\002', '\"', '5', '\n',
-    '\006', 'J', 'S', 'T', 'y', 'p', 'e', '\022', '\r', '\n', '\t', 'J',
-    'S', '_', 'N', 'O', 'R', 'M', 'A', 'L', '\020', '\000', '\022', '\r',
-    '\n', '\t', 'J', 'S', '_', 'S', 'T', 'R', 'I', 'N', 'G', '\020',
-    '\001', '\022', '\r', '\n', '\t', 'J', 'S', '_', 'N', 'U', 'M', 'B',
-    'E', 'R', '\020', '\002', '\"', 'U', '\n', '\017', 'O', 'p', 't', 'i',
-    'o', 'n', 'R', 'e', 't', 'e', 'n', 't', 'i', 'o', 'n', '\022',
+    'n', 'R', 'e', 'm', 'o', 'v', 'e', 'd', '\022', '#', '\n', '\r',
+    'r', 'e', 'm', 'o', 'v', 'a', 'l', '_', 'e', 'r', 'r', 'o',
+    'r', '\030', '\005', ' ', '\001', '(', '\t', 'R', '\014', 'r', 'e', 'm',
+    'o', 'v', 'a', 'l', 'E', 'r', 'r', 'o', 'r', '\"', '/', '\n',
+    '\005', 'C', 'T', 'y', 'p', 'e', '\022', '\n', '\n', '\006', 'S', 'T',
+    'R', 'I', 'N', 'G', '\020', '\000', '\022', '\010', '\n', '\004', 'C', 'O',
+    'R', 'D', '\020', '\001', '\022', '\020', '\n', '\014', 'S', 'T', 'R', 'I',
+    'N', 'G', '_', 'P', 'I', 'E', 'C', 'E', '\020', '\002', '\"', '5',
+    '\n', '\006', 'J', 'S', 'T', 'y', 'p', 'e', '\022', '\r', '\n', '\t',
+    'J', 'S', '_', 'N', 'O', 'R', 'M', 'A', 'L', '\020', '\000', '\022',
+    '\r', '\n', '\t', 'J', 'S', '_', 'S', 'T', 'R', 'I', 'N', 'G',
+    '\020', '\001', '\022', '\r', '\n', '\t', 'J', 'S', '_', 'N', 'U', 'M',
+    'B', 'E', 'R', '\020', '\002', '\"', 'U', '\n', '\017', 'O', 'p', 't',
+    'i', 'o', 'n', 'R', 'e', 't', 'e', 'n', 't', 'i', 'o', 'n',
+    '\022', '\025', '\n', '\021', 'R', 'E', 'T', 'E', 'N', 'T', 'I', 'O',
+    'N', '_', 'U', 'N', 'K', 'N', 'O', 'W', 'N', '\020', '\000', '\022',
     '\025', '\n', '\021', 'R', 'E', 'T', 'E', 'N', 'T', 'I', 'O', 'N',
-    '_', 'U', 'N', 'K', 'N', 'O', 'W', 'N', '\020', '\000', '\022', '\025',
-    '\n', '\021', 'R', 'E', 'T', 'E', 'N', 'T', 'I', 'O', 'N', '_',
-    'R', 'U', 'N', 'T', 'I', 'M', 'E', '\020', '\001', '\022', '\024', '\n',
-    '\020', 'R', 'E', 'T', 'E', 'N', 'T', 'I', 'O', 'N', '_', 'S',
-    'O', 'U', 'R', 'C', 'E', '\020', '\002', '\"', '\214', '\002', '\n', '\020',
-    'O', 'p', 't', 'i', 'o', 'n', 'T', 'a', 'r', 'g', 'e', 't',
-    'T', 'y', 'p', 'e', '\022', '\027', '\n', '\023', 'T', 'A', 'R', 'G',
-    'E', 'T', '_', 'T', 'Y', 'P', 'E', '_', 'U', 'N', 'K', 'N',
-    'O', 'W', 'N', '\020', '\000', '\022', '\024', '\n', '\020', 'T', 'A', 'R',
-    'G', 'E', 'T', '_', 'T', 'Y', 'P', 'E', '_', 'F', 'I', 'L',
-    'E', '\020', '\001', '\022', '\037', '\n', '\033', 'T', 'A', 'R', 'G', 'E',
-    'T', '_', 'T', 'Y', 'P', 'E', '_', 'E', 'X', 'T', 'E', 'N',
-    'S', 'I', 'O', 'N', '_', 'R', 'A', 'N', 'G', 'E', '\020', '\002',
-    '\022', '\027', '\n', '\023', 'T', 'A', 'R', 'G', 'E', 'T', '_', 'T',
-    'Y', 'P', 'E', '_', 'M', 'E', 'S', 'S', 'A', 'G', 'E', '\020',
-    '\003', '\022', '\025', '\n', '\021', 'T', 'A', 'R', 'G', 'E', 'T', '_',
-    'T', 'Y', 'P', 'E', '_', 'F', 'I', 'E', 'L', 'D', '\020', '\004',
-    '\022', '\025', '\n', '\021', 'T', 'A', 'R', 'G', 'E', 'T', '_', 'T',
-    'Y', 'P', 'E', '_', 'O', 'N', 'E', 'O', 'F', '\020', '\005', '\022',
-    '\024', '\n', '\020', 'T', 'A', 'R', 'G', 'E', 'T', '_', 'T', 'Y',
-    'P', 'E', '_', 'E', 'N', 'U', 'M', '\020', '\006', '\022', '\032', '\n',
-    '\026', 'T', 'A', 'R', 'G', 'E', 'T', '_', 'T', 'Y', 'P', 'E',
-    '_', 'E', 'N', 'U', 'M', '_', 'E', 'N', 'T', 'R', 'Y', '\020',
-    '\007', '\022', '\027', '\n', '\023', 'T', 'A', 'R', 'G', 'E', 'T', '_',
-    'T', 'Y', 'P', 'E', '_', 'S', 'E', 'R', 'V', 'I', 'C', 'E',
-    '\020', '\010', '\022', '\026', '\n', '\022', 'T', 'A', 'R', 'G', 'E', 'T',
-    '_', 'T', 'Y', 'P', 'E', '_', 'M', 'E', 'T', 'H', 'O', 'D',
-    '\020', '\t', '*', '\t', '\010', '\350', '\007', '\020', '\200', '\200', '\200', '\200',
-    '\002', 'J', '\004', '\010', '\004', '\020', '\005', 'J', '\004', '\010', '\022', '\020',
-    '\023', '\"', '\254', '\001', '\n', '\014', 'O', 'n', 'e', 'o', 'f', 'O',
-    'p', 't', 'i', 'o', 'n', 's', '\022', '7', '\n', '\010', 'f', 'e',
-    'a', 't', 'u', 'r', 'e', 's', '\030', '\001', ' ', '\001', '(', '\013',
-    '2', '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r',
-    'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u',
-    'r', 'e', 'S', 'e', 't', 'R', '\010', 'f', 'e', 'a', 't', 'u',
-    'r', 'e', 's', '\022', 'X', '\n', '\024', 'u', 'n', 'i', 'n', 't',
-    'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', '_', 'o', 'p', 't',
-    'i', 'o', 'n', '\030', '\347', '\007', ' ', '\003', '(', '\013', '2', '$',
-    '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't',
-    'o', 'b', 'u', 'f', '.', 'U', 'n', 'i', 'n', 't', 'e', 'r',
-    'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o', 'n',
-    'R', '\023', 'u', 'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e',
-    't', 'e', 'd', 'O', 'p', 't', 'i', 'o', 'n', '*', '\t', '\010',
-    '\350', '\007', '\020', '\200', '\200', '\200', '\200', '\002', '\"', '\321', '\002', '\n',
-    '\013', 'E', 'n', 'u', 'm', 'O', 'p', 't', 'i', 'o', 'n', 's',
-    '\022', '\037', '\n', '\013', 'a', 'l', 'l', 'o', 'w', '_', 'a', 'l',
-    'i', 'a', 's', '\030', '\002', ' ', '\001', '(', '\010', 'R', '\n', 'a',
-    'l', 'l', 'o', 'w', 'A', 'l', 'i', 'a', 's', '\022', '%', '\n',
-    '\n', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd', '\030',
-    '\003', ' ', '\001', '(', '\010', ':', '\005', 'f', 'a', 'l', 's', 'e',
-    'R', '\n', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd',
-    '\022', 'V', '\n', '&', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't',
-    'e', 'd', '_', 'l', 'e', 'g', 'a', 'c', 'y', '_', 'j', 's',
-    'o', 'n', '_', 'f', 'i', 'e', 'l', 'd', '_', 'c', 'o', 'n',
-    'f', 'l', 'i', 'c', 't', 's', '\030', '\006', ' ', '\001', '(', '\010',
-    'B', '\002', '\030', '\001', 'R', '\"', 'd', 'e', 'p', 'r', 'e', 'c',
-    'a', 't', 'e', 'd', 'L', 'e', 'g', 'a', 'c', 'y', 'J', 's',
-    'o', 'n', 'F', 'i', 'e', 'l', 'd', 'C', 'o', 'n', 'f', 'l',
-    'i', 'c', 't', 's', '\022', '7', '\n', '\010', 'f', 'e', 'a', 't',
-    'u', 'r', 'e', 's', '\030', '\007', ' ', '\001', '(', '\013', '2', '\033',
+    '_', 'R', 'U', 'N', 'T', 'I', 'M', 'E', '\020', '\001', '\022', '\024',
+    '\n', '\020', 'R', 'E', 'T', 'E', 'N', 'T', 'I', 'O', 'N', '_',
+    'S', 'O', 'U', 'R', 'C', 'E', '\020', '\002', '\"', '\214', '\002', '\n',
+    '\020', 'O', 'p', 't', 'i', 'o', 'n', 'T', 'a', 'r', 'g', 'e',
+    't', 'T', 'y', 'p', 'e', '\022', '\027', '\n', '\023', 'T', 'A', 'R',
+    'G', 'E', 'T', '_', 'T', 'Y', 'P', 'E', '_', 'U', 'N', 'K',
+    'N', 'O', 'W', 'N', '\020', '\000', '\022', '\024', '\n', '\020', 'T', 'A',
+    'R', 'G', 'E', 'T', '_', 'T', 'Y', 'P', 'E', '_', 'F', 'I',
+    'L', 'E', '\020', '\001', '\022', '\037', '\n', '\033', 'T', 'A', 'R', 'G',
+    'E', 'T', '_', 'T', 'Y', 'P', 'E', '_', 'E', 'X', 'T', 'E',
+    'N', 'S', 'I', 'O', 'N', '_', 'R', 'A', 'N', 'G', 'E', '\020',
+    '\002', '\022', '\027', '\n', '\023', 'T', 'A', 'R', 'G', 'E', 'T', '_',
+    'T', 'Y', 'P', 'E', '_', 'M', 'E', 'S', 'S', 'A', 'G', 'E',
+    '\020', '\003', '\022', '\025', '\n', '\021', 'T', 'A', 'R', 'G', 'E', 'T',
+    '_', 'T', 'Y', 'P', 'E', '_', 'F', 'I', 'E', 'L', 'D', '\020',
+    '\004', '\022', '\025', '\n', '\021', 'T', 'A', 'R', 'G', 'E', 'T', '_',
+    'T', 'Y', 'P', 'E', '_', 'O', 'N', 'E', 'O', 'F', '\020', '\005',
+    '\022', '\024', '\n', '\020', 'T', 'A', 'R', 'G', 'E', 'T', '_', 'T',
+    'Y', 'P', 'E', '_', 'E', 'N', 'U', 'M', '\020', '\006', '\022', '\032',
+    '\n', '\026', 'T', 'A', 'R', 'G', 'E', 'T', '_', 'T', 'Y', 'P',
+    'E', '_', 'E', 'N', 'U', 'M', '_', 'E', 'N', 'T', 'R', 'Y',
+    '\020', '\007', '\022', '\027', '\n', '\023', 'T', 'A', 'R', 'G', 'E', 'T',
+    '_', 'T', 'Y', 'P', 'E', '_', 'S', 'E', 'R', 'V', 'I', 'C',
+    'E', '\020', '\010', '\022', '\026', '\n', '\022', 'T', 'A', 'R', 'G', 'E',
+    'T', '_', 'T', 'Y', 'P', 'E', '_', 'M', 'E', 'T', 'H', 'O',
+    'D', '\020', '\t', '*', '\t', '\010', '\350', '\007', '\020', '\200', '\200', '\200',
+    '\200', '\002', 'J', '\004', '\010', '\004', '\020', '\005', 'J', '\004', '\010', '\022',
+    '\020', '\023', '\"', '\254', '\001', '\n', '\014', 'O', 'n', 'e', 'o', 'f',
+    'O', 'p', 't', 'i', 'o', 'n', 's', '\022', '7', '\n', '\010', 'f',
+    'e', 'a', 't', 'u', 'r', 'e', 's', '\030', '\001', ' ', '\001', '(',
+    '\013', '2', '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p',
+    'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't',
+    'u', 'r', 'e', 'S', 'e', 't', 'R', '\010', 'f', 'e', 'a', 't',
+    'u', 'r', 'e', 's', '\022', 'X', '\n', '\024', 'u', 'n', 'i', 'n',
+    't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', '_', 'o', 'p',
+    't', 'i', 'o', 'n', '\030', '\347', '\007', ' ', '\003', '(', '\013', '2',
+    '$', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o',
+    't', 'o', 'b', 'u', 'f', '.', 'U', 'n', 'i', 'n', 't', 'e',
+    'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o',
+    'n', 'R', '\023', 'u', 'n', 'i', 'n', 't', 'e', 'r', 'p', 'r',
+    'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o', 'n', '*', '\t',
+    '\010', '\350', '\007', '\020', '\200', '\200', '\200', '\200', '\002', '\"', '\321', '\002',
+    '\n', '\013', 'E', 'n', 'u', 'm', 'O', 'p', 't', 'i', 'o', 'n',
+    's', '\022', '\037', '\n', '\013', 'a', 'l', 'l', 'o', 'w', '_', 'a',
+    'l', 'i', 'a', 's', '\030', '\002', ' ', '\001', '(', '\010', 'R', '\n',
+    'a', 'l', 'l', 'o', 'w', 'A', 'l', 'i', 'a', 's', '\022', '%',
+    '\n', '\n', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd',
+    '\030', '\003', ' ', '\001', '(', '\010', ':', '\005', 'f', 'a', 'l', 's',
+    'e', 'R', '\n', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e',
+    'd', '\022', 'V', '\n', '&', 'd', 'e', 'p', 'r', 'e', 'c', 'a',
+    't', 'e', 'd', '_', 'l', 'e', 'g', 'a', 'c', 'y', '_', 'j',
+    's', 'o', 'n', '_', 'f', 'i', 'e', 'l', 'd', '_', 'c', 'o',
+    'n', 'f', 'l', 'i', 'c', 't', 's', '\030', '\006', ' ', '\001', '(',
+    '\010', 'B', '\002', '\030', '\001', 'R', '\"', 'd', 'e', 'p', 'r', 'e',
+    'c', 'a', 't', 'e', 'd', 'L', 'e', 'g', 'a', 'c', 'y', 'J',
+    's', 'o', 'n', 'F', 'i', 'e', 'l', 'd', 'C', 'o', 'n', 'f',
+    'l', 'i', 'c', 't', 's', '\022', '7', '\n', '\010', 'f', 'e', 'a',
+    't', 'u', 'r', 'e', 's', '\030', '\007', ' ', '\001', '(', '\013', '2',
+    '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o',
+    't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u', 'r',
+    'e', 'S', 'e', 't', 'R', '\010', 'f', 'e', 'a', 't', 'u', 'r',
+    'e', 's', '\022', 'X', '\n', '\024', 'u', 'n', 'i', 'n', 't', 'e',
+    'r', 'p', 'r', 'e', 't', 'e', 'd', '_', 'o', 'p', 't', 'i',
+    'o', 'n', '\030', '\347', '\007', ' ', '\003', '(', '\013', '2', '$', '.',
+    'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o',
+    'b', 'u', 'f', '.', 'U', 'n', 'i', 'n', 't', 'e', 'r', 'p',
+    'r', 'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o', 'n', 'R',
+    '\023', 'u', 'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't',
+    'e', 'd', 'O', 'p', 't', 'i', 'o', 'n', '*', '\t', '\010', '\350',
+    '\007', '\020', '\200', '\200', '\200', '\200', '\002', 'J', '\004', '\010', '\005', '\020',
+    '\006', '\"', '\330', '\002', '\n', '\020', 'E', 'n', 'u', 'm', 'V', 'a',
+    'l', 'u', 'e', 'O', 'p', 't', 'i', 'o', 'n', 's', '\022', '%',
+    '\n', '\n', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd',
+    '\030', '\001', ' ', '\001', '(', '\010', ':', '\005', 'f', 'a', 'l', 's',
+    'e', 'R', '\n', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e',
+    'd', '\022', '7', '\n', '\010', 'f', 'e', 'a', 't', 'u', 'r', 'e',
+    's', '\030', '\002', ' ', '\001', '(', '\013', '2', '\033', '.', 'g', 'o',
+    'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u',
+    'f', '.', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't',
+    'R', '\010', 'f', 'e', 'a', 't', 'u', 'r', 'e', 's', '\022', '(',
+    '\n', '\014', 'd', 'e', 'b', 'u', 'g', '_', 'r', 'e', 'd', 'a',
+    'c', 't', '\030', '\003', ' ', '\001', '(', '\010', ':', '\005', 'f', 'a',
+    'l', 's', 'e', 'R', '\013', 'd', 'e', 'b', 'u', 'g', 'R', 'e',
+    'd', 'a', 'c', 't', '\022', 'U', '\n', '\017', 'f', 'e', 'a', 't',
+    'u', 'r', 'e', '_', 's', 'u', 'p', 'p', 'o', 'r', 't', '\030',
+    '\004', ' ', '\001', '(', '\013', '2', ',', '.', 'g', 'o', 'o', 'g',
+    'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.',
+    'F', 'i', 'e', 'l', 'd', 'O', 'p', 't', 'i', 'o', 'n', 's',
+    '.', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'u', 'p', 'p',
+    'o', 'r', 't', 'R', '\016', 'f', 'e', 'a', 't', 'u', 'r', 'e',
+    'S', 'u', 'p', 'p', 'o', 'r', 't', '\022', 'X', '\n', '\024', 'u',
+    'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd',
+    '_', 'o', 'p', 't', 'i', 'o', 'n', '\030', '\347', '\007', ' ', '\003',
+    '(', '\013', '2', '$', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.',
+    'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'U', 'n', 'i',
+    'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p',
+    't', 'i', 'o', 'n', 'R', '\023', 'u', 'n', 'i', 'n', 't', 'e',
+    'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o',
+    'n', '*', '\t', '\010', '\350', '\007', '\020', '\200', '\200', '\200', '\200', '\002',
+    '\"', '\325', '\001', '\n', '\016', 'S', 'e', 'r', 'v', 'i', 'c', 'e',
+    'O', 'p', 't', 'i', 'o', 'n', 's', '\022', '7', '\n', '\010', 'f',
+    'e', 'a', 't', 'u', 'r', 'e', 's', '\030', '\"', ' ', '\001', '(',
+    '\013', '2', '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p',
+    'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't',
+    'u', 'r', 'e', 'S', 'e', 't', 'R', '\010', 'f', 'e', 'a', 't',
+    'u', 'r', 'e', 's', '\022', '%', '\n', '\n', 'd', 'e', 'p', 'r',
+    'e', 'c', 'a', 't', 'e', 'd', '\030', '!', ' ', '\001', '(', '\010',
+    ':', '\005', 'f', 'a', 'l', 's', 'e', 'R', '\n', 'd', 'e', 'p',
+    'r', 'e', 'c', 'a', 't', 'e', 'd', '\022', 'X', '\n', '\024', 'u',
+    'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd',
+    '_', 'o', 'p', 't', 'i', 'o', 'n', '\030', '\347', '\007', ' ', '\003',
+    '(', '\013', '2', '$', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.',
+    'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'U', 'n', 'i',
+    'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p',
+    't', 'i', 'o', 'n', 'R', '\023', 'u', 'n', 'i', 'n', 't', 'e',
+    'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o',
+    'n', '*', '\t', '\010', '\350', '\007', '\020', '\200', '\200', '\200', '\200', '\002',
+    '\"', '\231', '\003', '\n', '\r', 'M', 'e', 't', 'h', 'o', 'd', 'O',
+    'p', 't', 'i', 'o', 'n', 's', '\022', '%', '\n', '\n', 'd', 'e',
+    'p', 'r', 'e', 'c', 'a', 't', 'e', 'd', '\030', '!', ' ', '\001',
+    '(', '\010', ':', '\005', 'f', 'a', 'l', 's', 'e', 'R', '\n', 'd',
+    'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd', '\022', 'q', '\n',
+    '\021', 'i', 'd', 'e', 'm', 'p', 'o', 't', 'e', 'n', 'c', 'y',
+    '_', 'l', 'e', 'v', 'e', 'l', '\030', '\"', ' ', '\001', '(', '\016',
+    '2', '/', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r',
+    'o', 't', 'o', 'b', 'u', 'f', '.', 'M', 'e', 't', 'h', 'o',
+    'd', 'O', 'p', 't', 'i', 'o', 'n', 's', '.', 'I', 'd', 'e',
+    'm', 'p', 'o', 't', 'e', 'n', 'c', 'y', 'L', 'e', 'v', 'e',
+    'l', ':', '\023', 'I', 'D', 'E', 'M', 'P', 'O', 'T', 'E', 'N',
+    'C', 'Y', '_', 'U', 'N', 'K', 'N', 'O', 'W', 'N', 'R', '\020',
+    'i', 'd', 'e', 'm', 'p', 'o', 't', 'e', 'n', 'c', 'y', 'L',
+    'e', 'v', 'e', 'l', '\022', '7', '\n', '\010', 'f', 'e', 'a', 't',
+    'u', 'r', 'e', 's', '\030', '#', ' ', '\001', '(', '\013', '2', '\033',
     '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't',
     'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u', 'r', 'e',
     'S', 'e', 't', 'R', '\010', 'f', 'e', 'a', 't', 'u', 'r', 'e',
@@ -2317,424 +2402,349 @@ static const char descriptor[13195] = {
     'u', 'f', '.', 'U', 'n', 'i', 'n', 't', 'e', 'r', 'p', 'r',
     'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o', 'n', 'R', '\023',
     'u', 'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e',
-    'd', 'O', 'p', 't', 'i', 'o', 'n', '*', '\t', '\010', '\350', '\007',
-    '\020', '\200', '\200', '\200', '\200', '\002', 'J', '\004', '\010', '\005', '\020', '\006',
-    '\"', '\330', '\002', '\n', '\020', 'E', 'n', 'u', 'm', 'V', 'a', 'l',
-    'u', 'e', 'O', 'p', 't', 'i', 'o', 'n', 's', '\022', '%', '\n',
-    '\n', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd', '\030',
-    '\001', ' ', '\001', '(', '\010', ':', '\005', 'f', 'a', 'l', 's', 'e',
-    'R', '\n', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd',
-    '\022', '7', '\n', '\010', 'f', 'e', 'a', 't', 'u', 'r', 'e', 's',
-    '\030', '\002', ' ', '\001', '(', '\013', '2', '\033', '.', 'g', 'o', 'o',
-    'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f',
-    '.', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', 'R',
-    '\010', 'f', 'e', 'a', 't', 'u', 'r', 'e', 's', '\022', '(', '\n',
-    '\014', 'd', 'e', 'b', 'u', 'g', '_', 'r', 'e', 'd', 'a', 'c',
-    't', '\030', '\003', ' ', '\001', '(', '\010', ':', '\005', 'f', 'a', 'l',
-    's', 'e', 'R', '\013', 'd', 'e', 'b', 'u', 'g', 'R', 'e', 'd',
-    'a', 'c', 't', '\022', 'U', '\n', '\017', 'f', 'e', 'a', 't', 'u',
-    'r', 'e', '_', 's', 'u', 'p', 'p', 'o', 'r', 't', '\030', '\004',
-    ' ', '\001', '(', '\013', '2', ',', '.', 'g', 'o', 'o', 'g', 'l',
-    'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F',
-    'i', 'e', 'l', 'd', 'O', 'p', 't', 'i', 'o', 'n', 's', '.',
-    'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'u', 'p', 'p', 'o',
-    'r', 't', 'R', '\016', 'f', 'e', 'a', 't', 'u', 'r', 'e', 'S',
-    'u', 'p', 'p', 'o', 'r', 't', '\022', 'X', '\n', '\024', 'u', 'n',
-    'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', '_',
-    'o', 'p', 't', 'i', 'o', 'n', '\030', '\347', '\007', ' ', '\003', '(',
-    '\013', '2', '$', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p',
-    'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'U', 'n', 'i', 'n',
-    't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't',
-    'i', 'o', 'n', 'R', '\023', 'u', 'n', 'i', 'n', 't', 'e', 'r',
-    'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o', 'n',
-    '*', '\t', '\010', '\350', '\007', '\020', '\200', '\200', '\200', '\200', '\002', '\"',
-    '\325', '\001', '\n', '\016', 'S', 'e', 'r', 'v', 'i', 'c', 'e', 'O',
-    'p', 't', 'i', 'o', 'n', 's', '\022', '7', '\n', '\010', 'f', 'e',
-    'a', 't', 'u', 'r', 'e', 's', '\030', '\"', ' ', '\001', '(', '\013',
-    '2', '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r',
-    'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u',
-    'r', 'e', 'S', 'e', 't', 'R', '\010', 'f', 'e', 'a', 't', 'u',
-    'r', 'e', 's', '\022', '%', '\n', '\n', 'd', 'e', 'p', 'r', 'e',
-    'c', 'a', 't', 'e', 'd', '\030', '!', ' ', '\001', '(', '\010', ':',
-    '\005', 'f', 'a', 'l', 's', 'e', 'R', '\n', 'd', 'e', 'p', 'r',
-    'e', 'c', 'a', 't', 'e', 'd', '\022', 'X', '\n', '\024', 'u', 'n',
-    'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', '_',
-    'o', 'p', 't', 'i', 'o', 'n', '\030', '\347', '\007', ' ', '\003', '(',
-    '\013', '2', '$', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p',
-    'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'U', 'n', 'i', 'n',
-    't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't',
-    'i', 'o', 'n', 'R', '\023', 'u', 'n', 'i', 'n', 't', 'e', 'r',
-    'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't', 'i', 'o', 'n',
-    '*', '\t', '\010', '\350', '\007', '\020', '\200', '\200', '\200', '\200', '\002', '\"',
-    '\231', '\003', '\n', '\r', 'M', 'e', 't', 'h', 'o', 'd', 'O', 'p',
-    't', 'i', 'o', 'n', 's', '\022', '%', '\n', '\n', 'd', 'e', 'p',
-    'r', 'e', 'c', 'a', 't', 'e', 'd', '\030', '!', ' ', '\001', '(',
-    '\010', ':', '\005', 'f', 'a', 'l', 's', 'e', 'R', '\n', 'd', 'e',
-    'p', 'r', 'e', 'c', 'a', 't', 'e', 'd', '\022', 'q', '\n', '\021',
-    'i', 'd', 'e', 'm', 'p', 'o', 't', 'e', 'n', 'c', 'y', '_',
-    'l', 'e', 'v', 'e', 'l', '\030', '\"', ' ', '\001', '(', '\016', '2',
-    '/', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o',
-    't', 'o', 'b', 'u', 'f', '.', 'M', 'e', 't', 'h', 'o', 'd',
-    'O', 'p', 't', 'i', 'o', 'n', 's', '.', 'I', 'd', 'e', 'm',
-    'p', 'o', 't', 'e', 'n', 'c', 'y', 'L', 'e', 'v', 'e', 'l',
-    ':', '\023', 'I', 'D', 'E', 'M', 'P', 'O', 'T', 'E', 'N', 'C',
-    'Y', '_', 'U', 'N', 'K', 'N', 'O', 'W', 'N', 'R', '\020', 'i',
+    'd', 'O', 'p', 't', 'i', 'o', 'n', '\"', 'P', '\n', '\020', 'I',
     'd', 'e', 'm', 'p', 'o', 't', 'e', 'n', 'c', 'y', 'L', 'e',
-    'v', 'e', 'l', '\022', '7', '\n', '\010', 'f', 'e', 'a', 't', 'u',
-    'r', 'e', 's', '\030', '#', ' ', '\001', '(', '\013', '2', '\033', '.',
-    'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o',
-    'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S',
-    'e', 't', 'R', '\010', 'f', 'e', 'a', 't', 'u', 'r', 'e', 's',
-    '\022', 'X', '\n', '\024', 'u', 'n', 'i', 'n', 't', 'e', 'r', 'p',
-    'r', 'e', 't', 'e', 'd', '_', 'o', 'p', 't', 'i', 'o', 'n',
-    '\030', '\347', '\007', ' ', '\003', '(', '\013', '2', '$', '.', 'g', 'o',
-    'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u',
-    'f', '.', 'U', 'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e',
-    't', 'e', 'd', 'O', 'p', 't', 'i', 'o', 'n', 'R', '\023', 'u',
-    'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd',
-    'O', 'p', 't', 'i', 'o', 'n', '\"', 'P', '\n', '\020', 'I', 'd',
-    'e', 'm', 'p', 'o', 't', 'e', 'n', 'c', 'y', 'L', 'e', 'v',
-    'e', 'l', '\022', '\027', '\n', '\023', 'I', 'D', 'E', 'M', 'P', 'O',
-    'T', 'E', 'N', 'C', 'Y', '_', 'U', 'N', 'K', 'N', 'O', 'W',
-    'N', '\020', '\000', '\022', '\023', '\n', '\017', 'N', 'O', '_', 'S', 'I',
-    'D', 'E', '_', 'E', 'F', 'F', 'E', 'C', 'T', 'S', '\020', '\001',
-    '\022', '\016', '\n', '\n', 'I', 'D', 'E', 'M', 'P', 'O', 'T', 'E',
-    'N', 'T', '\020', '\002', '*', '\t', '\010', '\350', '\007', '\020', '\200', '\200',
-    '\200', '\200', '\002', '\"', '\232', '\003', '\n', '\023', 'U', 'n', 'i', 'n',
-    't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p', 't',
-    'i', 'o', 'n', '\022', 'A', '\n', '\004', 'n', 'a', 'm', 'e', '\030',
-    '\002', ' ', '\003', '(', '\013', '2', '-', '.', 'g', 'o', 'o', 'g',
-    'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.',
-    'U', 'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e',
-    'd', 'O', 'p', 't', 'i', 'o', 'n', '.', 'N', 'a', 'm', 'e',
-    'P', 'a', 'r', 't', 'R', '\004', 'n', 'a', 'm', 'e', '\022', ')',
-    '\n', '\020', 'i', 'd', 'e', 'n', 't', 'i', 'f', 'i', 'e', 'r',
-    '_', 'v', 'a', 'l', 'u', 'e', '\030', '\003', ' ', '\001', '(', '\t',
-    'R', '\017', 'i', 'd', 'e', 'n', 't', 'i', 'f', 'i', 'e', 'r',
-    'V', 'a', 'l', 'u', 'e', '\022', ',', '\n', '\022', 'p', 'o', 's',
-    'i', 't', 'i', 'v', 'e', '_', 'i', 'n', 't', '_', 'v', 'a',
-    'l', 'u', 'e', '\030', '\004', ' ', '\001', '(', '\004', 'R', '\020', 'p',
-    'o', 's', 'i', 't', 'i', 'v', 'e', 'I', 'n', 't', 'V', 'a',
-    'l', 'u', 'e', '\022', ',', '\n', '\022', 'n', 'e', 'g', 'a', 't',
-    'i', 'v', 'e', '_', 'i', 'n', 't', '_', 'v', 'a', 'l', 'u',
-    'e', '\030', '\005', ' ', '\001', '(', '\003', 'R', '\020', 'n', 'e', 'g',
-    'a', 't', 'i', 'v', 'e', 'I', 'n', 't', 'V', 'a', 'l', 'u',
-    'e', '\022', '!', '\n', '\014', 'd', 'o', 'u', 'b', 'l', 'e', '_',
-    'v', 'a', 'l', 'u', 'e', '\030', '\006', ' ', '\001', '(', '\001', 'R',
-    '\013', 'd', 'o', 'u', 'b', 'l', 'e', 'V', 'a', 'l', 'u', 'e',
-    '\022', '!', '\n', '\014', 's', 't', 'r', 'i', 'n', 'g', '_', 'v',
-    'a', 'l', 'u', 'e', '\030', '\007', ' ', '\001', '(', '\014', 'R', '\013',
-    's', 't', 'r', 'i', 'n', 'g', 'V', 'a', 'l', 'u', 'e', '\022',
-    '\'', '\n', '\017', 'a', 'g', 'g', 'r', 'e', 'g', 'a', 't', 'e',
-    '_', 'v', 'a', 'l', 'u', 'e', '\030', '\010', ' ', '\001', '(', '\t',
-    'R', '\016', 'a', 'g', 'g', 'r', 'e', 'g', 'a', 't', 'e', 'V',
-    'a', 'l', 'u', 'e', '\032', 'J', '\n', '\010', 'N', 'a', 'm', 'e',
-    'P', 'a', 'r', 't', '\022', '\033', '\n', '\t', 'n', 'a', 'm', 'e',
-    '_', 'p', 'a', 'r', 't', '\030', '\001', ' ', '\002', '(', '\t', 'R',
-    '\010', 'n', 'a', 'm', 'e', 'P', 'a', 'r', 't', '\022', '!', '\n',
-    '\014', 'i', 's', '_', 'e', 'x', 't', 'e', 'n', 's', 'i', 'o',
-    'n', '\030', '\002', ' ', '\002', '(', '\010', 'R', '\013', 'i', 's', 'E',
-    'x', 't', 'e', 'n', 's', 'i', 'o', 'n', '\"', '\216', '\017', '\n',
-    '\n', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '\022',
-    '\221', '\001', '\n', '\016', 'f', 'i', 'e', 'l', 'd', '_', 'p', 'r',
-    'e', 's', 'e', 'n', 'c', 'e', '\030', '\001', ' ', '\001', '(', '\016',
-    '2', ')', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r',
-    'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u',
-    'r', 'e', 'S', 'e', 't', '.', 'F', 'i', 'e', 'l', 'd', 'P',
-    'r', 'e', 's', 'e', 'n', 'c', 'e', 'B', '?', '\210', '\001', '\001',
+    'v', 'e', 'l', '\022', '\027', '\n', '\023', 'I', 'D', 'E', 'M', 'P',
+    'O', 'T', 'E', 'N', 'C', 'Y', '_', 'U', 'N', 'K', 'N', 'O',
+    'W', 'N', '\020', '\000', '\022', '\023', '\n', '\017', 'N', 'O', '_', 'S',
+    'I', 'D', 'E', '_', 'E', 'F', 'F', 'E', 'C', 'T', 'S', '\020',
+    '\001', '\022', '\016', '\n', '\n', 'I', 'D', 'E', 'M', 'P', 'O', 'T',
+    'E', 'N', 'T', '\020', '\002', '*', '\t', '\010', '\350', '\007', '\020', '\200',
+    '\200', '\200', '\200', '\002', '\"', '\232', '\003', '\n', '\023', 'U', 'n', 'i',
+    'n', 't', 'e', 'r', 'p', 'r', 'e', 't', 'e', 'd', 'O', 'p',
+    't', 'i', 'o', 'n', '\022', 'A', '\n', '\004', 'n', 'a', 'm', 'e',
+    '\030', '\002', ' ', '\003', '(', '\013', '2', '-', '.', 'g', 'o', 'o',
+    'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f',
+    '.', 'U', 'n', 'i', 'n', 't', 'e', 'r', 'p', 'r', 'e', 't',
+    'e', 'd', 'O', 'p', 't', 'i', 'o', 'n', '.', 'N', 'a', 'm',
+    'e', 'P', 'a', 'r', 't', 'R', '\004', 'n', 'a', 'm', 'e', '\022',
+    ')', '\n', '\020', 'i', 'd', 'e', 'n', 't', 'i', 'f', 'i', 'e',
+    'r', '_', 'v', 'a', 'l', 'u', 'e', '\030', '\003', ' ', '\001', '(',
+    '\t', 'R', '\017', 'i', 'd', 'e', 'n', 't', 'i', 'f', 'i', 'e',
+    'r', 'V', 'a', 'l', 'u', 'e', '\022', ',', '\n', '\022', 'p', 'o',
+    's', 'i', 't', 'i', 'v', 'e', '_', 'i', 'n', 't', '_', 'v',
+    'a', 'l', 'u', 'e', '\030', '\004', ' ', '\001', '(', '\004', 'R', '\020',
+    'p', 'o', 's', 'i', 't', 'i', 'v', 'e', 'I', 'n', 't', 'V',
+    'a', 'l', 'u', 'e', '\022', ',', '\n', '\022', 'n', 'e', 'g', 'a',
+    't', 'i', 'v', 'e', '_', 'i', 'n', 't', '_', 'v', 'a', 'l',
+    'u', 'e', '\030', '\005', ' ', '\001', '(', '\003', 'R', '\020', 'n', 'e',
+    'g', 'a', 't', 'i', 'v', 'e', 'I', 'n', 't', 'V', 'a', 'l',
+    'u', 'e', '\022', '!', '\n', '\014', 'd', 'o', 'u', 'b', 'l', 'e',
+    '_', 'v', 'a', 'l', 'u', 'e', '\030', '\006', ' ', '\001', '(', '\001',
+    'R', '\013', 'd', 'o', 'u', 'b', 'l', 'e', 'V', 'a', 'l', 'u',
+    'e', '\022', '!', '\n', '\014', 's', 't', 'r', 'i', 'n', 'g', '_',
+    'v', 'a', 'l', 'u', 'e', '\030', '\007', ' ', '\001', '(', '\014', 'R',
+    '\013', 's', 't', 'r', 'i', 'n', 'g', 'V', 'a', 'l', 'u', 'e',
+    '\022', '\'', '\n', '\017', 'a', 'g', 'g', 'r', 'e', 'g', 'a', 't',
+    'e', '_', 'v', 'a', 'l', 'u', 'e', '\030', '\010', ' ', '\001', '(',
+    '\t', 'R', '\016', 'a', 'g', 'g', 'r', 'e', 'g', 'a', 't', 'e',
+    'V', 'a', 'l', 'u', 'e', '\032', 'J', '\n', '\010', 'N', 'a', 'm',
+    'e', 'P', 'a', 'r', 't', '\022', '\033', '\n', '\t', 'n', 'a', 'm',
+    'e', '_', 'p', 'a', 'r', 't', '\030', '\001', ' ', '\002', '(', '\t',
+    'R', '\010', 'n', 'a', 'm', 'e', 'P', 'a', 'r', 't', '\022', '!',
+    '\n', '\014', 'i', 's', '_', 'e', 'x', 't', 'e', 'n', 's', 'i',
+    'o', 'n', '\030', '\002', ' ', '\002', '(', '\010', 'R', '\013', 'i', 's',
+    'E', 'x', 't', 'e', 'n', 's', 'i', 'o', 'n', '\"', '\216', '\017',
+    '\n', '\n', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't',
+    '\022', '\221', '\001', '\n', '\016', 'f', 'i', 'e', 'l', 'd', '_', 'p',
+    'r', 'e', 's', 'e', 'n', 'c', 'e', '\030', '\001', ' ', '\001', '(',
+    '\016', '2', ')', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p',
+    'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't',
+    'u', 'r', 'e', 'S', 'e', 't', '.', 'F', 'i', 'e', 'l', 'd',
+    'P', 'r', 'e', 's', 'e', 'n', 'c', 'e', 'B', '?', '\210', '\001',
+    '\001', '\230', '\001', '\004', '\230', '\001', '\001', '\242', '\001', '\r', '\022', '\010',
+    'E', 'X', 'P', 'L', 'I', 'C', 'I', 'T', '\030', '\204', '\007', '\242',
+    '\001', '\r', '\022', '\010', 'I', 'M', 'P', 'L', 'I', 'C', 'I', 'T',
+    '\030', '\347', '\007', '\242', '\001', '\r', '\022', '\010', 'E', 'X', 'P', 'L',
+    'I', 'C', 'I', 'T', '\030', '\350', '\007', '\262', '\001', '\003', '\010', '\350',
+    '\007', 'R', '\r', 'f', 'i', 'e', 'l', 'd', 'P', 'r', 'e', 's',
+    'e', 'n', 'c', 'e', '\022', 'l', '\n', '\t', 'e', 'n', 'u', 'm',
+    '_', 't', 'y', 'p', 'e', '\030', '\002', ' ', '\001', '(', '\016', '2',
+    '$', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o',
+    't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u', 'r',
+    'e', 'S', 'e', 't', '.', 'E', 'n', 'u', 'm', 'T', 'y', 'p',
+    'e', 'B', ')', '\210', '\001', '\001', '\230', '\001', '\006', '\230', '\001', '\001',
+    '\242', '\001', '\013', '\022', '\006', 'C', 'L', 'O', 'S', 'E', 'D', '\030',
+    '\204', '\007', '\242', '\001', '\t', '\022', '\004', 'O', 'P', 'E', 'N', '\030',
+    '\347', '\007', '\262', '\001', '\003', '\010', '\350', '\007', 'R', '\010', 'e', 'n',
+    'u', 'm', 'T', 'y', 'p', 'e', '\022', '\230', '\001', '\n', '\027', 'r',
+    'e', 'p', 'e', 'a', 't', 'e', 'd', '_', 'f', 'i', 'e', 'l',
+    'd', '_', 'e', 'n', 'c', 'o', 'd', 'i', 'n', 'g', '\030', '\003',
+    ' ', '\001', '(', '\016', '2', '1', '.', 'g', 'o', 'o', 'g', 'l',
+    'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F',
+    'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'R', 'e',
+    'p', 'e', 'a', 't', 'e', 'd', 'F', 'i', 'e', 'l', 'd', 'E',
+    'n', 'c', 'o', 'd', 'i', 'n', 'g', 'B', '-', '\210', '\001', '\001',
     '\230', '\001', '\004', '\230', '\001', '\001', '\242', '\001', '\r', '\022', '\010', 'E',
-    'X', 'P', 'L', 'I', 'C', 'I', 'T', '\030', '\204', '\007', '\242', '\001',
-    '\r', '\022', '\010', 'I', 'M', 'P', 'L', 'I', 'C', 'I', 'T', '\030',
-    '\347', '\007', '\242', '\001', '\r', '\022', '\010', 'E', 'X', 'P', 'L', 'I',
-    'C', 'I', 'T', '\030', '\350', '\007', '\262', '\001', '\003', '\010', '\350', '\007',
-    'R', '\r', 'f', 'i', 'e', 'l', 'd', 'P', 'r', 'e', 's', 'e',
-    'n', 'c', 'e', '\022', 'l', '\n', '\t', 'e', 'n', 'u', 'm', '_',
-    't', 'y', 'p', 'e', '\030', '\002', ' ', '\001', '(', '\016', '2', '$',
-    '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't',
-    'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u', 'r', 'e',
-    'S', 'e', 't', '.', 'E', 'n', 'u', 'm', 'T', 'y', 'p', 'e',
-    'B', ')', '\210', '\001', '\001', '\230', '\001', '\006', '\230', '\001', '\001', '\242',
-    '\001', '\013', '\022', '\006', 'C', 'L', 'O', 'S', 'E', 'D', '\030', '\204',
-    '\007', '\242', '\001', '\t', '\022', '\004', 'O', 'P', 'E', 'N', '\030', '\347',
-    '\007', '\262', '\001', '\003', '\010', '\350', '\007', 'R', '\010', 'e', 'n', 'u',
-    'm', 'T', 'y', 'p', 'e', '\022', '\230', '\001', '\n', '\027', 'r', 'e',
-    'p', 'e', 'a', 't', 'e', 'd', '_', 'f', 'i', 'e', 'l', 'd',
-    '_', 'e', 'n', 'c', 'o', 'd', 'i', 'n', 'g', '\030', '\003', ' ',
-    '\001', '(', '\016', '2', '1', '.', 'g', 'o', 'o', 'g', 'l', 'e',
-    '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e',
-    'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'R', 'e', 'p',
-    'e', 'a', 't', 'e', 'd', 'F', 'i', 'e', 'l', 'd', 'E', 'n',
-    'c', 'o', 'd', 'i', 'n', 'g', 'B', '-', '\210', '\001', '\001', '\230',
-    '\001', '\004', '\230', '\001', '\001', '\242', '\001', '\r', '\022', '\010', 'E', 'X',
-    'P', 'A', 'N', 'D', 'E', 'D', '\030', '\204', '\007', '\242', '\001', '\013',
-    '\022', '\006', 'P', 'A', 'C', 'K', 'E', 'D', '\030', '\347', '\007', '\262',
-    '\001', '\003', '\010', '\350', '\007', 'R', '\025', 'r', 'e', 'p', 'e', 'a',
-    't', 'e', 'd', 'F', 'i', 'e', 'l', 'd', 'E', 'n', 'c', 'o',
-    'd', 'i', 'n', 'g', '\022', '~', '\n', '\017', 'u', 't', 'f', '8',
-    '_', 'v', 'a', 'l', 'i', 'd', 'a', 't', 'i', 'o', 'n', '\030',
-    '\004', ' ', '\001', '(', '\016', '2', '*', '.', 'g', 'o', 'o', 'g',
-    'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.',
-    'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'U',
-    't', 'f', '8', 'V', 'a', 'l', 'i', 'd', 'a', 't', 'i', 'o',
-    'n', 'B', ')', '\210', '\001', '\001', '\230', '\001', '\004', '\230', '\001', '\001',
-    '\242', '\001', '\t', '\022', '\004', 'N', 'O', 'N', 'E', '\030', '\204', '\007',
-    '\242', '\001', '\013', '\022', '\006', 'V', 'E', 'R', 'I', 'F', 'Y', '\030',
-    '\347', '\007', '\262', '\001', '\003', '\010', '\350', '\007', 'R', '\016', 'u', 't',
-    'f', '8', 'V', 'a', 'l', 'i', 'd', 'a', 't', 'i', 'o', 'n',
-    '\022', '~', '\n', '\020', 'm', 'e', 's', 's', 'a', 'g', 'e', '_',
-    'e', 'n', 'c', 'o', 'd', 'i', 'n', 'g', '\030', '\005', ' ', '\001',
-    '(', '\016', '2', '+', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.',
-    'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a',
-    't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'M', 'e', 's', 's',
-    'a', 'g', 'e', 'E', 'n', 'c', 'o', 'd', 'i', 'n', 'g', 'B',
-    '&', '\210', '\001', '\001', '\230', '\001', '\004', '\230', '\001', '\001', '\242', '\001',
-    '\024', '\022', '\017', 'L', 'E', 'N', 'G', 'T', 'H', '_', 'P', 'R',
-    'E', 'F', 'I', 'X', 'E', 'D', '\030', '\204', '\007', '\262', '\001', '\003',
-    '\010', '\350', '\007', 'R', '\017', 'm', 'e', 's', 's', 'a', 'g', 'e',
-    'E', 'n', 'c', 'o', 'd', 'i', 'n', 'g', '\022', '\202', '\001', '\n',
-    '\013', 'j', 's', 'o', 'n', '_', 'f', 'o', 'r', 'm', 'a', 't',
-    '\030', '\006', ' ', '\001', '(', '\016', '2', '&', '.', 'g', 'o', 'o',
+    'X', 'P', 'A', 'N', 'D', 'E', 'D', '\030', '\204', '\007', '\242', '\001',
+    '\013', '\022', '\006', 'P', 'A', 'C', 'K', 'E', 'D', '\030', '\347', '\007',
+    '\262', '\001', '\003', '\010', '\350', '\007', 'R', '\025', 'r', 'e', 'p', 'e',
+    'a', 't', 'e', 'd', 'F', 'i', 'e', 'l', 'd', 'E', 'n', 'c',
+    'o', 'd', 'i', 'n', 'g', '\022', '~', '\n', '\017', 'u', 't', 'f',
+    '8', '_', 'v', 'a', 'l', 'i', 'd', 'a', 't', 'i', 'o', 'n',
+    '\030', '\004', ' ', '\001', '(', '\016', '2', '*', '.', 'g', 'o', 'o',
     'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f',
     '.', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.',
-    'J', 's', 'o', 'n', 'F', 'o', 'r', 'm', 'a', 't', 'B', '9',
-    '\210', '\001', '\001', '\230', '\001', '\003', '\230', '\001', '\006', '\230', '\001', '\001',
-    '\242', '\001', '\027', '\022', '\022', 'L', 'E', 'G', 'A', 'C', 'Y', '_',
-    'B', 'E', 'S', 'T', '_', 'E', 'F', 'F', 'O', 'R', 'T', '\030',
-    '\204', '\007', '\242', '\001', '\n', '\022', '\005', 'A', 'L', 'L', 'O', 'W',
-    '\030', '\347', '\007', '\262', '\001', '\003', '\010', '\350', '\007', 'R', '\n', 'j',
-    's', 'o', 'n', 'F', 'o', 'r', 'm', 'a', 't', '\022', '\253', '\001',
-    '\n', '\024', 'e', 'n', 'f', 'o', 'r', 'c', 'e', '_', 'n', 'a',
-    'm', 'i', 'n', 'g', '_', 's', 't', 'y', 'l', 'e', '\030', '\007',
-    ' ', '\001', '(', '\016', '2', '.', '.', 'g', 'o', 'o', 'g', 'l',
-    'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F',
-    'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'E', 'n',
-    'f', 'o', 'r', 'c', 'e', 'N', 'a', 'm', 'i', 'n', 'g', 'S',
-    't', 'y', 'l', 'e', 'B', 'I', '\210', '\001', '\002', '\230', '\001', '\001',
-    '\230', '\001', '\002', '\230', '\001', '\003', '\230', '\001', '\004', '\230', '\001', '\005',
-    '\230', '\001', '\006', '\230', '\001', '\007', '\230', '\001', '\010', '\230', '\001', '\t',
-    '\242', '\001', '\021', '\022', '\014', 'S', 'T', 'Y', 'L', 'E', '_', 'L',
-    'E', 'G', 'A', 'C', 'Y', '\030', '\204', '\007', '\242', '\001', '\016', '\022',
-    '\t', 'S', 'T', 'Y', 'L', 'E', '2', '0', '2', '4', '\030', '\351',
-    '\007', '\262', '\001', '\003', '\010', '\351', '\007', 'R', '\022', 'e', 'n', 'f',
-    'o', 'r', 'c', 'e', 'N', 'a', 'm', 'i', 'n', 'g', 'S', 't',
-    'y', 'l', 'e', '\022', '\271', '\001', '\n', '\031', 'd', 'e', 'f', 'a',
-    'u', 'l', 't', '_', 's', 'y', 'm', 'b', 'o', 'l', '_', 'v',
-    'i', 's', 'i', 'b', 'i', 'l', 'i', 't', 'y', '\030', '\010', ' ',
-    '\001', '(', '\016', '2', 'E', '.', 'g', 'o', 'o', 'g', 'l', 'e',
+    'U', 't', 'f', '8', 'V', 'a', 'l', 'i', 'd', 'a', 't', 'i',
+    'o', 'n', 'B', ')', '\210', '\001', '\001', '\230', '\001', '\004', '\230', '\001',
+    '\001', '\242', '\001', '\t', '\022', '\004', 'N', 'O', 'N', 'E', '\030', '\204',
+    '\007', '\242', '\001', '\013', '\022', '\006', 'V', 'E', 'R', 'I', 'F', 'Y',
+    '\030', '\347', '\007', '\262', '\001', '\003', '\010', '\350', '\007', 'R', '\016', 'u',
+    't', 'f', '8', 'V', 'a', 'l', 'i', 'd', 'a', 't', 'i', 'o',
+    'n', '\022', '~', '\n', '\020', 'm', 'e', 's', 's', 'a', 'g', 'e',
+    '_', 'e', 'n', 'c', 'o', 'd', 'i', 'n', 'g', '\030', '\005', ' ',
+    '\001', '(', '\016', '2', '+', '.', 'g', 'o', 'o', 'g', 'l', 'e',
     '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e',
-    'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'V', 'i', 's',
-    'i', 'b', 'i', 'l', 'i', 't', 'y', 'F', 'e', 'a', 't', 'u',
-    'r', 'e', '.', 'D', 'e', 'f', 'a', 'u', 'l', 't', 'S', 'y',
-    'm', 'b', 'o', 'l', 'V', 'i', 's', 'i', 'b', 'i', 'l', 'i',
-    't', 'y', 'B', '6', '\210', '\001', '\002', '\230', '\001', '\001', '\242', '\001',
-    '\017', '\022', '\n', 'E', 'X', 'P', 'O', 'R', 'T', '_', 'A', 'L',
-    'L', '\030', '\204', '\007', '\242', '\001', '\025', '\022', '\020', 'E', 'X', 'P',
-    'O', 'R', 'T', '_', 'T', 'O', 'P', '_', 'L', 'E', 'V', 'E',
-    'L', '\030', '\351', '\007', '\262', '\001', '\003', '\010', '\351', '\007', 'R', '\027',
-    'd', 'e', 'f', 'a', 'u', 'l', 't', 'S', 'y', 'm', 'b', 'o',
-    'l', 'V', 'i', 's', 'i', 'b', 'i', 'l', 'i', 't', 'y', '\032',
-    '\241', '\001', '\n', '\021', 'V', 'i', 's', 'i', 'b', 'i', 'l', 'i',
-    't', 'y', 'F', 'e', 'a', 't', 'u', 'r', 'e', '\"', '\201', '\001',
-    '\n', '\027', 'D', 'e', 'f', 'a', 'u', 'l', 't', 'S', 'y', 'm',
-    'b', 'o', 'l', 'V', 'i', 's', 'i', 'b', 'i', 'l', 'i', 't',
-    'y', '\022', '%', '\n', '!', 'D', 'E', 'F', 'A', 'U', 'L', 'T',
-    '_', 'S', 'Y', 'M', 'B', 'O', 'L', '_', 'V', 'I', 'S', 'I',
-    'B', 'I', 'L', 'I', 'T', 'Y', '_', 'U', 'N', 'K', 'N', 'O',
-    'W', 'N', '\020', '\000', '\022', '\016', '\n', '\n', 'E', 'X', 'P', 'O',
-    'R', 'T', '_', 'A', 'L', 'L', '\020', '\001', '\022', '\024', '\n', '\020',
-    'E', 'X', 'P', 'O', 'R', 'T', '_', 'T', 'O', 'P', '_', 'L',
-    'E', 'V', 'E', 'L', '\020', '\002', '\022', '\r', '\n', '\t', 'L', 'O',
-    'C', 'A', 'L', '_', 'A', 'L', 'L', '\020', '\003', '\022', '\n', '\n',
-    '\006', 'S', 'T', 'R', 'I', 'C', 'T', '\020', '\004', 'J', '\010', '\010',
-    '\001', '\020', '\200', '\200', '\200', '\200', '\002', '\"', '\\', '\n', '\r', 'F',
-    'i', 'e', 'l', 'd', 'P', 'r', 'e', 's', 'e', 'n', 'c', 'e',
-    '\022', '\032', '\n', '\026', 'F', 'I', 'E', 'L', 'D', '_', 'P', 'R',
-    'E', 'S', 'E', 'N', 'C', 'E', '_', 'U', 'N', 'K', 'N', 'O',
-    'W', 'N', '\020', '\000', '\022', '\014', '\n', '\010', 'E', 'X', 'P', 'L',
-    'I', 'C', 'I', 'T', '\020', '\001', '\022', '\014', '\n', '\010', 'I', 'M',
-    'P', 'L', 'I', 'C', 'I', 'T', '\020', '\002', '\022', '\023', '\n', '\017',
-    'L', 'E', 'G', 'A', 'C', 'Y', '_', 'R', 'E', 'Q', 'U', 'I',
-    'R', 'E', 'D', '\020', '\003', '\"', '7', '\n', '\010', 'E', 'n', 'u',
-    'm', 'T', 'y', 'p', 'e', '\022', '\025', '\n', '\021', 'E', 'N', 'U',
-    'M', '_', 'T', 'Y', 'P', 'E', '_', 'U', 'N', 'K', 'N', 'O',
-    'W', 'N', '\020', '\000', '\022', '\010', '\n', '\004', 'O', 'P', 'E', 'N',
-    '\020', '\001', '\022', '\n', '\n', '\006', 'C', 'L', 'O', 'S', 'E', 'D',
-    '\020', '\002', '\"', 'V', '\n', '\025', 'R', 'e', 'p', 'e', 'a', 't',
-    'e', 'd', 'F', 'i', 'e', 'l', 'd', 'E', 'n', 'c', 'o', 'd',
-    'i', 'n', 'g', '\022', '#', '\n', '\037', 'R', 'E', 'P', 'E', 'A',
-    'T', 'E', 'D', '_', 'F', 'I', 'E', 'L', 'D', '_', 'E', 'N',
-    'C', 'O', 'D', 'I', 'N', 'G', '_', 'U', 'N', 'K', 'N', 'O',
-    'W', 'N', '\020', '\000', '\022', '\n', '\n', '\006', 'P', 'A', 'C', 'K',
-    'E', 'D', '\020', '\001', '\022', '\014', '\n', '\010', 'E', 'X', 'P', 'A',
-    'N', 'D', 'E', 'D', '\020', '\002', '\"', 'I', '\n', '\016', 'U', 't',
-    'f', '8', 'V', 'a', 'l', 'i', 'd', 'a', 't', 'i', 'o', 'n',
-    '\022', '\033', '\n', '\027', 'U', 'T', 'F', '8', '_', 'V', 'A', 'L',
-    'I', 'D', 'A', 'T', 'I', 'O', 'N', '_', 'U', 'N', 'K', 'N',
-    'O', 'W', 'N', '\020', '\000', '\022', '\n', '\n', '\006', 'V', 'E', 'R',
-    'I', 'F', 'Y', '\020', '\002', '\022', '\010', '\n', '\004', 'N', 'O', 'N',
-    'E', '\020', '\003', '\"', '\004', '\010', '\001', '\020', '\001', '\"', 'S', '\n',
-    '\017', 'M', 'e', 's', 's', 'a', 'g', 'e', 'E', 'n', 'c', 'o',
-    'd', 'i', 'n', 'g', '\022', '\034', '\n', '\030', 'M', 'E', 'S', 'S',
-    'A', 'G', 'E', '_', 'E', 'N', 'C', 'O', 'D', 'I', 'N', 'G',
-    '_', 'U', 'N', 'K', 'N', 'O', 'W', 'N', '\020', '\000', '\022', '\023',
-    '\n', '\017', 'L', 'E', 'N', 'G', 'T', 'H', '_', 'P', 'R', 'E',
-    'F', 'I', 'X', 'E', 'D', '\020', '\001', '\022', '\r', '\n', '\t', 'D',
-    'E', 'L', 'I', 'M', 'I', 'T', 'E', 'D', '\020', '\002', '\"', 'H',
-    '\n', '\n', 'J', 's', 'o', 'n', 'F', 'o', 'r', 'm', 'a', 't',
-    '\022', '\027', '\n', '\023', 'J', 'S', 'O', 'N', '_', 'F', 'O', 'R',
-    'M', 'A', 'T', '_', 'U', 'N', 'K', 'N', 'O', 'W', 'N', '\020',
-    '\000', '\022', '\t', '\n', '\005', 'A', 'L', 'L', 'O', 'W', '\020', '\001',
-    '\022', '\026', '\n', '\022', 'L', 'E', 'G', 'A', 'C', 'Y', '_', 'B',
-    'E', 'S', 'T', '_', 'E', 'F', 'F', 'O', 'R', 'T', '\020', '\002',
-    '\"', 'W', '\n', '\022', 'E', 'n', 'f', 'o', 'r', 'c', 'e', 'N',
-    'a', 'm', 'i', 'n', 'g', 'S', 't', 'y', 'l', 'e', '\022', ' ',
-    '\n', '\034', 'E', 'N', 'F', 'O', 'R', 'C', 'E', '_', 'N', 'A',
-    'M', 'I', 'N', 'G', '_', 'S', 'T', 'Y', 'L', 'E', '_', 'U',
-    'N', 'K', 'N', 'O', 'W', 'N', '\020', '\000', '\022', '\r', '\n', '\t',
-    'S', 'T', 'Y', 'L', 'E', '2', '0', '2', '4', '\020', '\001', '\022',
-    '\020', '\n', '\014', 'S', 'T', 'Y', 'L', 'E', '_', 'L', 'E', 'G',
-    'A', 'C', 'Y', '\020', '\002', '*', '\006', '\010', '\350', '\007', '\020', '\213',
-    'N', '*', '\006', '\010', '\213', 'N', '\020', '\220', 'N', '*', '\006', '\010',
-    '\220', 'N', '\020', '\221', 'N', 'J', '\006', '\010', '\347', '\007', '\020', '\350',
-    '\007', '\"', '\357', '\003', '\n', '\022', 'F', 'e', 'a', 't', 'u', 'r',
-    'e', 'S', 'e', 't', 'D', 'e', 'f', 'a', 'u', 'l', 't', 's',
-    '\022', 'X', '\n', '\010', 'd', 'e', 'f', 'a', 'u', 'l', 't', 's',
-    '\030', '\001', ' ', '\003', '(', '\013', '2', '<', '.', 'g', 'o', 'o',
-    'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f',
-    '.', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', 'D',
-    'e', 'f', 'a', 'u', 'l', 't', 's', '.', 'F', 'e', 'a', 't',
-    'u', 'r', 'e', 'S', 'e', 't', 'E', 'd', 'i', 't', 'i', 'o',
-    'n', 'D', 'e', 'f', 'a', 'u', 'l', 't', 'R', '\010', 'd', 'e',
-    'f', 'a', 'u', 'l', 't', 's', '\022', 'A', '\n', '\017', 'm', 'i',
-    'n', 'i', 'm', 'u', 'm', '_', 'e', 'd', 'i', 't', 'i', 'o',
-    'n', '\030', '\004', ' ', '\001', '(', '\016', '2', '\030', '.', 'g', 'o',
+    'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'M', 'e', 's',
+    's', 'a', 'g', 'e', 'E', 'n', 'c', 'o', 'd', 'i', 'n', 'g',
+    'B', '&', '\210', '\001', '\001', '\230', '\001', '\004', '\230', '\001', '\001', '\242',
+    '\001', '\024', '\022', '\017', 'L', 'E', 'N', 'G', 'T', 'H', '_', 'P',
+    'R', 'E', 'F', 'I', 'X', 'E', 'D', '\030', '\204', '\007', '\262', '\001',
+    '\003', '\010', '\350', '\007', 'R', '\017', 'm', 'e', 's', 's', 'a', 'g',
+    'e', 'E', 'n', 'c', 'o', 'd', 'i', 'n', 'g', '\022', '\202', '\001',
+    '\n', '\013', 'j', 's', 'o', 'n', '_', 'f', 'o', 'r', 'm', 'a',
+    't', '\030', '\006', ' ', '\001', '(', '\016', '2', '&', '.', 'g', 'o',
     'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u',
-    'f', '.', 'E', 'd', 'i', 't', 'i', 'o', 'n', 'R', '\016', 'm',
-    'i', 'n', 'i', 'm', 'u', 'm', 'E', 'd', 'i', 't', 'i', 'o',
-    'n', '\022', 'A', '\n', '\017', 'm', 'a', 'x', 'i', 'm', 'u', 'm',
-    '_', 'e', 'd', 'i', 't', 'i', 'o', 'n', '\030', '\005', ' ', '\001',
-    '(', '\016', '2', '\030', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.',
-    'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'E', 'd', 'i',
-    't', 'i', 'o', 'n', 'R', '\016', 'm', 'a', 'x', 'i', 'm', 'u',
-    'm', 'E', 'd', 'i', 't', 'i', 'o', 'n', '\032', '\370', '\001', '\n',
-    '\030', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', 'E',
-    'd', 'i', 't', 'i', 'o', 'n', 'D', 'e', 'f', 'a', 'u', 'l',
-    't', '\022', '2', '\n', '\007', 'e', 'd', 'i', 't', 'i', 'o', 'n',
-    '\030', '\003', ' ', '\001', '(', '\016', '2', '\030', '.', 'g', 'o', 'o',
-    'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f',
-    '.', 'E', 'd', 'i', 't', 'i', 'o', 'n', 'R', '\007', 'e', 'd',
-    'i', 't', 'i', 'o', 'n', '\022', 'N', '\n', '\024', 'o', 'v', 'e',
-    'r', 'r', 'i', 'd', 'a', 'b', 'l', 'e', '_', 'f', 'e', 'a',
-    't', 'u', 'r', 'e', 's', '\030', '\004', ' ', '\001', '(', '\013', '2',
-    '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o',
-    't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u', 'r',
-    'e', 'S', 'e', 't', 'R', '\023', 'o', 'v', 'e', 'r', 'r', 'i',
-    'd', 'a', 'b', 'l', 'e', 'F', 'e', 'a', 't', 'u', 'r', 'e',
-    's', '\022', 'B', '\n', '\016', 'f', 'i', 'x', 'e', 'd', '_', 'f',
-    'e', 'a', 't', 'u', 'r', 'e', 's', '\030', '\005', ' ', '\001', '(',
-    '\013', '2', '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p',
-    'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't',
-    'u', 'r', 'e', 'S', 'e', 't', 'R', '\r', 'f', 'i', 'x', 'e',
-    'd', 'F', 'e', 'a', 't', 'u', 'r', 'e', 's', 'J', '\004', '\010',
-    '\001', '\020', '\002', 'J', '\004', '\010', '\002', '\020', '\003', 'R', '\010', 'f',
-    'e', 'a', 't', 'u', 'r', 'e', 's', '\"', '\265', '\002', '\n', '\016',
-    'S', 'o', 'u', 'r', 'c', 'e', 'C', 'o', 'd', 'e', 'I', 'n',
-    'f', 'o', '\022', 'D', '\n', '\010', 'l', 'o', 'c', 'a', 't', 'i',
-    'o', 'n', '\030', '\001', ' ', '\003', '(', '\013', '2', '(', '.', 'g',
+    'f', '.', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't',
+    '.', 'J', 's', 'o', 'n', 'F', 'o', 'r', 'm', 'a', 't', 'B',
+    '9', '\210', '\001', '\001', '\230', '\001', '\003', '\230', '\001', '\006', '\230', '\001',
+    '\001', '\242', '\001', '\027', '\022', '\022', 'L', 'E', 'G', 'A', 'C', 'Y',
+    '_', 'B', 'E', 'S', 'T', '_', 'E', 'F', 'F', 'O', 'R', 'T',
+    '\030', '\204', '\007', '\242', '\001', '\n', '\022', '\005', 'A', 'L', 'L', 'O',
+    'W', '\030', '\347', '\007', '\262', '\001', '\003', '\010', '\350', '\007', 'R', '\n',
+    'j', 's', 'o', 'n', 'F', 'o', 'r', 'm', 'a', 't', '\022', '\253',
+    '\001', '\n', '\024', 'e', 'n', 'f', 'o', 'r', 'c', 'e', '_', 'n',
+    'a', 'm', 'i', 'n', 'g', '_', 's', 't', 'y', 'l', 'e', '\030',
+    '\007', ' ', '\001', '(', '\016', '2', '.', '.', 'g', 'o', 'o', 'g',
+    'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.',
+    'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'E',
+    'n', 'f', 'o', 'r', 'c', 'e', 'N', 'a', 'm', 'i', 'n', 'g',
+    'S', 't', 'y', 'l', 'e', 'B', 'I', '\210', '\001', '\002', '\230', '\001',
+    '\001', '\230', '\001', '\002', '\230', '\001', '\003', '\230', '\001', '\004', '\230', '\001',
+    '\005', '\230', '\001', '\006', '\230', '\001', '\007', '\230', '\001', '\010', '\230', '\001',
+    '\t', '\242', '\001', '\021', '\022', '\014', 'S', 'T', 'Y', 'L', 'E', '_',
+    'L', 'E', 'G', 'A', 'C', 'Y', '\030', '\204', '\007', '\242', '\001', '\016',
+    '\022', '\t', 'S', 'T', 'Y', 'L', 'E', '2', '0', '2', '4', '\030',
+    '\351', '\007', '\262', '\001', '\003', '\010', '\351', '\007', 'R', '\022', 'e', 'n',
+    'f', 'o', 'r', 'c', 'e', 'N', 'a', 'm', 'i', 'n', 'g', 'S',
+    't', 'y', 'l', 'e', '\022', '\271', '\001', '\n', '\031', 'd', 'e', 'f',
+    'a', 'u', 'l', 't', '_', 's', 'y', 'm', 'b', 'o', 'l', '_',
+    'v', 'i', 's', 'i', 'b', 'i', 'l', 'i', 't', 'y', '\030', '\010',
+    ' ', '\001', '(', '\016', '2', 'E', '.', 'g', 'o', 'o', 'g', 'l',
+    'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F',
+    'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't', '.', 'V', 'i',
+    's', 'i', 'b', 'i', 'l', 'i', 't', 'y', 'F', 'e', 'a', 't',
+    'u', 'r', 'e', '.', 'D', 'e', 'f', 'a', 'u', 'l', 't', 'S',
+    'y', 'm', 'b', 'o', 'l', 'V', 'i', 's', 'i', 'b', 'i', 'l',
+    'i', 't', 'y', 'B', '6', '\210', '\001', '\002', '\230', '\001', '\001', '\242',
+    '\001', '\017', '\022', '\n', 'E', 'X', 'P', 'O', 'R', 'T', '_', 'A',
+    'L', 'L', '\030', '\204', '\007', '\242', '\001', '\025', '\022', '\020', 'E', 'X',
+    'P', 'O', 'R', 'T', '_', 'T', 'O', 'P', '_', 'L', 'E', 'V',
+    'E', 'L', '\030', '\351', '\007', '\262', '\001', '\003', '\010', '\351', '\007', 'R',
+    '\027', 'd', 'e', 'f', 'a', 'u', 'l', 't', 'S', 'y', 'm', 'b',
+    'o', 'l', 'V', 'i', 's', 'i', 'b', 'i', 'l', 'i', 't', 'y',
+    '\032', '\241', '\001', '\n', '\021', 'V', 'i', 's', 'i', 'b', 'i', 'l',
+    'i', 't', 'y', 'F', 'e', 'a', 't', 'u', 'r', 'e', '\"', '\201',
+    '\001', '\n', '\027', 'D', 'e', 'f', 'a', 'u', 'l', 't', 'S', 'y',
+    'm', 'b', 'o', 'l', 'V', 'i', 's', 'i', 'b', 'i', 'l', 'i',
+    't', 'y', '\022', '%', '\n', '!', 'D', 'E', 'F', 'A', 'U', 'L',
+    'T', '_', 'S', 'Y', 'M', 'B', 'O', 'L', '_', 'V', 'I', 'S',
+    'I', 'B', 'I', 'L', 'I', 'T', 'Y', '_', 'U', 'N', 'K', 'N',
+    'O', 'W', 'N', '\020', '\000', '\022', '\016', '\n', '\n', 'E', 'X', 'P',
+    'O', 'R', 'T', '_', 'A', 'L', 'L', '\020', '\001', '\022', '\024', '\n',
+    '\020', 'E', 'X', 'P', 'O', 'R', 'T', '_', 'T', 'O', 'P', '_',
+    'L', 'E', 'V', 'E', 'L', '\020', '\002', '\022', '\r', '\n', '\t', 'L',
+    'O', 'C', 'A', 'L', '_', 'A', 'L', 'L', '\020', '\003', '\022', '\n',
+    '\n', '\006', 'S', 'T', 'R', 'I', 'C', 'T', '\020', '\004', 'J', '\010',
+    '\010', '\001', '\020', '\200', '\200', '\200', '\200', '\002', '\"', '\\', '\n', '\r',
+    'F', 'i', 'e', 'l', 'd', 'P', 'r', 'e', 's', 'e', 'n', 'c',
+    'e', '\022', '\032', '\n', '\026', 'F', 'I', 'E', 'L', 'D', '_', 'P',
+    'R', 'E', 'S', 'E', 'N', 'C', 'E', '_', 'U', 'N', 'K', 'N',
+    'O', 'W', 'N', '\020', '\000', '\022', '\014', '\n', '\010', 'E', 'X', 'P',
+    'L', 'I', 'C', 'I', 'T', '\020', '\001', '\022', '\014', '\n', '\010', 'I',
+    'M', 'P', 'L', 'I', 'C', 'I', 'T', '\020', '\002', '\022', '\023', '\n',
+    '\017', 'L', 'E', 'G', 'A', 'C', 'Y', '_', 'R', 'E', 'Q', 'U',
+    'I', 'R', 'E', 'D', '\020', '\003', '\"', '7', '\n', '\010', 'E', 'n',
+    'u', 'm', 'T', 'y', 'p', 'e', '\022', '\025', '\n', '\021', 'E', 'N',
+    'U', 'M', '_', 'T', 'Y', 'P', 'E', '_', 'U', 'N', 'K', 'N',
+    'O', 'W', 'N', '\020', '\000', '\022', '\010', '\n', '\004', 'O', 'P', 'E',
+    'N', '\020', '\001', '\022', '\n', '\n', '\006', 'C', 'L', 'O', 'S', 'E',
+    'D', '\020', '\002', '\"', 'V', '\n', '\025', 'R', 'e', 'p', 'e', 'a',
+    't', 'e', 'd', 'F', 'i', 'e', 'l', 'd', 'E', 'n', 'c', 'o',
+    'd', 'i', 'n', 'g', '\022', '#', '\n', '\037', 'R', 'E', 'P', 'E',
+    'A', 'T', 'E', 'D', '_', 'F', 'I', 'E', 'L', 'D', '_', 'E',
+    'N', 'C', 'O', 'D', 'I', 'N', 'G', '_', 'U', 'N', 'K', 'N',
+    'O', 'W', 'N', '\020', '\000', '\022', '\n', '\n', '\006', 'P', 'A', 'C',
+    'K', 'E', 'D', '\020', '\001', '\022', '\014', '\n', '\010', 'E', 'X', 'P',
+    'A', 'N', 'D', 'E', 'D', '\020', '\002', '\"', 'I', '\n', '\016', 'U',
+    't', 'f', '8', 'V', 'a', 'l', 'i', 'd', 'a', 't', 'i', 'o',
+    'n', '\022', '\033', '\n', '\027', 'U', 'T', 'F', '8', '_', 'V', 'A',
+    'L', 'I', 'D', 'A', 'T', 'I', 'O', 'N', '_', 'U', 'N', 'K',
+    'N', 'O', 'W', 'N', '\020', '\000', '\022', '\n', '\n', '\006', 'V', 'E',
+    'R', 'I', 'F', 'Y', '\020', '\002', '\022', '\010', '\n', '\004', 'N', 'O',
+    'N', 'E', '\020', '\003', '\"', '\004', '\010', '\001', '\020', '\001', '\"', 'S',
+    '\n', '\017', 'M', 'e', 's', 's', 'a', 'g', 'e', 'E', 'n', 'c',
+    'o', 'd', 'i', 'n', 'g', '\022', '\034', '\n', '\030', 'M', 'E', 'S',
+    'S', 'A', 'G', 'E', '_', 'E', 'N', 'C', 'O', 'D', 'I', 'N',
+    'G', '_', 'U', 'N', 'K', 'N', 'O', 'W', 'N', '\020', '\000', '\022',
+    '\023', '\n', '\017', 'L', 'E', 'N', 'G', 'T', 'H', '_', 'P', 'R',
+    'E', 'F', 'I', 'X', 'E', 'D', '\020', '\001', '\022', '\r', '\n', '\t',
+    'D', 'E', 'L', 'I', 'M', 'I', 'T', 'E', 'D', '\020', '\002', '\"',
+    'H', '\n', '\n', 'J', 's', 'o', 'n', 'F', 'o', 'r', 'm', 'a',
+    't', '\022', '\027', '\n', '\023', 'J', 'S', 'O', 'N', '_', 'F', 'O',
+    'R', 'M', 'A', 'T', '_', 'U', 'N', 'K', 'N', 'O', 'W', 'N',
+    '\020', '\000', '\022', '\t', '\n', '\005', 'A', 'L', 'L', 'O', 'W', '\020',
+    '\001', '\022', '\026', '\n', '\022', 'L', 'E', 'G', 'A', 'C', 'Y', '_',
+    'B', 'E', 'S', 'T', '_', 'E', 'F', 'F', 'O', 'R', 'T', '\020',
+    '\002', '\"', 'W', '\n', '\022', 'E', 'n', 'f', 'o', 'r', 'c', 'e',
+    'N', 'a', 'm', 'i', 'n', 'g', 'S', 't', 'y', 'l', 'e', '\022',
+    ' ', '\n', '\034', 'E', 'N', 'F', 'O', 'R', 'C', 'E', '_', 'N',
+    'A', 'M', 'I', 'N', 'G', '_', 'S', 'T', 'Y', 'L', 'E', '_',
+    'U', 'N', 'K', 'N', 'O', 'W', 'N', '\020', '\000', '\022', '\r', '\n',
+    '\t', 'S', 'T', 'Y', 'L', 'E', '2', '0', '2', '4', '\020', '\001',
+    '\022', '\020', '\n', '\014', 'S', 'T', 'Y', 'L', 'E', '_', 'L', 'E',
+    'G', 'A', 'C', 'Y', '\020', '\002', '*', '\006', '\010', '\350', '\007', '\020',
+    '\213', 'N', '*', '\006', '\010', '\213', 'N', '\020', '\220', 'N', '*', '\006',
+    '\010', '\220', 'N', '\020', '\221', 'N', 'J', '\006', '\010', '\347', '\007', '\020',
+    '\350', '\007', '\"', '\357', '\003', '\n', '\022', 'F', 'e', 'a', 't', 'u',
+    'r', 'e', 'S', 'e', 't', 'D', 'e', 'f', 'a', 'u', 'l', 't',
+    's', '\022', 'X', '\n', '\010', 'd', 'e', 'f', 'a', 'u', 'l', 't',
+    's', '\030', '\001', ' ', '\003', '(', '\013', '2', '<', '.', 'g', 'o',
+    'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u',
+    'f', '.', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't',
+    'D', 'e', 'f', 'a', 'u', 'l', 't', 's', '.', 'F', 'e', 'a',
+    't', 'u', 'r', 'e', 'S', 'e', 't', 'E', 'd', 'i', 't', 'i',
+    'o', 'n', 'D', 'e', 'f', 'a', 'u', 'l', 't', 'R', '\010', 'd',
+    'e', 'f', 'a', 'u', 'l', 't', 's', '\022', 'A', '\n', '\017', 'm',
+    'i', 'n', 'i', 'm', 'u', 'm', '_', 'e', 'd', 'i', 't', 'i',
+    'o', 'n', '\030', '\004', ' ', '\001', '(', '\016', '2', '\030', '.', 'g',
     'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b',
-    'u', 'f', '.', 'S', 'o', 'u', 'r', 'c', 'e', 'C', 'o', 'd',
-    'e', 'I', 'n', 'f', 'o', '.', 'L', 'o', 'c', 'a', 't', 'i',
-    'o', 'n', 'R', '\010', 'l', 'o', 'c', 'a', 't', 'i', 'o', 'n',
-    '\032', '\316', '\001', '\n', '\010', 'L', 'o', 'c', 'a', 't', 'i', 'o',
-    'n', '\022', '\026', '\n', '\004', 'p', 'a', 't', 'h', '\030', '\001', ' ',
-    '\003', '(', '\005', 'B', '\002', '\020', '\001', 'R', '\004', 'p', 'a', 't',
-    'h', '\022', '\026', '\n', '\004', 's', 'p', 'a', 'n', '\030', '\002', ' ',
-    '\003', '(', '\005', 'B', '\002', '\020', '\001', 'R', '\004', 's', 'p', 'a',
-    'n', '\022', ')', '\n', '\020', 'l', 'e', 'a', 'd', 'i', 'n', 'g',
-    '_', 'c', 'o', 'm', 'm', 'e', 'n', 't', 's', '\030', '\003', ' ',
-    '\001', '(', '\t', 'R', '\017', 'l', 'e', 'a', 'd', 'i', 'n', 'g',
-    'C', 'o', 'm', 'm', 'e', 'n', 't', 's', '\022', '+', '\n', '\021',
-    't', 'r', 'a', 'i', 'l', 'i', 'n', 'g', '_', 'c', 'o', 'm',
-    'm', 'e', 'n', 't', 's', '\030', '\004', ' ', '\001', '(', '\t', 'R',
-    '\020', 't', 'r', 'a', 'i', 'l', 'i', 'n', 'g', 'C', 'o', 'm',
-    'm', 'e', 'n', 't', 's', '\022', ':', '\n', '\031', 'l', 'e', 'a',
-    'd', 'i', 'n', 'g', '_', 'd', 'e', 't', 'a', 'c', 'h', 'e',
-    'd', '_', 'c', 'o', 'm', 'm', 'e', 'n', 't', 's', '\030', '\006',
-    ' ', '\003', '(', '\t', 'R', '\027', 'l', 'e', 'a', 'd', 'i', 'n',
-    'g', 'D', 'e', 't', 'a', 'c', 'h', 'e', 'd', 'C', 'o', 'm',
-    'm', 'e', 'n', 't', 's', '*', '\014', '\010', '\200', '\354', '\312', '\377',
-    '\001', '\020', '\201', '\354', '\312', '\377', '\001', '\"', '\320', '\002', '\n', '\021',
-    'G', 'e', 'n', 'e', 'r', 'a', 't', 'e', 'd', 'C', 'o', 'd',
-    'e', 'I', 'n', 'f', 'o', '\022', 'M', '\n', '\n', 'a', 'n', 'n',
-    'o', 't', 'a', 't', 'i', 'o', 'n', '\030', '\001', ' ', '\003', '(',
-    '\013', '2', '-', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p',
-    'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'G', 'e', 'n', 'e',
-    'r', 'a', 't', 'e', 'd', 'C', 'o', 'd', 'e', 'I', 'n', 'f',
-    'o', '.', 'A', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n',
-    'R', '\n', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n',
-    '\032', '\353', '\001', '\n', '\n', 'A', 'n', 'n', 'o', 't', 'a', 't',
-    'i', 'o', 'n', '\022', '\026', '\n', '\004', 'p', 'a', 't', 'h', '\030',
-    '\001', ' ', '\003', '(', '\005', 'B', '\002', '\020', '\001', 'R', '\004', 'p',
-    'a', 't', 'h', '\022', '\037', '\n', '\013', 's', 'o', 'u', 'r', 'c',
-    'e', '_', 'f', 'i', 'l', 'e', '\030', '\002', ' ', '\001', '(', '\t',
-    'R', '\n', 's', 'o', 'u', 'r', 'c', 'e', 'F', 'i', 'l', 'e',
-    '\022', '\024', '\n', '\005', 'b', 'e', 'g', 'i', 'n', '\030', '\003', ' ',
-    '\001', '(', '\005', 'R', '\005', 'b', 'e', 'g', 'i', 'n', '\022', '\020',
-    '\n', '\003', 'e', 'n', 'd', '\030', '\004', ' ', '\001', '(', '\005', 'R',
-    '\003', 'e', 'n', 'd', '\022', 'R', '\n', '\010', 's', 'e', 'm', 'a',
-    'n', 't', 'i', 'c', '\030', '\005', ' ', '\001', '(', '\016', '2', '6',
-    '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't',
-    'o', 'b', 'u', 'f', '.', 'G', 'e', 'n', 'e', 'r', 'a', 't',
-    'e', 'd', 'C', 'o', 'd', 'e', 'I', 'n', 'f', 'o', '.', 'A',
-    'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '.', 'S', 'e',
-    'm', 'a', 'n', 't', 'i', 'c', 'R', '\010', 's', 'e', 'm', 'a',
-    'n', 't', 'i', 'c', '\"', '(', '\n', '\010', 'S', 'e', 'm', 'a',
-    'n', 't', 'i', 'c', '\022', '\010', '\n', '\004', 'N', 'O', 'N', 'E',
-    '\020', '\000', '\022', '\007', '\n', '\003', 'S', 'E', 'T', '\020', '\001', '\022',
-    '\t', '\n', '\005', 'A', 'L', 'I', 'A', 'S', '\020', '\002', '*', '\247',
-    '\002', '\n', '\007', 'E', 'd', 'i', 't', 'i', 'o', 'n', '\022', '\023',
-    '\n', '\017', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_', 'U', 'N',
-    'K', 'N', 'O', 'W', 'N', '\020', '\000', '\022', '\023', '\n', '\016', 'E',
-    'D', 'I', 'T', 'I', 'O', 'N', '_', 'L', 'E', 'G', 'A', 'C',
-    'Y', '\020', '\204', '\007', '\022', '\023', '\n', '\016', 'E', 'D', 'I', 'T',
-    'I', 'O', 'N', '_', 'P', 'R', 'O', 'T', 'O', '2', '\020', '\346',
-    '\007', '\022', '\023', '\n', '\016', 'E', 'D', 'I', 'T', 'I', 'O', 'N',
-    '_', 'P', 'R', 'O', 'T', 'O', '3', '\020', '\347', '\007', '\022', '\021',
-    '\n', '\014', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_', '2', '0',
-    '2', '3', '\020', '\350', '\007', '\022', '\021', '\n', '\014', 'E', 'D', 'I',
-    'T', 'I', 'O', 'N', '_', '2', '0', '2', '4', '\020', '\351', '\007',
-    '\022', '\027', '\n', '\023', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_',
-    '1', '_', 'T', 'E', 'S', 'T', '_', 'O', 'N', 'L', 'Y', '\020',
-    '\001', '\022', '\027', '\n', '\023', 'E', 'D', 'I', 'T', 'I', 'O', 'N',
-    '_', '2', '_', 'T', 'E', 'S', 'T', '_', 'O', 'N', 'L', 'Y',
-    '\020', '\002', '\022', '\035', '\n', '\027', 'E', 'D', 'I', 'T', 'I', 'O',
-    'N', '_', '9', '9', '9', '9', '7', '_', 'T', 'E', 'S', 'T',
-    '_', 'O', 'N', 'L', 'Y', '\020', '\235', '\215', '\006', '\022', '\035', '\n',
-    '\027', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_', '9', '9', '9',
-    '9', '8', '_', 'T', 'E', 'S', 'T', '_', 'O', 'N', 'L', 'Y',
-    '\020', '\236', '\215', '\006', '\022', '\035', '\n', '\027', 'E', 'D', 'I', 'T',
-    'I', 'O', 'N', '_', '9', '9', '9', '9', '9', '_', 'T', 'E',
-    'S', 'T', '_', 'O', 'N', 'L', 'Y', '\020', '\237', '\215', '\006', '\022',
-    '\023', '\n', '\013', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_', 'M',
-    'A', 'X', '\020', '\377', '\377', '\377', '\377', '\007', '*', 'U', '\n', '\020',
-    'S', 'y', 'm', 'b', 'o', 'l', 'V', 'i', 's', 'i', 'b', 'i',
-    'l', 'i', 't', 'y', '\022', '\024', '\n', '\020', 'V', 'I', 'S', 'I',
-    'B', 'I', 'L', 'I', 'T', 'Y', '_', 'U', 'N', 'S', 'E', 'T',
-    '\020', '\000', '\022', '\024', '\n', '\020', 'V', 'I', 'S', 'I', 'B', 'I',
-    'L', 'I', 'T', 'Y', '_', 'L', 'O', 'C', 'A', 'L', '\020', '\001',
-    '\022', '\025', '\n', '\021', 'V', 'I', 'S', 'I', 'B', 'I', 'L', 'I',
-    'T', 'Y', '_', 'E', 'X', 'P', 'O', 'R', 'T', '\020', '\002', 'B',
-    '~', '\n', '\023', 'c', 'o', 'm', '.', 'g', 'o', 'o', 'g', 'l',
-    'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', 'B', '\020',
-    'D', 'e', 's', 'c', 'r', 'i', 'p', 't', 'o', 'r', 'P', 'r',
-    'o', 't', 'o', 's', 'H', '\001', 'Z', '-', 'g', 'o', 'o', 'g',
-    'l', 'e', '.', 'g', 'o', 'l', 'a', 'n', 'g', '.', 'o', 'r',
-    'g', '/', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '/', 't',
-    'y', 'p', 'e', 's', '/', 'd', 'e', 's', 'c', 'r', 'i', 'p',
-    't', 'o', 'r', 'p', 'b', '\370', '\001', '\001', '\242', '\002', '\003', 'G',
-    'P', 'B', '\252', '\002', '\032', 'G', 'o', 'o', 'g', 'l', 'e', '.',
-    'P', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'R', 'e', 'f',
-    'l', 'e', 'c', 't', 'i', 'o', 'n',
+    'u', 'f', '.', 'E', 'd', 'i', 't', 'i', 'o', 'n', 'R', '\016',
+    'm', 'i', 'n', 'i', 'm', 'u', 'm', 'E', 'd', 'i', 't', 'i',
+    'o', 'n', '\022', 'A', '\n', '\017', 'm', 'a', 'x', 'i', 'm', 'u',
+    'm', '_', 'e', 'd', 'i', 't', 'i', 'o', 'n', '\030', '\005', ' ',
+    '\001', '(', '\016', '2', '\030', '.', 'g', 'o', 'o', 'g', 'l', 'e',
+    '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'E', 'd',
+    'i', 't', 'i', 'o', 'n', 'R', '\016', 'm', 'a', 'x', 'i', 'm',
+    'u', 'm', 'E', 'd', 'i', 't', 'i', 'o', 'n', '\032', '\370', '\001',
+    '\n', '\030', 'F', 'e', 'a', 't', 'u', 'r', 'e', 'S', 'e', 't',
+    'E', 'd', 'i', 't', 'i', 'o', 'n', 'D', 'e', 'f', 'a', 'u',
+    'l', 't', '\022', '2', '\n', '\007', 'e', 'd', 'i', 't', 'i', 'o',
+    'n', '\030', '\003', ' ', '\001', '(', '\016', '2', '\030', '.', 'g', 'o',
+    'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u',
+    'f', '.', 'E', 'd', 'i', 't', 'i', 'o', 'n', 'R', '\007', 'e',
+    'd', 'i', 't', 'i', 'o', 'n', '\022', 'N', '\n', '\024', 'o', 'v',
+    'e', 'r', 'r', 'i', 'd', 'a', 'b', 'l', 'e', '_', 'f', 'e',
+    'a', 't', 'u', 'r', 'e', 's', '\030', '\004', ' ', '\001', '(', '\013',
+    '2', '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r',
+    'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a', 't', 'u',
+    'r', 'e', 'S', 'e', 't', 'R', '\023', 'o', 'v', 'e', 'r', 'r',
+    'i', 'd', 'a', 'b', 'l', 'e', 'F', 'e', 'a', 't', 'u', 'r',
+    'e', 's', '\022', 'B', '\n', '\016', 'f', 'i', 'x', 'e', 'd', '_',
+    'f', 'e', 'a', 't', 'u', 'r', 'e', 's', '\030', '\005', ' ', '\001',
+    '(', '\013', '2', '\033', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.',
+    'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'F', 'e', 'a',
+    't', 'u', 'r', 'e', 'S', 'e', 't', 'R', '\r', 'f', 'i', 'x',
+    'e', 'd', 'F', 'e', 'a', 't', 'u', 'r', 'e', 's', 'J', '\004',
+    '\010', '\001', '\020', '\002', 'J', '\004', '\010', '\002', '\020', '\003', 'R', '\010',
+    'f', 'e', 'a', 't', 'u', 'r', 'e', 's', '\"', '\265', '\002', '\n',
+    '\016', 'S', 'o', 'u', 'r', 'c', 'e', 'C', 'o', 'd', 'e', 'I',
+    'n', 'f', 'o', '\022', 'D', '\n', '\010', 'l', 'o', 'c', 'a', 't',
+    'i', 'o', 'n', '\030', '\001', ' ', '\003', '(', '\013', '2', '(', '.',
+    'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o', 't', 'o',
+    'b', 'u', 'f', '.', 'S', 'o', 'u', 'r', 'c', 'e', 'C', 'o',
+    'd', 'e', 'I', 'n', 'f', 'o', '.', 'L', 'o', 'c', 'a', 't',
+    'i', 'o', 'n', 'R', '\010', 'l', 'o', 'c', 'a', 't', 'i', 'o',
+    'n', '\032', '\316', '\001', '\n', '\010', 'L', 'o', 'c', 'a', 't', 'i',
+    'o', 'n', '\022', '\026', '\n', '\004', 'p', 'a', 't', 'h', '\030', '\001',
+    ' ', '\003', '(', '\005', 'B', '\002', '\020', '\001', 'R', '\004', 'p', 'a',
+    't', 'h', '\022', '\026', '\n', '\004', 's', 'p', 'a', 'n', '\030', '\002',
+    ' ', '\003', '(', '\005', 'B', '\002', '\020', '\001', 'R', '\004', 's', 'p',
+    'a', 'n', '\022', ')', '\n', '\020', 'l', 'e', 'a', 'd', 'i', 'n',
+    'g', '_', 'c', 'o', 'm', 'm', 'e', 'n', 't', 's', '\030', '\003',
+    ' ', '\001', '(', '\t', 'R', '\017', 'l', 'e', 'a', 'd', 'i', 'n',
+    'g', 'C', 'o', 'm', 'm', 'e', 'n', 't', 's', '\022', '+', '\n',
+    '\021', 't', 'r', 'a', 'i', 'l', 'i', 'n', 'g', '_', 'c', 'o',
+    'm', 'm', 'e', 'n', 't', 's', '\030', '\004', ' ', '\001', '(', '\t',
+    'R', '\020', 't', 'r', 'a', 'i', 'l', 'i', 'n', 'g', 'C', 'o',
+    'm', 'm', 'e', 'n', 't', 's', '\022', ':', '\n', '\031', 'l', 'e',
+    'a', 'd', 'i', 'n', 'g', '_', 'd', 'e', 't', 'a', 'c', 'h',
+    'e', 'd', '_', 'c', 'o', 'm', 'm', 'e', 'n', 't', 's', '\030',
+    '\006', ' ', '\003', '(', '\t', 'R', '\027', 'l', 'e', 'a', 'd', 'i',
+    'n', 'g', 'D', 'e', 't', 'a', 'c', 'h', 'e', 'd', 'C', 'o',
+    'm', 'm', 'e', 'n', 't', 's', '*', '\014', '\010', '\200', '\354', '\312',
+    '\377', '\001', '\020', '\201', '\354', '\312', '\377', '\001', '\"', '\320', '\002', '\n',
+    '\021', 'G', 'e', 'n', 'e', 'r', 'a', 't', 'e', 'd', 'C', 'o',
+    'd', 'e', 'I', 'n', 'f', 'o', '\022', 'M', '\n', '\n', 'a', 'n',
+    'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '\030', '\001', ' ', '\003',
+    '(', '\013', '2', '-', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.',
+    'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'G', 'e', 'n',
+    'e', 'r', 'a', 't', 'e', 'd', 'C', 'o', 'd', 'e', 'I', 'n',
+    'f', 'o', '.', 'A', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o',
+    'n', 'R', '\n', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o',
+    'n', '\032', '\353', '\001', '\n', '\n', 'A', 'n', 'n', 'o', 't', 'a',
+    't', 'i', 'o', 'n', '\022', '\026', '\n', '\004', 'p', 'a', 't', 'h',
+    '\030', '\001', ' ', '\003', '(', '\005', 'B', '\002', '\020', '\001', 'R', '\004',
+    'p', 'a', 't', 'h', '\022', '\037', '\n', '\013', 's', 'o', 'u', 'r',
+    'c', 'e', '_', 'f', 'i', 'l', 'e', '\030', '\002', ' ', '\001', '(',
+    '\t', 'R', '\n', 's', 'o', 'u', 'r', 'c', 'e', 'F', 'i', 'l',
+    'e', '\022', '\024', '\n', '\005', 'b', 'e', 'g', 'i', 'n', '\030', '\003',
+    ' ', '\001', '(', '\005', 'R', '\005', 'b', 'e', 'g', 'i', 'n', '\022',
+    '\020', '\n', '\003', 'e', 'n', 'd', '\030', '\004', ' ', '\001', '(', '\005',
+    'R', '\003', 'e', 'n', 'd', '\022', 'R', '\n', '\010', 's', 'e', 'm',
+    'a', 'n', 't', 'i', 'c', '\030', '\005', ' ', '\001', '(', '\016', '2',
+    '6', '.', 'g', 'o', 'o', 'g', 'l', 'e', '.', 'p', 'r', 'o',
+    't', 'o', 'b', 'u', 'f', '.', 'G', 'e', 'n', 'e', 'r', 'a',
+    't', 'e', 'd', 'C', 'o', 'd', 'e', 'I', 'n', 'f', 'o', '.',
+    'A', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '.', 'S',
+    'e', 'm', 'a', 'n', 't', 'i', 'c', 'R', '\010', 's', 'e', 'm',
+    'a', 'n', 't', 'i', 'c', '\"', '(', '\n', '\010', 'S', 'e', 'm',
+    'a', 'n', 't', 'i', 'c', '\022', '\010', '\n', '\004', 'N', 'O', 'N',
+    'E', '\020', '\000', '\022', '\007', '\n', '\003', 'S', 'E', 'T', '\020', '\001',
+    '\022', '\t', '\n', '\005', 'A', 'L', 'I', 'A', 'S', '\020', '\002', '*',
+    '\247', '\002', '\n', '\007', 'E', 'd', 'i', 't', 'i', 'o', 'n', '\022',
+    '\023', '\n', '\017', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_', 'U',
+    'N', 'K', 'N', 'O', 'W', 'N', '\020', '\000', '\022', '\023', '\n', '\016',
+    'E', 'D', 'I', 'T', 'I', 'O', 'N', '_', 'L', 'E', 'G', 'A',
+    'C', 'Y', '\020', '\204', '\007', '\022', '\023', '\n', '\016', 'E', 'D', 'I',
+    'T', 'I', 'O', 'N', '_', 'P', 'R', 'O', 'T', 'O', '2', '\020',
+    '\346', '\007', '\022', '\023', '\n', '\016', 'E', 'D', 'I', 'T', 'I', 'O',
+    'N', '_', 'P', 'R', 'O', 'T', 'O', '3', '\020', '\347', '\007', '\022',
+    '\021', '\n', '\014', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_', '2',
+    '0', '2', '3', '\020', '\350', '\007', '\022', '\021', '\n', '\014', 'E', 'D',
+    'I', 'T', 'I', 'O', 'N', '_', '2', '0', '2', '4', '\020', '\351',
+    '\007', '\022', '\027', '\n', '\023', 'E', 'D', 'I', 'T', 'I', 'O', 'N',
+    '_', '1', '_', 'T', 'E', 'S', 'T', '_', 'O', 'N', 'L', 'Y',
+    '\020', '\001', '\022', '\027', '\n', '\023', 'E', 'D', 'I', 'T', 'I', 'O',
+    'N', '_', '2', '_', 'T', 'E', 'S', 'T', '_', 'O', 'N', 'L',
+    'Y', '\020', '\002', '\022', '\035', '\n', '\027', 'E', 'D', 'I', 'T', 'I',
+    'O', 'N', '_', '9', '9', '9', '9', '7', '_', 'T', 'E', 'S',
+    'T', '_', 'O', 'N', 'L', 'Y', '\020', '\235', '\215', '\006', '\022', '\035',
+    '\n', '\027', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_', '9', '9',
+    '9', '9', '8', '_', 'T', 'E', 'S', 'T', '_', 'O', 'N', 'L',
+    'Y', '\020', '\236', '\215', '\006', '\022', '\035', '\n', '\027', 'E', 'D', 'I',
+    'T', 'I', 'O', 'N', '_', '9', '9', '9', '9', '9', '_', 'T',
+    'E', 'S', 'T', '_', 'O', 'N', 'L', 'Y', '\020', '\237', '\215', '\006',
+    '\022', '\023', '\n', '\013', 'E', 'D', 'I', 'T', 'I', 'O', 'N', '_',
+    'M', 'A', 'X', '\020', '\377', '\377', '\377', '\377', '\007', '*', 'U', '\n',
+    '\020', 'S', 'y', 'm', 'b', 'o', 'l', 'V', 'i', 's', 'i', 'b',
+    'i', 'l', 'i', 't', 'y', '\022', '\024', '\n', '\020', 'V', 'I', 'S',
+    'I', 'B', 'I', 'L', 'I', 'T', 'Y', '_', 'U', 'N', 'S', 'E',
+    'T', '\020', '\000', '\022', '\024', '\n', '\020', 'V', 'I', 'S', 'I', 'B',
+    'I', 'L', 'I', 'T', 'Y', '_', 'L', 'O', 'C', 'A', 'L', '\020',
+    '\001', '\022', '\025', '\n', '\021', 'V', 'I', 'S', 'I', 'B', 'I', 'L',
+    'I', 'T', 'Y', '_', 'E', 'X', 'P', 'O', 'R', 'T', '\020', '\002',
+    'B', '~', '\n', '\023', 'c', 'o', 'm', '.', 'g', 'o', 'o', 'g',
+    'l', 'e', '.', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', 'B',
+    '\020', 'D', 'e', 's', 'c', 'r', 'i', 'p', 't', 'o', 'r', 'P',
+    'r', 'o', 't', 'o', 's', 'H', '\001', 'Z', '-', 'g', 'o', 'o',
+    'g', 'l', 'e', '.', 'g', 'o', 'l', 'a', 'n', 'g', '.', 'o',
+    'r', 'g', '/', 'p', 'r', 'o', 't', 'o', 'b', 'u', 'f', '/',
+    't', 'y', 'p', 'e', 's', '/', 'd', 'e', 's', 'c', 'r', 'i',
+    'p', 't', 'o', 'r', 'p', 'b', '\370', '\001', '\001', '\242', '\002', '\003',
+    'G', 'P', 'B', '\252', '\002', '\032', 'G', 'o', 'o', 'g', 'l', 'e',
+    '.', 'P', 'r', 'o', 't', 'o', 'b', 'u', 'f', '.', 'R', 'e',
+    'f', 'l', 'e', 'c', 't', 'i', 'o', 'n',
 };
 
 static _upb_DefPool_Init *deps[1] = {
@@ -16694,13 +16704,18 @@ UPB_NORETURN static void encode_err(upb_encstate* e, upb_EncodeStatus s) {
   UPB_LONGJMP(e->err, 1);
 }
 
+// Subtraction is used for bounds checks, and the C standard says that pointer
+// subtraction is UB if the pointers aren't part of the same array or one past
+// the end, so we must avoid NULL - NULL. C++ defines it though.
+static char initial_buf_sentinel;
+
 UPB_NOINLINE
 static char* encode_growbuffer(char* ptr, upb_encstate* e, size_t bytes) {
   size_t old_size = e->limit - e->buf;
   size_t needed_size = bytes + (e->limit - ptr);
   size_t new_size = upb_roundup_pow2(needed_size);
-  char* new_buf =
-      upb_Arena_Realloc(e->arena, (void*)e->buf, old_size, new_size);
+  void* old_buf = e->buf == &initial_buf_sentinel ? NULL : (void*)e->buf;
+  char* new_buf = upb_Arena_Realloc(e->arena, old_buf, old_size, new_size);
 
   if (!new_buf) encode_err(e, kUpb_EncodeStatus_OutOfMemory);
 
@@ -16748,9 +16763,8 @@ static char* encode_fixed32(char* ptr, upb_encstate* e, uint32_t val) {
 
 #define UPB_PB_VARINT_MAX_LEN 10
 
-// Need gnu extended inline asm; msan can't instrument stores in inline assembly
-#if defined(__aarch64__) && (defined(__GNUC__) || defined(__clang__)) && \
-    !UPB_HAS_FEATURE(memory_sanitizer)
+// Need gnu extended inline asm
+#if defined(__aarch64__) && (defined(__GNUC__) || defined(__clang__))
 #define UPB_ARM64_ASM
 #endif
 
@@ -16801,8 +16815,10 @@ UPB_NOINLINE static char* encode_longvarint_arm64(char* ptr, upb_encstate* e,
       : [addr] "=&r"(addr), [mask] "=&r"(mask)
       : [val] "r"(val), [ptr] "r"(ptr), [cnt] "r"((uint64_t)skip)
       : "memory");
-  // Encode the final byte after the continuation bytes.
   uint32_t continuations = UPB_PB_VARINT_MAX_LEN - 1 - skip;
+  // msan can't instrument stores in inline assembly
+  UPB_PRIVATE(upb_Xsan_MarkInitialized)(ptr, continuations);
+  // Encode the final byte after the continuation bytes.
   ptr[continuations] = val >> (7 * continuations);
   return ptr;
 }
@@ -16835,6 +16851,29 @@ char* encode_varint(char* ptr, upb_encstate* e, uint64_t val) {
 #else
     return encode_longvarint(ptr, e, val);
 #endif
+  }
+}
+
+UPB_NOINLINE
+char* encode_longlength(char* ptr, upb_encstate* e, uint64_t val) {
+  if (val > INT32_MAX) {
+    encode_err(e, kUpb_EncodeStatus_MaxSizeExceeded);
+  }
+#ifdef UPB_ARM64_ASM
+  return encode_longvarint_arm64(ptr, e, val);
+#else
+  return encode_longvarint(ptr, e, val);
+#endif
+}
+
+UPB_FORCEINLINE
+char* encode_length(char* ptr, upb_encstate* e, uint64_t val) {
+  if (val < 128 && ptr != e->buf) {
+    --ptr;
+    *ptr = val;
+    return ptr;
+  } else {
+    return encode_longlength(ptr, e, val);
   }
 }
 
@@ -16946,7 +16985,7 @@ static char* encode_scalar(char* ptr, upb_encstate* e, const void* _field_mem,
     case kUpb_FieldType_Bytes: {
       upb_StringView view = *(upb_StringView*)field_mem;
       ptr = encode_bytes(ptr, e, view.data, view.size);
-      ptr = encode_varint(ptr, e, view.size);
+      ptr = encode_length(ptr, e, view.size);
       wire_type = kUpb_WireType_Delimited;
       break;
     }
@@ -16974,7 +17013,7 @@ static char* encode_scalar(char* ptr, upb_encstate* e, const void* _field_mem,
       }
       if (--e->depth == 0) encode_err(e, kUpb_EncodeStatus_MaxDepthExceeded);
       ptr = encode_TaggedMessagePtr(ptr, e, submsg, subm, &size);
-      ptr = encode_varint(ptr, e, size);
+      ptr = encode_length(ptr, e, size);
       wire_type = kUpb_WireType_Delimited;
       e->depth++;
       break;
@@ -17056,7 +17095,7 @@ static char* encode_array(char* ptr, upb_encstate* e, const upb_Message* msg,
       do {
         str_ptr--;
         ptr = encode_bytes(ptr, e, str_ptr->data, str_ptr->size);
-        ptr = encode_varint(ptr, e, str_ptr->size);
+        ptr = encode_length(ptr, e, str_ptr->size);
         ptr = encode_tag(ptr, e, upb_MiniTableField_Number(f),
                          kUpb_WireType_Delimited);
       } while (str_ptr != start);
@@ -17088,7 +17127,7 @@ static char* encode_array(char* ptr, upb_encstate* e, const upb_Message* msg,
         size_t size;
         arr_ptr--;
         ptr = encode_TaggedMessagePtr(ptr, e, *arr_ptr, subm, &size);
-        ptr = encode_varint(ptr, e, size);
+        ptr = encode_length(ptr, e, size);
         ptr = encode_tag(ptr, e, upb_MiniTableField_Number(f),
                          kUpb_WireType_Delimited);
       } while (arr_ptr != start);
@@ -17099,7 +17138,7 @@ static char* encode_array(char* ptr, upb_encstate* e, const upb_Message* msg,
 #undef VARINT_CASE
 
   if (packed) {
-    ptr = encode_varint(ptr, e, e->limit - ptr - pre_len);
+    ptr = encode_length(ptr, e, e->limit - ptr - pre_len);
     ptr = encode_tag(ptr, e, upb_MiniTableField_Number(f),
                      kUpb_WireType_Delimited);
   }
@@ -17116,7 +17155,7 @@ static char* encode_mapentry(char* ptr, upb_encstate* e, uint32_t number,
   ptr = encode_scalar(ptr, e, &ent->v, layout->UPB_PRIVATE(subs), val_field);
   ptr = encode_scalar(ptr, e, &ent->k, layout->UPB_PRIVATE(subs), key_field);
   size = (e->limit - ptr) - pre_len;
-  ptr = encode_varint(ptr, e, size);
+  ptr = encode_length(ptr, e, size);
   ptr = encode_tag(ptr, e, number, kUpb_WireType_Delimited);
   return ptr;
 }
@@ -17373,7 +17412,7 @@ static upb_EncodeStatus upb_Encoder_Encode(char* ptr,
     size_t encoded_msg_size;
     ptr = encode_message(ptr, encoder, msg, l, &encoded_msg_size);
     if (prepend_len) {
-      ptr = encode_varint(ptr, encoder, encoded_msg_size);
+      ptr = encode_length(ptr, encoder, encoded_msg_size);
     }
     *size = encoder->limit - ptr;
     if (*size == 0) {
@@ -17410,13 +17449,14 @@ static upb_EncodeStatus _upb_Encode(const upb_Message* msg,
 
   e.status = kUpb_EncodeStatus_Ok;
   e.arena = arena;
-  e.buf = NULL;
-  e.limit = NULL;
+  e.buf = &initial_buf_sentinel;
+  e.limit = &initial_buf_sentinel;
   e.depth = upb_EncodeOptions_GetEffectiveMaxDepth(options);
   e.options = options;
   _upb_mapsorter_init(&e.sorter);
 
-  return upb_Encoder_Encode(NULL, &e, msg, l, buf, size, prepend_len);
+  return upb_Encoder_Encode(&initial_buf_sentinel, &e, msg, l, buf, size,
+                            prepend_len);
 }
 
 upb_EncodeStatus upb_Encode(const upb_Message* msg, const upb_MiniTable* l,
@@ -17596,6 +17636,7 @@ const char* UPB_PRIVATE(_upb_WireReader_SkipGroup)(
 #undef UPB_ASAN
 #undef UPB_HWASAN
 #undef UPB_HWASAN_POISON_TAG
+#undef UPB_MSAN
 #undef UPB_MALLOC_ALIGN
 #undef UPB_TSAN
 #undef UPB_TREAT_CLOSED_ENUMS_LIKE_OPEN

@@ -98,9 +98,10 @@ struct MapTestPeer {
   static bool InsertOrReplaceNode(T& map, typename T::key_type key,
                                   typename T::mapped_type value) {
     using Node = typename T::Node;
-    auto* node = static_cast<Node*>(map.AllocNode(sizeof(Node)));
+    auto* node = static_cast<Node*>(map.arena(),
+                                    map.AllocNode(map.arena(), sizeof(Node)));
     ::new (static_cast<void*>(&node->kv)) typename T::value_type{key, value};
-    return GetKeyMapBase(map).InsertOrReplaceNode(node);
+    return GetKeyMapBase(map).InsertOrReplaceNode(map.arena(), node);
   }
 
   template <typename T>
@@ -2958,6 +2959,23 @@ TEST(GeneratedMapFieldTest, DuplicatedKeyWireFormat) {
   EXPECT_FALSE(map_message.map_field().find(key)->second.has_dummy4());
   ASSERT_TRUE(map_message.map_field().find(key)->second.has_dummy5());
   EXPECT_EQ(12, map_message.map_field().find(key)->second.dummy5());
+}
+
+TEST(GeneratedMapFieldTest, DuplicateEntriesInWireFormatLastOneWins) {
+  UNITTEST::TestMap message;
+
+  std::string bytes;
+  {
+    UNITTEST::TestMap tmp;
+    (*tmp.mutable_map_int32_int32())[1] = 1;
+    bytes = tmp.SerializeAsString();
+
+    (*tmp.mutable_map_int32_int32())[1] = 2;
+    absl::StrAppend(&bytes, tmp.SerializeAsString());
+  }
+
+  ASSERT_TRUE(message.ParseFromString(bytes));
+  EXPECT_THAT(message.map_int32_int32(), ElementsAre(Pair(1, 2)));
 }
 
 // Exhaustive combinations of keys, values, and junk in any order.

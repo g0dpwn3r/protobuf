@@ -124,6 +124,16 @@ constexpr bool FieldHasArenaOffset() {
   return !std::is_same_v<T, ArenaRepT>;
 }
 
+// TODO - Some types have a deprecated arena-enabled constructor,
+// as we plan to remove it in favor of using arena offsets, but for now Arena
+// needs to call it. While the arena constructor exists, we will call the
+// `InternalVisibility` override to silence the warning.
+template <typename T>
+constexpr bool HasDeprecatedArenaConstructor() {
+  return std::is_base_of_v<internal::RepeatedPtrFieldBase, T> &&
+         !std::is_same_v<T, internal::RepeatedPtrFieldBase>;
+}
+
 template <typename T>
 void arena_delete_object(void* PROTOBUF_NONNULL object) {
   delete reinterpret_cast<T*>(object);
@@ -474,25 +484,32 @@ class PROTOBUF_EXPORT PROTOBUF_ALIGNAS(8)
                                              sizeof(char)>
         is_arena_constructable;
 
+    // Note that by this point, for types `U` which overload `FieldArenaRep<U>`,
+    // `T` is the arena representation `FieldArenaRep<U>::Type` and is expected
+    // to have an arena-enabled constructor.
+    //
+    // For types with a different arena representation, if the arena pointer is
+    // null, the object is allocated directly with `new` as its original type,
+    // since wrapping the type in the arena representation would be wasteful.
     template <typename... Args>
     static T* PROTOBUF_NONNULL ConstructOnArena(void* PROTOBUF_NONNULL ptr,
                                                 Arena& arena, Args&&... args) {
+#ifndef PROTOBUF_INTERNAL_REMOVE_ARENA_PTRS_REPEATED_PTR_FIELD
       // TODO - ClangTidy gives warnings for calling the deprecated
-      // `RepeatedPtrField(Arena*)` constructor here, but this is the correct
-      // way to call it as it will allow us to silently switch to a different
-      // constructor once arena pointers are removed from RepeatedPtrFields.
-      // While this constructor exists, we will call the `InternalVisibility`
-      // override to silence the warning.
-      //
-      // Note: RepeatedPtrFieldBase is sometimes constructed internally, and it
-      // doesn't have `InternalVisibility` constructors.
-      if constexpr (std::is_base_of_v<internal::RepeatedPtrFieldBase, T> &&
-                    !std::is_same_v<T, internal::RepeatedPtrFieldBase>) {
+      // constructors here, which leads to log spam. It is correct to invoke
+      // these constructors through the Arena class as it will allow us to
+      // silently switch to a different constructor once arena pointers are
+      // removed. While these constructors exists, we will call the
+      // `InternalVisibility` overrides to silence the warning.
+      if constexpr (internal::HasDeprecatedArenaConstructor<T>()) {
         return new (ptr) T(internal::InternalVisibility(), &arena,
                            static_cast<Args&&>(args)...);
       } else {
+#endif
         return new (ptr) T(&arena, static_cast<Args&&>(args)...);
+#ifndef PROTOBUF_INTERNAL_REMOVE_ARENA_PTRS_REPEATED_PTR_FIELD
       }
+#endif
     }
 
     template <typename... Args>
@@ -510,7 +527,8 @@ class PROTOBUF_EXPORT PROTOBUF_ALIGNAS(8)
       // Fields which use arena offsets don't have constructors that take an
       // arena pointer. Since the arena is nullptr, it is safe to default
       // construct the object.
-      if constexpr (internal::FieldHasArenaOffset<T>()) {
+      if constexpr (internal::FieldHasArenaOffset<T>() ||
+                    internal::HasDeprecatedArenaConstructor<T>()) {
         return new T();
       } else {
         return new T(nullptr);
@@ -590,7 +608,8 @@ class PROTOBUF_EXPORT PROTOBUF_ALIGNAS(8)
     static_assert(is_arena_constructable<T>::value,
                   "Can only construct types that are ArenaConstructable");
     if (ABSL_PREDICT_FALSE(arena == nullptr)) {
-      if constexpr (internal::FieldHasArenaOffset<T>()) {
+      if constexpr (internal::FieldHasArenaOffset<T>() ||
+                    internal::HasDeprecatedArenaConstructor<T>()) {
         return new T(static_cast<Args&&>(args)...);
       } else {
         return new T(nullptr, static_cast<Args&&>(args)...);
@@ -741,29 +760,29 @@ class PROTOBUF_EXPORT PROTOBUF_ALIGNAS(8)
 template <typename T>
 PROTOBUF_NOINLINE void* PROTOBUF_NONNULL
 Arena::DefaultConstruct(Arena* PROTOBUF_NULLABLE arena) {
-  if (arena != nullptr) {
-    using ArenaRepT = typename internal::FieldArenaRep<T>::Type;
-    static_assert(is_destructor_skippable<ArenaRepT>::value, "");
+  if constexpr (internal::FieldHasArenaOffset<T>()) {
+    if (arena != nullptr) {
+      using ArenaRepT = typename internal::FieldArenaRep<T>::Type;
+      static_assert(is_destructor_skippable<ArenaRepT>::value);
 
-    void* mem = arena->AllocateAligned(sizeof(ArenaRepT));
-    ArenaRepT* arena_rep = new (mem) ArenaRepT(arena);
-    return internal::FieldArenaRep<T>::Get(arena_rep);
-  } else {
-    static_assert(is_destructor_skippable<T>::value, "");
-
-#if ABSL_HAVE_BUILTIN(__builtin_operator_new)
-    void* mem = __builtin_operator_new(sizeof(T));
-#else
-    void* mem = ::operator new(sizeof(T));
-#endif
-
-    // Fields which use arena offsets don't have constructors that take an arena
-    // pointer. Since the arena is nullptr, it is safe to default construct the
-    // object.
-    if constexpr (internal::FieldHasArenaOffset<T>()) {
-      return new (mem) T();
+      void* mem = arena->AllocateAligned(sizeof(ArenaRepT));
+      ArenaRepT* arena_rep = new (mem) ArenaRepT(arena);
+      return internal::FieldArenaRep<T>::Get(arena_rep);
     } else {
-      return new (mem) T(nullptr);
+      static_assert(is_destructor_skippable<T>::value);
+      // Fields which use arena offsets don't have constructors that take an
+      // arena pointer. Since the arena is nullptr, it is safe to default
+      // construct the object.
+      return new (internal::Allocate(sizeof(T))) T();
+    }
+  } else {
+    static_assert(is_destructor_skippable<T>::value);
+    void* mem = arena != nullptr ? arena->AllocateAligned(sizeof(T))
+                                 : internal::Allocate(sizeof(T));
+    if constexpr (internal::HasDeprecatedArenaConstructor<T>()) {
+      return new (mem) T(internal::InternalVisibility(), arena);
+    } else {
+      return new (mem) T(arena);
     }
   }
 }
@@ -791,11 +810,7 @@ PROTOBUF_NOINLINE void* PROTOBUF_NONNULL Arena::CopyConstruct(
   if (arena != nullptr) {
     mem = arena->AllocateAligned(sizeof(T));
   } else {
-#if ABSL_HAVE_BUILTIN(__builtin_operator_new)
-    mem = __builtin_operator_new(sizeof(T));
-#else
-    mem = ::operator new(sizeof(T));
-#endif
+    mem = internal::Allocate(sizeof(T));
   }
   return new (mem) T(arena, *typed_from);
 }
@@ -804,6 +819,21 @@ template <>
 inline void* PROTOBUF_NONNULL Arena::AllocateInternal<std::string, false>() {
   return impl_.AllocateFromStringBlock();
 }
+
+namespace internal {
+
+// This class is used to define `DestructorSkippable_` for some containing type
+// if and only if `T` is destructor-skippable.
+template <typename T,
+          bool kDestructorSkippable = Arena::is_destructor_skippable<T>::value>
+struct ContainerDestructorSkippableBase {};
+
+template <typename T>
+struct ContainerDestructorSkippableBase<T, /*kDestructorSkippable=*/true> {
+  using DestructorSkippable_ = void;
+};
+
+}  // namespace internal
 
 }  // namespace protobuf
 }  // namespace google

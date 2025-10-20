@@ -33,6 +33,7 @@
 #include <utility>
 
 #include "absl/base/attributes.h"
+#include "absl/base/config.h"
 #include "absl/log/absl_check.h"
 #include "absl/numeric/bits.h"
 #include "absl/strings/cord.h"
@@ -1445,11 +1446,13 @@ template <typename MessageLite>
 PROTOBUF_ALWAYS_INLINE MessageLite* MessageCreator::New(
     const MessageLite* prototype_for_func,
     const MessageLite* prototype_for_copy, Arena* arena) const {
-  return PlacementNew(prototype_for_func, prototype_for_copy,
-                      arena != nullptr
-                          ? arena->AllocateAligned(allocation_size_)
-                          : ::operator new(allocation_size_),
-                      arena);
+  void* mem;
+  if (arena != nullptr) {
+    mem = arena->AllocateAligned(allocation_size_);
+  } else {
+    mem = Allocate(allocation_size_);
+  }
+  return PlacementNew(prototype_for_func, prototype_for_copy, mem, arena);
 }
 
 }  // namespace internal

@@ -157,18 +157,6 @@ static_assert(PROTOBUF_ABSL_MIN(20230125, 3),
 // Owner: ckennelly@, mkruskal@
 #define PROTOBUF_FUTURE_ADD_NODISCARD [[nodiscard]]
 
-// Removes the ability to copy messages into themselves.
-// Owner: cknittel@, mkruskal@
-#define PROTOBUF_FUTURE_NO_RECURSIVE_MESSAGE_COPY 1
-
-// Removes the public RepeatedPtrField(Arena*) constructor.
-// Owner: cknittel@, mkruskal@
-#define PROTOBUF_FUTURE_REMOVE_REPEATED_PTR_FIELD_ARENA_CONSTRUCTOR 1
-
-// Removes the public Map(Arena*) constructor.
-// Owner: cknittel@, mkruskal@
-#define PROTOBUF_FUTURE_REMOVE_MAP_FIELD_ARENA_CONSTRUCTOR 1
-
 #else
 
 #define PROTOBUF_FUTURE_ADD_NODISCARD
@@ -265,6 +253,14 @@ static_assert(PROTOBUF_ABSL_MIN(20230125, 3),
 #else
 #define PROTOBUF_MUSTTAIL
 #define PROTOBUF_TAILCALL false
+#endif
+
+// On windows, you need to hint to the compiler that you want to do empty base
+// class optimization with multiple inheritance.
+#ifdef _MSC_VER
+#define PROTOBUF_DECLSPEC_EMPTY_BASES __declspec(empty_bases)
+#else
+#define PROTOBUF_DECLSPEC_EMPTY_BASES
 #endif
 
 #ifdef PROTOBUF_CC

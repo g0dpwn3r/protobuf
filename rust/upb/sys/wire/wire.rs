@@ -22,6 +22,7 @@ pub enum EncodeStatus {
     OutOfMemory = 1,
     MaxDepthExceeded = 2,
     MissingRequired = 3,
+    MaxSizeExceeded = 4,
 }
 // LINT.ThenChange()
 
@@ -39,7 +40,7 @@ pub enum DecodeStatus {
 }
 // LINT.ThenChange()
 
-extern "C" {
+unsafe extern "C" {
     // SAFETY:
     // - `mini_table` is the one associated with `msg`
     // - `buf` and `buf_size` are legally writable.

@@ -397,7 +397,20 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
    * @throws IndexOutOfBoundsException if {@code offset} or {@code size} are out of bounds
    */
   public static ByteString copyFrom(byte[] bytes, int offset, int size) {
+    try {
+      return copyFrom(bytes, offset, size, /* requireUtf8= */ false);
+    } catch (InvalidProtocolBufferException e) {
+      throw new AssertionError(
+          "Expected no InvalidProtocolBufferException as data UTF8 validity is not checked.", e);
+    }
+  }
+
+  static ByteString copyFrom(byte[] bytes, int offset, int size, boolean requireUtf8)
+      throws InvalidProtocolBufferException {
     checkRange(offset, offset + size, bytes.length);
+    if (requireUtf8 && !Utf8.isValidUtf8(bytes, offset, offset + size)) {
+      throw InvalidProtocolBufferException.invalidUtf8();
+    }
     return new LiteralByteString(byteArrayCopier.copyFrom(bytes, offset, size));
   }
 
@@ -416,6 +429,19 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
    * library.
    */
   static ByteString wrap(ByteBuffer buffer) {
+    try {
+      return wrap(buffer, /* requireUtf8= */ false);
+    } catch (InvalidProtocolBufferException e) {
+      throw new AssertionError(
+          "Expected no InvalidProtocolBufferException as data UTF8 validity is not checked.", e);
+    }
+  }
+
+  static ByteString wrap(ByteBuffer buffer, boolean requireUtf8)
+      throws InvalidProtocolBufferException {
+    if (requireUtf8 && !Utf8.isValidUtf8(buffer)) {
+      throw InvalidProtocolBufferException.invalidUtf8();
+    }
     if (buffer.hasArray()) {
       final int offset = buffer.arrayOffset();
       return ByteString.wrap(buffer.array(), offset + buffer.position(), buffer.remaining());
@@ -434,6 +460,18 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
    * to force a classload of ByteString before LiteralByteString.
    */
   static ByteString wrap(byte[] bytes) {
+    try {
+      return wrap(bytes, /* requireUtf8= */ false);
+    } catch (InvalidProtocolBufferException e) {
+      throw new AssertionError(
+          "Expected no InvalidProtocolBufferException as data UTF8 validity is not checked.", e);
+    }
+  }
+
+  static ByteString wrap(byte[] bytes, boolean requireUtf8) throws InvalidProtocolBufferException {
+    if (requireUtf8 && !Utf8.isValidUtf8(bytes)) {
+      throw InvalidProtocolBufferException.invalidUtf8();
+    }
     // TODO: Return EMPTY when bytes are empty to reduce allocations?
     return new LiteralByteString(bytes);
   }
@@ -443,6 +481,19 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
    * to force a classload of ByteString before BoundedByteString and LiteralByteString.
    */
   static ByteString wrap(byte[] bytes, int offset, int length) {
+    try {
+      return wrap(bytes, offset, length, /* requireUtf8= */ false);
+    } catch (InvalidProtocolBufferException e) {
+      throw new AssertionError(
+          "Expected no InvalidProtocolBufferException as data UTF8 validity is not checked.", e);
+    }
+  }
+
+  static ByteString wrap(byte[] bytes, int offset, int length, boolean requireUtf8)
+      throws InvalidProtocolBufferException {
+    if (requireUtf8 && !Utf8.isValidUtf8(bytes, offset, offset + length)) {
+      throw InvalidProtocolBufferException.invalidUtf8();
+    }
     return new BoundedByteString(bytes, offset, length);
   }
 
@@ -929,8 +980,42 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
   // equals() and hashCode()
 
   @Override
-  public abstract boolean equals(
-          Object o);
+  public final boolean equals(
+          Object o) {
+    if (o == this) {
+      return true;
+    }
+    if (!(o instanceof ByteString)) {
+      return false;
+    }
+
+    ByteString other = (ByteString) o; // Non-null due to instanceof check above.
+    int size = size();
+    if (size != other.size()) {
+      return false;
+    }
+    if (size == 0) {
+      return true;
+    }
+
+    // If we have cached hash codes, and they are different, then we can skip any additional
+    // equality check.
+    int thisPeekHash = peekCachedHashCode();
+    int otherPeekHash = other.peekCachedHashCode();
+    if (thisPeekHash != 0 && otherPeekHash != 0 && thisPeekHash != otherPeekHash) {
+      return false;
+    }
+
+    return equalsInternal(other);
+  }
+
+  /**
+   * Internal portion of the equals check: as a precondition the caller has already checked most
+   * fast properties that are common (including reference identity, null, size, cached hash codes if
+   * available) are the same. This method is when we need to check the actual string contents from
+   * there.
+   */
+  protected abstract boolean equalsInternal(ByteString other);
 
   /** Base class for leaf {@link ByteString}s (i.e. non-ropes). */
   abstract static class LeafByteString extends ByteString {
@@ -1479,36 +1564,12 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
     // equals() and hashCode()
 
     @Override
-    public final boolean equals(
-            Object other) {
-      if (other == this) {
-        return true;
-      }
-      if (!(other instanceof ByteString)) {
-        return false;
-      }
-
-      if (size() != ((ByteString) other).size()) {
-        return false;
-      }
-      if (size() == 0) {
-        return true;
-      }
-
+    protected final boolean equalsInternal(ByteString other) {
       if (other instanceof LiteralByteString) {
-        LiteralByteString otherAsLiteral = (LiteralByteString) other;
-        // If we know the hash codes and they are not equal, we know the byte
-        // strings are not equal.
-        int thisHash = peekCachedHashCode();
-        int thatHash = otherAsLiteral.peekCachedHashCode();
-        if (thisHash != 0 && thatHash != 0 && thisHash != thatHash) {
-          return false;
-        }
-
-        return equalsRange((LiteralByteString) other, 0, size());
+        return equalsRange(other, 0, size());
       } else {
         // RopeByteString and NioByteString.
-        return other.equals(this);
+        return other.equalsInternal(this);
       }
     }
 
@@ -1818,28 +1879,14 @@ public abstract class ByteString implements Iterable<Byte>, Serializable {
     }
 
     @Override
-    public boolean equals(
-            Object other) {
-      if (other == this) {
-        return true;
-      }
-      if (!(other instanceof ByteString)) {
-        return false;
-      }
-      ByteString otherString = ((ByteString) other);
-      if (size() != otherString.size()) {
-        return false;
-      }
-      if (size() == 0) {
-        return true;
-      }
+    public boolean equalsInternal(ByteString other) {
       if (other instanceof NioByteString) {
         return buffer.equals(((NioByteString) other).buffer);
       }
       if (other instanceof RopeByteString) {
-        return other.equals(this);
+        return other.equalsInternal(this);
       }
-      return buffer.equals(otherString.asReadOnlyByteBuffer());
+      return buffer.equals(other.asReadOnlyByteBuffer());
     }
 
     @Override
