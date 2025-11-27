@@ -37,7 +37,6 @@
 #include "absl/base/no_destructor.h"
 #include "absl/base/optimization.h"
 #include "absl/log/absl_check.h"
-#include "absl/meta/type_traits.h"
 #include "absl/strings/cord.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/field_with_arena.h"
@@ -107,31 +106,40 @@ class RepeatedIterator;
 struct RepeatedFieldBase {};
 
 #ifdef PROTOBUF_INTERNAL_REMOVE_ARENA_PTRS_REPEATED_FIELD
+// Align to 8 as sanitizers are picky on the alignment of containers to start at
+// 8 byte offsets even when compiling for 32 bit platforms.
 template <size_t kMinSize>
-class HeapRep {
+class alignas(8) HeapRep {
  public:
-  explicit HeapRep(uint32_t capacity) : capacity_(capacity) {}
+  explicit HeapRep(uint32_t capacity) : capacity_(capacity), unused_(0) {}
   // Avoid 'implicitly deleted dtor' warnings on certain compilers.
   ~HeapRep() = delete;
 
   uint32_t capacity() const { return capacity_; }
 
-  const void* elements() const { return this + 1; }
-  void* elements() { return this + 1; }
+  const void* elements() const { return elements_; }
+  void* elements() { return elements_; }
+
+  // Returns the size of the HeapRep in bytes. Do not use `sizeof(HeapRep)`,
+  // since that includes the dummy `elements_` member.
+  static constexpr size_t SizeOf() { return offsetof(HeapRep, elements_); }
 
  private:
-  // Align to 8 as sanitizers are picky on the alignment of containers to start
-  // at 8 byte offsets even when compiling for 32 bit platforms.
   union {
-    alignas(8) struct {
+    struct {
       uint32_t capacity_;
-      [[maybe_unused]] const uint32_t unused_ = 0;
+      [[maybe_unused]] const uint32_t unused_;
     };
 
     // We pad the header to be at least `sizeof(Element)` so that we have
     // power-of-two sized allocations, which enables Arena optimizations.
     char padding_[kMinSize];
   };
+
+  // This is the start of the elements storage. We would use a flexible array
+  // member here, but that's not available in all compilers. We will not
+  // initialize this member, and `kHeapRepHeaderSize` ignores this field.
+  uint8_t elements_[1];
 };
 #else
 template <size_t kMinSize>
@@ -140,6 +148,8 @@ struct HeapRep {
   ~HeapRep() = delete;
 
   void* elements() { return this + 1; }
+
+  static constexpr size_t SizeOf() { return sizeof(HeapRep); }
 
   // Align to 8 as sanitizers are picky on the alignment of containers to start
   // at 8 byte offsets even when compiling for 32 bit platforms.
@@ -383,11 +393,11 @@ class ABSL_ATTRIBUTE_WARN_UNUSED PROTOBUF_DECLSPEC_EMPTY_BASES
                 "We do not support reference value types.");
   static constexpr PROTOBUF_ALWAYS_INLINE void StaticValidityCheck() {
     static_assert(
-        absl::disjunction<internal::is_supported_integral_type<Element>,
-                          internal::is_supported_floating_point_type<Element>,
-                          std::is_same<absl::Cord, Element>,
-                          std::is_same<UnknownField, Element>,
-                          is_proto_enum<Element>>::value,
+        std::disjunction<internal::is_supported_integral_type<Element>,
+                         internal::is_supported_floating_point_type<Element>,
+                         std::is_same<absl::Cord, Element>,
+                         std::is_same<UnknownField, Element>,
+                         is_proto_enum<Element>>::value,
         "We only support non-string scalars in RepeatedField.");
   }
 
@@ -599,9 +609,15 @@ class ABSL_ATTRIBUTE_WARN_UNUSED PROTOBUF_DECLSPEC_EMPTY_BASES
                  const_iterator last) ABSL_ATTRIBUTE_LIFETIME_BOUND;
 
   // Gets the Arena on which this RepeatedField stores its elements.
-  // Note: this can be inaccurate for split default fields so we make this
-  // function non-const.
   PROTOBUF_FUTURE_ADD_NODISCARD inline Arena* GetArena() {
+    // Note: we make this function non-const to force callers to call the
+    // `mutable_*` accessor on the repeated field before calling `GetArena()`,
+    // which initializes the field if it is split. If this method were const,
+    // then `msg.repeated_field().GetArena()` would be valid, but for split
+    // repeated fields `repeated_field()` could point to the default split
+    // instance. This would always return `nullptr`, which is incorrect when
+    // using arenas.
+
 #ifdef PROTOBUF_INTERNAL_REMOVE_ARENA_PTRS_REPEATED_FIELD
     return soo_rep_.arena();
 #else
@@ -652,7 +668,7 @@ class ABSL_ATTRIBUTE_WARN_UNUSED PROTOBUF_DECLSPEC_EMPTY_BASES
       internal::SooCapacityElements<Element>();
 
   static constexpr int kInitialSize = 0;
-  static PROTOBUF_CONSTEXPR const size_t kHeapRepHeaderSize = sizeof(HeapRep);
+  static PROTOBUF_CONSTEXPR const size_t kHeapRepHeaderSize = HeapRep::SizeOf();
 
 #ifdef PROTOBUF_INTERNAL_REMOVE_ARENA_PTRS_REPEATED_FIELD
   explicit constexpr RepeatedField(internal::InternalMetadataOffset offset);
@@ -704,6 +720,9 @@ class ABSL_ATTRIBUTE_WARN_UNUSED PROTOBUF_DECLSPEC_EMPTY_BASES
 #endif
 
   void ReserveWithArena(Arena* arena, int new_size);
+  void GrowByWithArena(Arena* arena, int grow_by) {
+    ReserveWithArena(arena, size() + grow_by);
+  }
 
   void AddWithArena(Arena* arena, Element value);
   pointer AddWithArena(Arena* arena) ABSL_ATTRIBUTE_LIFETIME_BOUND;

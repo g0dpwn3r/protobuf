@@ -67,6 +67,13 @@ namespace protobuf {
 template <>
 internal::EnumTraitsT<::pb::CppFeatures_StringType_internal_data_>
     internal::EnumTraitsImpl::value<::pb::CppFeatures_StringType>;
+namespace internal {
+template <>
+inline ::absl::string_view GetFeatureSetDefaultsData<::pb::CppFeatures>() {
+  static constexpr char kDefaults[] = "CiMYhAciA8I+ACoZCAEQAhgCIAMoATACOAJAAcI+BggBEAMYAAojGOcHIgPCPgAqGQgCEAEYASACKAEwATgCQAHCPgYIABADGAAKIxjoByITCAEQARgBIAIoATABwj4ECAAQAyoJOAJAAcI+AhgACiMY6QciGQgBEAEYASACKAEwATgBQALCPgYIABABGAEqA8I+ACDmByjpBw==";
+  return kDefaults;
+}
+}  // namespace internal
 }  // namespace protobuf
 }  // namespace google
 
@@ -280,7 +287,8 @@ class PROTOBUF_EXPORT CppFeatures final : public ::google::protobuf::Message
     kEnumNameUsesStringViewFieldNumber = 3,
   };
   // optional .pb.CppFeatures.StringType string_type = 2 [retention = RETENTION_RUNTIME, targets = TARGET_TYPE_FIELD, targets = TARGET_TYPE_FILE, edition_defaults = {
-  bool has_string_type() const;
+  [[nodiscard]] bool has_string_type()
+      const;
   void clear_string_type() ;
   ::pb::CppFeatures_StringType string_type() const;
   void set_string_type(::pb::CppFeatures_StringType value);
@@ -291,7 +299,8 @@ class PROTOBUF_EXPORT CppFeatures final : public ::google::protobuf::Message
 
   public:
   // optional bool legacy_closed_enum = 1 [retention = RETENTION_RUNTIME, targets = TARGET_TYPE_FIELD, targets = TARGET_TYPE_FILE, edition_defaults = {
-  bool has_legacy_closed_enum() const;
+  [[nodiscard]] bool has_legacy_closed_enum()
+      const;
   void clear_legacy_closed_enum() ;
   bool legacy_closed_enum() const;
   void set_legacy_closed_enum(bool value);
@@ -302,7 +311,8 @@ class PROTOBUF_EXPORT CppFeatures final : public ::google::protobuf::Message
 
   public:
   // optional bool enum_name_uses_string_view = 3 [retention = RETENTION_RUNTIME, targets = TARGET_TYPE_ENUM, targets = TARGET_TYPE_FILE, edition_defaults = {
-  bool has_enum_name_uses_string_view() const;
+  [[nodiscard]] bool has_enum_name_uses_string_view()
+      const;
   void clear_enum_name_uses_string_view() ;
   bool enum_name_uses_string_view() const;
   void set_enum_name_uses_string_view(bool value);
@@ -323,6 +333,7 @@ class PROTOBUF_EXPORT CppFeatures final : public ::google::protobuf::Message
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
   template <typename T>
   friend class ::google::protobuf::Arena::InternalHelper;
   using InternalArenaConstructable_ = void;

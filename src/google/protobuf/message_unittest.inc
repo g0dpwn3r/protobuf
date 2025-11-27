@@ -451,7 +451,8 @@ TEST(MESSAGE_TEST_NAME, UnparsedEmpty) {
   const char encoded[] = {'\042', 100};
   UNITTEST::NestedTestAllTypes message;
 
-  EXPECT_FALSE(message.ParseFromArray(encoded, sizeof(encoded)));
+  EXPECT_FALSE(
+      message.ParseFromString(absl::string_view(encoded, sizeof(encoded))));
   EXPECT_TRUE(message.has_lazy_child());
   EXPECT_EQ(message.lazy_child().ByteSizeLong(), 0);
 }
@@ -958,6 +959,35 @@ TEST(MESSAGE_TEST_NAME, CheckInitialized) {
                             "fields: a, b, c"));
 }
 
+TEST(MESSAGE_TEST_NAME, StringWithInvalidSizeDoesNotExposeGarbage) {
+  Arena the_arena;
+  // We test different sizes because we have different parsers for small/SSO and
+  // larger sizes.
+  for (char size = 1; size < 40; ++size) {
+    SCOPED_TRACE(size);
+    // We test arena and no arena because we have different parsers for
+    // donations and heap.
+    for (Arena* arena : {static_cast<Arena*>(nullptr), &the_arena}) {
+      SCOPED_TRACE(arena);
+
+      auto* msg = Arena::Create<UNITTEST::TestAllTypes>(arena);
+      std::unique_ptr<UNITTEST::TestAllTypes> cleanup(arena ? nullptr : msg);
+
+      const char input[] = {// Field 14, LEN
+                            '\162',
+                            // The size
+                            size};
+      ASSERT_FALSE(msg->ParseFromString(absl::string_view(input, 2)));
+
+      for (const char& c : msg->optional_string()) {
+        // If we have any chars in here, they must be zeros.
+        // Anything else indicates exposing garbage.
+        EXPECT_EQ(0, c);
+      }
+    }
+  }
+}
+
 #endif  // GTEST_HAS_DEATH_TEST
 
 namespace {
@@ -1091,16 +1121,16 @@ TEST(MESSAGE_TEST_NAME, ParseFailsOnInvalidMessageEnd) {
   UNITTEST::TestAllTypes message;
 
   // Control case.
-  EXPECT_TRUE(message.ParseFromArray("", 0));
+  EXPECT_TRUE(message.ParseFromString(""));
 
   // The byte is a valid varint, but not a valid tag (zero).
-  EXPECT_FALSE(message.ParseFromArray("\0", 1));
+  EXPECT_FALSE(message.ParseFromString(absl::string_view("\0", 1)));
 
   // The byte is a malformed varint.
-  EXPECT_FALSE(message.ParseFromArray("\200", 1));
+  EXPECT_FALSE(message.ParseFromString("\200"));
 
   // The byte is an endgroup tag, but we aren't parsing a group.
-  EXPECT_FALSE(message.ParseFromArray("\014", 1));
+  EXPECT_FALSE(message.ParseFromString("\014"));
 }
 
 // Regression test for b/23630858
@@ -1131,7 +1161,8 @@ TEST(MESSAGE_TEST_NAME, NonCanonicalTag) {
   UNITTEST::TestAllTypes message;
   // optional_lazy_message (27) LEN(3) with non canonical tag: (1).
   const char encoded[] = {'\332', 1, 3, '\210', 0, 0};
-  EXPECT_TRUE(message.ParseFromArray(encoded, sizeof(encoded)));
+  EXPECT_TRUE(
+      message.ParseFromString(absl::string_view(encoded, sizeof(encoded))));
 }
 
 TEST(MESSAGE_TEST_NAME, Zero5BTag) {
@@ -1139,7 +1170,8 @@ TEST(MESSAGE_TEST_NAME, Zero5BTag) {
   // optional_nested_message (18) LEN(6) with 5B but zero tag.
   const char encoded[] = {'\222', 1,      6,      '\200', '\200',
                           '\200', '\200', '\020', 0};
-  EXPECT_FALSE(message.ParseFromArray(encoded, sizeof(encoded)));
+  EXPECT_FALSE(
+      message.ParseFromString(absl::string_view(encoded, sizeof(encoded))));
 }
 
 TEST(MESSAGE_TEST_NAME, Zero5BTagLazy) {
@@ -1147,7 +1179,8 @@ TEST(MESSAGE_TEST_NAME, Zero5BTagLazy) {
   // optional_lazy_message (27) LEN(6) with 5B but zero tag.
   const char encoded[] = {'\332', 1,      6,      '\200', '\200',
                           '\200', '\200', '\020', 0};
-  EXPECT_FALSE(message.ParseFromArray(encoded, sizeof(encoded)));
+  EXPECT_FALSE(
+      message.ParseFromString(absl::string_view(encoded, sizeof(encoded))));
 }
 
 namespace {

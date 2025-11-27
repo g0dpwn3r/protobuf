@@ -77,6 +77,13 @@ internal::EnumTraitsT<::pb::JavaFeatures_NestInFileClassFeature_NestInFileClass_
 template <>
 internal::EnumTraitsT<::pb::JavaFeatures_Utf8Validation_internal_data_>
     internal::EnumTraitsImpl::value<::pb::JavaFeatures_Utf8Validation>;
+namespace internal {
+template <>
+inline ::absl::string_view GetFeatureSetDefaultsData<::pb::JavaFeatures>() {
+  static constexpr char kDefaults[] = "CicYhAciA8o+ACodCAEQAhgCIAMoATACOAJAAco+CggBEAEYACABKAMKJxjnByIDyj4AKh0IAhABGAEgAigBMAE4AkAByj4KCAAQARgAIAEoAwonGOgHIhMIARABGAEgAigBMAHKPgQIABABKg04AkAByj4GGAAgASgDCicY6QciGwgBEAEYASACKAEwATgBQALKPggIABABGAAoASoFyj4CIAAg5gco6Qc=";
+  return kDefaults;
+}
+}  // namespace internal
 }  // namespace protobuf
 }  // namespace google
 
@@ -300,6 +307,7 @@ class PROTOC_EXPORT JavaFeatures_NestInFileClassFeature final : public ::google:
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
   template <typename T>
   friend class ::google::protobuf::Arena::InternalHelper;
   using InternalArenaConstructable_ = void;
@@ -481,7 +489,8 @@ class PROTOC_EXPORT JavaFeatures final : public ::google::protobuf::Message
     kNestInFileClassFieldNumber = 5,
   };
   // optional .pb.JavaFeatures.Utf8Validation utf8_validation = 2 [retention = RETENTION_RUNTIME, targets = TARGET_TYPE_FIELD, targets = TARGET_TYPE_FILE, edition_defaults = {
-  bool has_utf8_validation() const;
+  [[nodiscard]] bool has_utf8_validation()
+      const;
   void clear_utf8_validation() ;
   ::pb::JavaFeatures_Utf8Validation utf8_validation() const;
   void set_utf8_validation(::pb::JavaFeatures_Utf8Validation value);
@@ -492,7 +501,8 @@ class PROTOC_EXPORT JavaFeatures final : public ::google::protobuf::Message
 
   public:
   // optional bool legacy_closed_enum = 1 [retention = RETENTION_RUNTIME, targets = TARGET_TYPE_FIELD, targets = TARGET_TYPE_FILE, edition_defaults = {
-  bool has_legacy_closed_enum() const;
+  [[nodiscard]] bool has_legacy_closed_enum()
+      const;
   void clear_legacy_closed_enum() ;
   bool legacy_closed_enum() const;
   void set_legacy_closed_enum(bool value);
@@ -503,7 +513,8 @@ class PROTOC_EXPORT JavaFeatures final : public ::google::protobuf::Message
 
   public:
   // optional bool large_enum = 3 [retention = RETENTION_RUNTIME, targets = TARGET_TYPE_ENUM, targets = TARGET_TYPE_FILE, edition_defaults = {
-  bool has_large_enum() const;
+  [[nodiscard]] bool has_large_enum()
+      const;
   void clear_large_enum() ;
   bool large_enum() const;
   void set_large_enum(bool value);
@@ -514,7 +525,8 @@ class PROTOC_EXPORT JavaFeatures final : public ::google::protobuf::Message
 
   public:
   // optional bool use_old_outer_classname_default = 4 [retention = RETENTION_RUNTIME, targets = TARGET_TYPE_FILE, edition_defaults = {
-  bool has_use_old_outer_classname_default() const;
+  [[nodiscard]] bool has_use_old_outer_classname_default()
+      const;
   void clear_use_old_outer_classname_default() ;
   bool use_old_outer_classname_default() const;
   void set_use_old_outer_classname_default(bool value);
@@ -525,7 +537,8 @@ class PROTOC_EXPORT JavaFeatures final : public ::google::protobuf::Message
 
   public:
   // optional .pb.JavaFeatures.NestInFileClassFeature.NestInFileClass nest_in_file_class = 5 [retention = RETENTION_RUNTIME, targets = TARGET_TYPE_MESSAGE, targets = TARGET_TYPE_ENUM, targets = TARGET_TYPE_SERVICE, edition_defaults = {
-  bool has_nest_in_file_class() const;
+  [[nodiscard]] bool has_nest_in_file_class()
+      const;
   void clear_nest_in_file_class() ;
   ::pb::JavaFeatures_NestInFileClassFeature_NestInFileClass nest_in_file_class() const;
   void set_nest_in_file_class(::pb::JavaFeatures_NestInFileClassFeature_NestInFileClass value);
@@ -546,6 +559,7 @@ class PROTOC_EXPORT JavaFeatures final : public ::google::protobuf::Message
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
+  friend ::google::protobuf::internal::PrivateAccess;
   template <typename T>
   friend class ::google::protobuf::Arena::InternalHelper;
   using InternalArenaConstructable_ = void;
@@ -583,13 +597,6 @@ inline constexpr int kJavaFieldNumber = 1001;
 PROTOC_EXPORT extern ::google::protobuf::internal::ExtensionIdentifier<
     ::google::protobuf::FeatureSet, ::google::protobuf::internal::MessageTypeTraits< ::pb::JavaFeatures >, 11, false>
     java;
-namespace internal {
-template <>
-inline ::absl::string_view GetFeatureSetDefaultsData<::pb::JavaFeatures>() {
-  static constexpr char kDefaults[] = "CicYhAciA8o+ACodCAEQAhgCIAMoATACOAJAAco+CggBEAEYACABKAMKJxjnByIDyj4AKh0IAhABGAEgAigBMAE4AkAByj4KCAAQARgAIAEoAwonGOgHIhMIARABGAEgAigBMAHKPgQIABABKg04AkAByj4GGAAgASgDCicY6QciGwgBEAEYASACKAEwATgBQALKPggIABABGAAoASoFyj4CIAAg5gco6Qc=";
-  return kDefaults;
-}
-}  // namespace internal
 
 // ===================================================================
 

@@ -98,6 +98,7 @@ cc_library(
         "//upb/message:internal",
         "//upb/mini_descriptor",
         "//upb/mini_table",
+        "//upb/mini_table:internal",
         "//upb/wire",
     ] + select({
         ":fasttable_enabled_setting": [
@@ -154,6 +155,7 @@ upb_amalgamation(
         "//upb/wire",
         "//upb/wire:decoder",
         "//upb/wire:eps_copy_input_stream",
+        "//upb/wire:eps_copy_input_stream_internal",
         "//upb/wire:reader",
         "//upb/wire:reader_internal",
         "//upb/wire:writer",
@@ -205,6 +207,7 @@ upb_amalgamation(
         "//upb/wire",
         "//upb/wire:decoder",
         "//upb/wire:eps_copy_input_stream",
+        "//upb/wire:eps_copy_input_stream_internal",
         "//upb/wire:reader",
         "//upb/wire:reader_internal",
         "//upb/wire:writer",
@@ -257,6 +260,7 @@ upb_amalgamation(
         "//upb/wire",
         "//upb/wire:decoder",
         "//upb/wire:eps_copy_input_stream",
+        "//upb/wire:eps_copy_input_stream_internal",
         "//upb/wire:reader",
         "//upb/wire:reader_internal",
         "//upb/wire:writer",
@@ -308,9 +312,13 @@ filegroup(
 filegroup(
     name = "test_srcs",
     srcs = [
+        "//upb/hash:test_srcs",
         "//upb/json:test_srcs",
+        "//upb/lex:test_srcs",
         "//upb/mem:test_srcs",
         "//upb/message:test_srcs",
+        "//upb/mini_descriptor:test_srcs",
+        "//upb/mini_table:test_srcs",
         "//upb/test:test_srcs",
         "//upb/util:test_srcs",
         "//upb/wire:test_srcs",

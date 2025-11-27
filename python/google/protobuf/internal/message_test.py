@@ -1937,6 +1937,14 @@ class Proto2Test(unittest.TestCase):
     with self.assertRaises(ValueError):
       unittest_pb2.TestAllTypes(repeated_nested_enum='FOO')
 
+    m1 = unittest_pb2.TestAllTypes(
+        repeated_foreign_message=[{'c': 1}]
+    )
+    with self.assertRaises(TypeError):
+      unittest_pb2.TestAllTypes(
+          repeated_nested_message=m1.repeated_foreign_message
+      )
+
   def testPythonicInitWithDict(self):
     # Both string/unicode field name keys should work.
     kwargs = {
@@ -2122,7 +2130,7 @@ class Proto3Test(unittest.TestCase):
       if field.name.startswith('optional_'):
         self.assertTrue(field.has_presence)
     for field in unittest_pb2.TestAllTypes.DESCRIPTOR.fields:
-      if field.label == descriptor.FieldDescriptor.LABEL_REPEATED:
+      if field.is_repeated:
         self.assertFalse(field.has_presence)
       else:
         self.assertTrue(field.has_presence)
